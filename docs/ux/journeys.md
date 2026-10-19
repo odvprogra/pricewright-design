@@ -10,7 +10,7 @@ The actors are Northfield Supply's demo users. The actions come from what the AP
 the brief's problem statement, not quotes from research: the usability test confirms or corrects
 them, and its report links the changes back here.
 
-Every screen named in a phase gets a spec of its own in `screens/`.
+Every screen named in a phase has a spec in [screens/](screens/README.md).
 
 ## Sales rep — Taylor Brooks
 
@@ -24,13 +24,13 @@ customers, quotes (build, submit, send, accept, convert), orders, and unit costs
 - **Expectations:** the price is right the first time, without asking anyone which discount applies;
   they know before submitting whether the quote needs their manager.
 
-| Phase             | Actions                                                                     | Mindset (hypothesis)                                  | Screen        |
-| ----------------- | --------------------------------------------------------------------------- | ----------------------------------------------------- | ------------- |
-| Find the customer | Searches by name or account number; opens the account                       | “Is this the Stonegate with the gold discount?”       | Customers     |
-| Start the draft   | Starts a quote from the customer; validity defaults to the tenant’s 30 days | Wants to type lines, not fill a form                  | Quote builder |
-| Add lines         | Adds each line by SKU or name with the keyboard; sets quantities            | “Why is this price lower than the list?”              | Quote builder |
-| Check the price   | Reads a line’s breakdown: list, volume tier, customer tier, promotion, net  | Trusts the number once the steps are visible          | Quote builder |
-| Submit            | Submits; the quote is approved at once or waits for approval, with why      | Needs to know what happens next and how long it takes | Quote detail  |
+| Phase             | Actions                                                                     | Mindset (hypothesis)                                  | Screen                                    |
+| ----------------- | --------------------------------------------------------------------------- | ----------------------------------------------------- | ----------------------------------------- |
+| Find the customer | Searches by name or account number; opens the account                       | “Is this the Stonegate with the gold discount?”       | [Customers](screens/customers.md)         |
+| Start the draft   | Starts a quote from the customer; validity defaults to the tenant’s 30 days | Wants to type lines, not fill a form                  | [Quote builder](screens/quote-builder.md) |
+| Add lines         | Adds each line by SKU or name with the keyboard; sets quantities            | “Why is this price lower than the list?”              | [Quote builder](screens/quote-builder.md) |
+| Check the price   | Reads a line’s breakdown: list, volume tier, customer tier, promotion, net  | Trusts the number once the steps are visible          | [Quote builder](screens/quote-builder.md) |
+| Submit            | Submits; the quote is approved at once or waits for approval, with why      | Needs to know what happens next and how long it takes | [Quote detail](screens/quote-detail.md)   |
 
 **Opportunities:** keyboard-first line entry; the breakdown one key away from each line; the
 approval threshold shown against the quote's discount before submitting, so a pending approval is
@@ -43,12 +43,12 @@ never a surprise.
 - **Expectations:** the decision reaches them without checking the app, and the next step is one
   click.
 
-| Phase              | Actions                                                                       | Mindset (hypothesis)                           | Screen              |
-| ------------------ | ----------------------------------------------------------------------------- | ---------------------------------------------- | ------------------- |
-| Hear the decision  | Reads the email: approved with the PDF, or rejected with Morgan’s comment     | Wants the outcome in the subject line          | Email (brand guide) |
-| Send it (approved) | Opens the quote; sends it; the customer receives the PDF, replying to them    | “Did it actually go to the customer?”          | Quote detail        |
-| Rework (rejected)  | Revises: the quote becomes revision R2, a draft priced now; changes the lines | Doesn’t want to rebuild what was already right | Quote builder       |
-| Resubmit           | Submits R2; R1 stays readable as superseded                                   | Wants the history kept, but out of the way     | Quote detail        |
+| Phase              | Actions                                                                       | Mindset (hypothesis)                           | Screen                                    |
+| ------------------ | ----------------------------------------------------------------------------- | ---------------------------------------------- | ----------------------------------------- |
+| Hear the decision  | Reads the email: approved with the PDF, or rejected with Morgan’s comment     | Wants the outcome in the subject line          | Email (brand guide)                       |
+| Send it (approved) | Opens the quote; sends it; the customer receives the PDF, replying to them    | “Did it actually go to the customer?”          | [Quote detail](screens/quote-detail.md)   |
+| Rework (rejected)  | Revises: the quote becomes revision R2, a draft priced now; changes the lines | Doesn’t want to rebuild what was already right | [Quote builder](screens/quote-builder.md) |
+| Resubmit           | Submits R2; R1 stays readable as superseded                                   | Wants the history kept, but out of the way     | [Quote detail](screens/quote-detail.md)   |
 
 **Opportunities:** the rejection comment pinned above the revised draft; one primary action per
 state; an explicit confirmation of who received the email.
@@ -59,11 +59,11 @@ state; an explicit confirmation of who received the email.
 - **Expectations:** the order exists with the quoted prices; a lost or expired quote is closed for
   good, with the reason.
 
-| Phase          | Actions                                                                      | Mindset (hypothesis)                         | Screen       |
-| -------------- | ---------------------------------------------------------------------------- | -------------------------------------------- | ------------ |
-| Accept         | Records the acceptance on the sent quote                                     | Worries about doing it twice                 | Quote detail |
-| Convert        | Converts it into an order: prices and tax copied, never recomputed           | Needs the order number to tell the warehouse | Quote detail |
-| Close the rest | Cancels a quote the customer declined, with a reason; revises an expired one | “Can I still save this deal?”                | Quote detail |
+| Phase          | Actions                                                                      | Mindset (hypothesis)                         | Screen                                  |
+| -------------- | ---------------------------------------------------------------------------- | -------------------------------------------- | --------------------------------------- |
+| Accept         | Records the acceptance on the sent quote                                     | Worries about doing it twice                 | [Quote detail](screens/quote-detail.md) |
+| Convert        | Converts it into an order: prices and tax copied, never recomputed           | Needs the order number to tell the warehouse | [Quote detail](screens/quote-detail.md) |
+| Close the rest | Cancels a quote the customer declined, with a reason; revises an expired one | “Can I still save this deal?”                | [Quote detail](screens/quote-detail.md) |
 
 **Opportunities:** convert is safe to retry (the API replays it by `Idempotency-Key`), so the button
 can say so; expired offers show "Revise" as their next step.
@@ -81,11 +81,11 @@ eyes).
 - **Expectations:** sees at once why each one needs approval, decides on a phone in under a minute,
   and the rep hears about it.
 
-| Phase            | Actions                                                                         | Mindset (hypothesis)                 | Screen         |
-| ---------------- | ------------------------------------------------------------------------------- | ------------------------------------ | -------------- |
-| Triage the inbox | Opens the inbox, oldest first; scans customer, rep, total, discount, reason     | “Which of these is risky?”           | Approval inbox |
-| Inspect          | Opens one: discount against the threshold, lines below the margin floor, margin | Wants the reason before the detail   | Approval inbox |
-| Decide           | Approves with an optional comment, or rejects saying what to change             | Doesn’t want to type much on a phone | Approval inbox |
+| Phase            | Actions                                                                         | Mindset (hypothesis)                 | Screen                                      |
+| ---------------- | ------------------------------------------------------------------------------- | ------------------------------------ | ------------------------------------------- |
+| Triage the inbox | Opens the inbox, oldest first; scans customer, rep, total, discount, reason     | “Which of these is risky?”           | [Approval inbox](screens/approval-inbox.md) |
+| Inspect          | Opens one: discount against the threshold, lines below the margin floor, margin | Wants the reason before the detail   | [Approval inbox](screens/approval-inbox.md) |
+| Decide           | Approves with an optional comment, or rejects saying what to change             | Doesn’t want to type much on a phone | [Approval inbox](screens/approval-inbox.md) |
 
 **Opportunities:** the reason for approval as the first line of each request; the decision without
 leaving the inbox; a rejection that requires a comment (the rep needs to know what to change).
@@ -96,10 +96,10 @@ leaving the inbox; a rejection that requires a comment (the rep needs to know wh
 - **Expectations:** the override is visible as its own step in the breakdown, with the reason, and
   still goes through approval like any other discount.
 
-| Phase    | Actions                                                         | Mindset (hypothesis)                 | Screen        |
-| -------- | --------------------------------------------------------------- | ------------------------------------ | ------------- |
-| Override | Sets the line's override with a reason on a draft               | “Will this be traceable later?”      | Quote builder |
-| Review   | Sees the override as a step after the promotion, and the margin | Checks the margin floor didn’t break | Quote builder |
+| Phase    | Actions                                                         | Mindset (hypothesis)                 | Screen                                    |
+| -------- | --------------------------------------------------------------- | ------------------------------------ | ----------------------------------------- |
+| Override | Sets the line's override with a reason on a draft               | “Will this be traceable later?”      | [Quote builder](screens/quote-builder.md) |
+| Review   | Sees the override as a step after the promotion, and the margin | Checks the margin floor didn’t break | [Quote builder](screens/quote-builder.md) |
 
 **Opportunities:** the override control only for managers; the margin floor warning next to the
 overridden line.
@@ -115,11 +115,11 @@ keys for integrations.
 - **Expectations:** quick search, edits that never lose someone else's change, archive instead of
   delete.
 
-| Phase   | Actions                                                          | Mindset (hypothesis)                      | Screen              |
-| ------- | ---------------------------------------------------------------- | ----------------------------------------- | ------------------- |
-| Find    | Searches products by SKU or name, or customers by name or tax id | Expects results while typing              | Products, Customers |
-| Edit    | Changes a price, a cost or a customer's tier; saves              | “Did someone else change this meanwhile?” | Products, Customers |
-| Archive | Archives a product or customer; restores it if needed            | Afraid of breaking old quotes             | Products, Customers |
+| Phase   | Actions                                                          | Mindset (hypothesis)                      | Screen                                                             |
+| ------- | ---------------------------------------------------------------- | ----------------------------------------- | ------------------------------------------------------------------ |
+| Find    | Searches products by SKU or name, or customers by name or tax id | Expects results while typing              | [Products](screens/products.md), [Customers](screens/customers.md) |
+| Edit    | Changes a price, a cost or a customer's tier; saves              | “Did someone else change this meanwhile?” | [Products](screens/products.md), [Customers](screens/customers.md) |
+| Archive | Archives a product or customer; restores it if needed            | Afraid of breaking old quotes             | [Products](screens/products.md), [Customers](screens/customers.md) |
 
 **Opportunities:** on a 412, show what changed and offer to reload (handbook §14.2); explain that
 archiving keeps every past quote intact.
@@ -129,5 +129,5 @@ whose brief lists the screens above; their journeys are written when they get sc
 
 ## Sign in (every role)
 
-Every journey starts at Sign in: email and password, a session that renews itself, and a clear
-message after too many failed attempts, when an admin must unlock the account.
+Every journey starts at [Sign in](screens/sign-in.md): email and password, a session that renews
+itself, and a clear message after too many failed attempts, when an admin must unlock the account.
