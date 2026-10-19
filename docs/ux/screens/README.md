@@ -4,12 +4,15 @@ One spec per screen of `pricewright-web`'s first release (M7), as the handbook a
 purpose, data, actions, the four states and permissions by role. The journeys they serve are in
 [journeys.md](../journeys.md); the prototype implements them on the design tokens.
 
-| Screen                            | Route                      | Pattern                | Main journeys |
-| --------------------------------- | -------------------------- | ---------------------- | ------------- |
-| [Sign in](sign-in.md)             | `/sign-in`                 | Form                   | All           |
-| [Quotes](quotes.md)               | `/quotes`                  | List report            | R1–R3         |
-| [Quote builder](quote-builder.md) | `/quotes/{id}` (draft)     | Object page, edit mode | R1, R2, M2    |
-| [Quote detail](quote-detail.md)   | `/quotes/{id}` (otherwise) | Object page, display   | R1–R3         |
+| Screen                              | Route                           | Pattern                  | Main journeys |
+| ----------------------------------- | ------------------------------- | ------------------------ | ------------- |
+| [Sign in](sign-in.md)               | `/sign-in`                      | Form                     | All           |
+| [Quotes](quotes.md)                 | `/quotes`                       | List report              | R1–R3         |
+| [Quote builder](quote-builder.md)   | `/quotes/{id}` (draft)          | Object page, edit mode   | R1, R2, M2    |
+| [Quote detail](quote-detail.md)     | `/quotes/{id}` (otherwise)      | Object page, display     | R1–R3         |
+| [Approval inbox](approval-inbox.md) | `/approvals`                    | Worklist                 | M1            |
+| [Customers](customers.md)           | `/customers`, `/customers/{id}` | List report, object page | R1, A1        |
+| [Products](products.md)             | `/products`, `/products/{id}`   | List report, object page | A1            |
 
 ## How a spec is written
 
