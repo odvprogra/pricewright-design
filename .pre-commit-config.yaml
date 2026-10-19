@@ -16,6 +16,8 @@ repos:
       - id: check-json
       - id: check-merge-conflict
       - id: check-added-large-files
+        # Generated from pricewright-api by `just demo-data`, regenerated rather than edited.
+        exclude: ^(prototype/data/demo\.json|tests/fixtures/engine-prices\.json)$
 
   - repo: https://github.com/gitleaks/gitleaks
     rev: v8.30.1
