@@ -1,0 +1,19 @@
+# Weekly, grouped update PRs. CI must pass before any of them is merged.
+version: 2
+updates:
+  - package-ecosystem: npm # pnpm-lock.yaml
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      node:
+        patterns: ["*"]
+    commit-message:
+      prefix: chore
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: ci

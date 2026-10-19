@@ -1,0 +1,16 @@
+{
+  "name": "pricewright-design",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Pricewright's brand, design tokens and UX research: the source of truth for every user-facing surface.",
+  "license": "MIT",
+  "type": "module",
+  "packageManager": "pnpm@12.9.1",
+  "engines": {
+    "node": ">=24"
+  },
+  "devDependencies": {
+    "markdownlint-cli2": "0.23.3",
+    "prettier": "3.9.9"
+  }
+}

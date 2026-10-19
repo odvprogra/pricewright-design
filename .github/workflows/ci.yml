@@ -1,0 +1,64 @@
+name: CI
+
+# Local to this repository: the shared python-ci workflow does not fit a Node project, and a reusable
+# web workflow moves to engineering-standards when pricewright-web needs the same steps (D-18, D-21).
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: Lint and check
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
+
+      # pnpm at the version package.json pins (packageManager), through Node's Corepack.
+      - name: Install dependencies
+        run: |
+          corepack enable
+          pnpm install --frozen-lockfile
+
+      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+
+      - name: just check
+        run: uvx --from rust-just@1.58.0 just check
+
+  dependencies:
+    name: Audit Node dependencies
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
+
+      - name: Audit for known vulnerabilities
+        run: |
+          corepack enable
+          pnpm audit
+
+  security:
+    uses: odvprogra/engineering-standards/.github/workflows/security.yml@v1
+    with:
+      audit-python: false # no Python here; the Node dependencies are audited above

@@ -1,0 +1,28 @@
+# Uniform commands (HANDBOOK §3). Requires: Node.js 24 (with Corepack), Docker and pre-commit.
+
+set windows-shell := ["powershell.exe", "-NoLogo", "-NoProfile", "-Command"]
+
+pnpm := "corepack pnpm"
+actionlint := "rhysd/actionlint:1.7.12@sha256:b1934ee5f1c509618f2508e6eb47ee0d3520686341fec936f3b79331f9315667"
+
+# List the recipes
+default:
+    @just --list
+
+# Install the locked dependencies and the git hooks
+setup:
+    {{ pnpm }} install --frozen-lockfile
+    pre-commit install
+
+# Lint workflows, formatting and Markdown
+lint:
+    docker run --rm -v "{{ justfile_directory() }}:/repo" -w /repo {{ actionlint }}
+    {{ pnpm }} exec prettier --check .
+    {{ pnpm }} exec markdownlint-cli2
+
+# Format every supported file
+fmt:
+    {{ pnpm }} exec prettier --write .
+
+# Everything CI checks
+check: lint
