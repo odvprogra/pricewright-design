@@ -12,8 +12,9 @@ universe (Pricewright, Northfield Supply, Larkspur Tool Co.) is fictional.
 
 ## Demo
 
-Work in progress (milestone M12). The brand guide and the clickable prototype will be published on
-GitHub Pages from this repository.
+- **Brand guide:** <https://odvprogra.github.io/pricewright-design/>, built from `main`'s tokens on
+  every merge: color with the contrast table, type, the logo.
+- **Clickable prototype:** next (milestone M12 is in progress).
 
 ## The problem
 
@@ -67,6 +68,7 @@ Prerequisites: Node.js 24 (with Corepack), Docker, [just](https://just.systems) 
 ```sh
 just setup   # locked dependencies and git hooks
 just build   # dist/: tokens.css, theme.css (Tailwind CSS v4) and tokens.json
+just site    # dist/site/: the brand guide, as GitHub Pages publishes it
 just check   # what CI checks
 ```
 

@@ -28,6 +28,10 @@ fmt:
 build:
     node scripts/build.ts
 
+# Build the brand guide into dist/site/, as GitHub Pages publishes it
+site:
+    node scripts/site.ts
+
 # Draw the logo files into docs/brand/logo/ from the tokens and the outlined wordmark
 logo:
     node scripts/logo.ts
