@@ -28,6 +28,10 @@ fmt:
 build:
     node scripts/build.ts
 
+# Draw the logo files into docs/brand/logo/ from the tokens and the outlined wordmark
+logo:
+    node scripts/logo.ts
+
 # Type-check the build and the tests
 typecheck:
     {{ pnpm }} exec tsc --noEmit -p .

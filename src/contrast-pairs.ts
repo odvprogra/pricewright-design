@@ -64,6 +64,10 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
   ...ui("color.focus.ring", ...LIGHT_SURFACES),
   ...ui("color.focus.ring-inverse", "color.surface.inverse"),
   ...ui("color.tenant.accent", "color.surface.default"),
+  ...ui("color.logo.ink", "color.surface.default", "color.surface.muted"),
+  ...ui("color.logo.rule", "color.surface.default", "color.surface.muted"),
+  ...ui("color.logo.ink-inverse", "color.surface.inverse"),
+  ...ui("color.logo.rule-inverse", "color.surface.inverse"),
 ];
 
 /** Tokens that are text wherever they appear, so each must be in at least one pair as foreground. */
