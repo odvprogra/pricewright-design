@@ -1,0 +1,12 @@
+# pnpm settings (a single package, no workspace members).
+
+# Patched versions of the linters' transitive dependencies, until markdownlint-cli2 requires them.
+overrides:
+  katex: 0.18.11 # GHSA-238p-pmpm-9mq7; markdownlint parses math with it, this repo has none
+  smol-toml: 1.9.0 # GHSA-r4xh-jqrq-34v2
+
+auditConfig:
+  ignoreGhsas:
+    # braces <= 3.0.3 has no patched version yet. Only markdownlint-cli2's globs reach it, and they
+    # come from this repository's own configuration, never from outside input. Remove when fixed.
+    - GHSA-vfj7-8cjw-p6xm
