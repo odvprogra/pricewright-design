@@ -1,0 +1,1651 @@
+<!doctype html>
+<html lang="en">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pricewright Brand Directions</title>
+  <meta name="claude:viewport-fit-sides" content="cover" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=Public+Sans:wght@400;500;600;700&family=Schibsted+Grotesk:wght@500;600;700;800&family=Source+Sans+3:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&display=swap"
+  />
+  <style>
+    /* Layout: a quiet review sheet; each direction is a band with its brand kit beside a product sample. */
+    :root {
+      --bg: #f4f5f7;
+      --surface: #ffffff;
+      --fg: #16181d;
+      --muted: #596070;
+      --line: #d8dbe1;
+      --chip: #e9ebef;
+      --focus: #2f5bd3;
+      --font-ui: "Hanken Grotesk", "Segoe UI", system-ui, sans-serif;
+      --font-mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg: #111318;
+        --surface: #191c23;
+        --fg: #e9ebef;
+        --muted: #a3a9b6;
+        --line: #2d323c;
+        --chip: #252a33;
+        --focus: #8fb0ff;
+        color-scheme: dark;
+      }
+    }
+    :root[data-theme="dark"] {
+      --bg: #111318;
+      --surface: #191c23;
+      --fg: #e9ebef;
+      --muted: #a3a9b6;
+      --line: #2d323c;
+      --chip: #252a33;
+      --focus: #8fb0ff;
+      color-scheme: dark;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font: 400 1rem/1.55 var(--font-ui);
+      padding-left: max(16px, env(safe-area-inset-left, 0px));
+      padding-right: max(16px, env(safe-area-inset-right, 0px));
+      padding-block: 2.5rem 4rem;
+    }
+    .wrap {
+      max-width: 76rem;
+      margin: 0 auto;
+      display: grid;
+      gap: 3rem;
+    }
+    h1,
+    h2,
+    h3 {
+      text-wrap: balance;
+      margin: 0;
+      line-height: 1.15;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 4vw, 2.6rem);
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+    h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
+    }
+    h3 {
+      font-size: 1rem;
+      font-weight: 600;
+    }
+    p {
+      margin: 0;
+    }
+    a {
+      color: inherit;
+      text-underline-offset: 3px;
+    }
+    a:focus-visible,
+    button:focus-visible {
+      outline: 3px solid var(--focus);
+      outline-offset: 2px;
+      border-radius: 4px;
+    }
+    .eyebrow {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .lede {
+      max-width: 65ch;
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+    .mono {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+    }
+
+    /* Intro */
+    .intro {
+      display: grid;
+      gap: 1rem;
+    }
+    .fixed {
+      display: grid;
+      gap: 0.6rem;
+      grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+      margin-top: 0.5rem;
+    }
+    .fixed div {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 0.9rem 1rem;
+      display: grid;
+      gap: 0.25rem;
+    }
+    .fixed strong {
+      font-weight: 600;
+    }
+    .fixed span {
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    /* At a glance */
+    .glance {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+    }
+    .glance a {
+      text-decoration: none;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 1.25rem;
+      display: grid;
+      gap: 0.9rem;
+      align-content: start;
+    }
+    .glance a:hover {
+      border-color: var(--muted);
+    }
+    .glance .tile {
+      background: #ffffff;
+      border-radius: 8px;
+      padding: 1.4rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--line);
+    }
+    .glance p {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    /* Direction band */
+    .dir {
+      display: grid;
+      gap: 1.5rem;
+      padding-top: 2.5rem;
+      border-top: 1px solid var(--line);
+    }
+    .dir-head {
+      display: grid;
+      gap: 0.4rem;
+    }
+    .dir-head .idea {
+      max-width: 65ch;
+      font-size: 1.05rem;
+      color: var(--muted);
+    }
+    .dir-grid {
+      display: grid;
+      gap: 1.5rem;
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      align-items: start;
+    }
+    @media (max-width: 960px) {
+      .dir-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+    .kit {
+      display: grid;
+      gap: 1.25rem;
+      min-width: 0;
+    }
+    .block {
+      display: grid;
+      gap: 0.6rem;
+      min-width: 0;
+    }
+
+    .lockups {
+      display: grid;
+      gap: 0.6rem;
+      grid-template-columns: 1fr 1fr;
+    }
+    .lockup {
+      border-radius: 8px;
+      padding: 1.1rem 0.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--line);
+      min-height: 5.2rem;
+    }
+
+    .swatches {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 0.4rem;
+    }
+    .swatches li {
+      display: grid;
+      grid-template-columns: 2.4rem minmax(0, 1fr) auto;
+      gap: 0.75rem;
+      align-items: center;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 0.45rem 0.6rem 0.45rem 0.45rem;
+    }
+    .chip-color {
+      width: 2.4rem;
+      height: 2.4rem;
+      border-radius: 6px;
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      font-size: 0.85rem;
+    }
+    .sw-name {
+      display: grid;
+      min-width: 0;
+    }
+    .sw-name b {
+      font-weight: 600;
+      font-size: 0.92rem;
+    }
+    .sw-name span {
+      color: var(--muted);
+    }
+    .ratio {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      display: grid;
+      justify-items: end;
+      gap: 0.1rem;
+      white-space: nowrap;
+    }
+    .badge {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      padding: 0.05rem 0.4rem;
+      border-radius: 99px;
+      background: var(--chip);
+    }
+
+    .specimen {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 1rem;
+      display: grid;
+      gap: 0.5rem;
+    }
+    .specimen .big {
+      font-size: 1.7rem;
+      line-height: 1.1;
+    }
+    .specimen .nums {
+      font-variant-numeric: tabular-nums;
+      display: grid;
+      grid-template-columns: auto auto;
+      justify-content: start;
+      gap: 0 1.5rem;
+    }
+    .specimen .nums span:nth-child(even) {
+      text-align: right;
+    }
+    .specimen .caption {
+      color: var(--muted);
+      font-size: 0.82rem;
+      font-family: var(--font-ui);
+    }
+
+    .voice {
+      display: grid;
+      gap: 0.5rem;
+    }
+    .voice div {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 0.7rem 0.9rem;
+      display: grid;
+      gap: 0.15rem;
+    }
+    .voice span {
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .tradeoffs {
+      display: grid;
+      gap: 0.6rem;
+      grid-template-columns: 1fr 1fr;
+    }
+    @media (max-width: 520px) {
+      .tradeoffs,
+      .lockups {
+        grid-template-columns: 1fr;
+      }
+    }
+    .tradeoffs ul {
+      margin: 0;
+      padding-left: 1.1rem;
+      display: grid;
+      gap: 0.3rem;
+      font-size: 0.93rem;
+    }
+    .refs {
+      font-size: 0.88rem;
+      color: var(--muted);
+    }
+
+    /* Product sample: light theme on purpose (it ships first); every color comes from the direction's set. */
+    .sample {
+      min-width: 0;
+      display: grid;
+      gap: 0.5rem;
+    }
+    .sample .note {
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+    .app {
+      background: var(--d-canvas);
+      color: var(--d-ink);
+      font-family: var(--d-body);
+      border-radius: var(--d-radius);
+      overflow: hidden;
+      border: 1px solid var(--d-line);
+      font-size: 0.9rem;
+      line-height: 1.45;
+    }
+    .app-bar {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.7rem 1rem;
+      background: var(--d-bar);
+      color: var(--d-bar-ink);
+      flex-wrap: wrap;
+      border-bottom: var(--d-bar-border);
+    }
+    .tenant {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 700;
+      font-family: var(--d-display);
+    }
+    .tenant i {
+      width: 1.15rem;
+      height: 1.15rem;
+      border-radius: 4px;
+      background: #c2410c;
+      display: inline-block;
+    }
+    .app-bar nav {
+      display: flex;
+      gap: 0.9rem;
+      flex-wrap: wrap;
+      font-size: 0.85rem;
+      opacity: 0.92;
+    }
+    .app-bar nav b {
+      font-weight: 600;
+      text-decoration: underline;
+      text-decoration-thickness: 2px;
+      text-underline-offset: 6px;
+    }
+    .app-bar .who {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.8rem;
+    }
+    .app-bar .who em {
+      font-style: normal;
+      width: 1.8rem;
+      height: 1.8rem;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: var(--d-avatar);
+      color: var(--d-avatar-ink);
+      font-weight: 700;
+      font-size: 0.72rem;
+    }
+    .app-body {
+      padding: 1rem;
+      display: grid;
+      gap: 0.9rem;
+    }
+    .q-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+      align-items: flex-start;
+    }
+    .q-num {
+      font-family: var(--d-num);
+      font-size: 0.8rem;
+      color: var(--d-muted);
+      font-variant-numeric: tabular-nums;
+    }
+    .q-title {
+      font-family: var(--d-display);
+      font-size: 1.3rem;
+      font-weight: var(--d-display-weight);
+      color: var(--d-ink);
+      line-height: 1.2;
+    }
+    .q-meta {
+      color: var(--d-muted);
+      font-size: 0.85rem;
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.2rem 0.55rem;
+      border-radius: var(--d-pill-radius);
+      white-space: nowrap;
+    }
+    .pill::before {
+      content: "";
+      width: 0.45rem;
+      height: 0.45rem;
+      border-radius: 50%;
+      background: currentColor;
+    }
+    .pill.draft {
+      background: var(--d-wash);
+      color: var(--d-muted);
+    }
+    .pill.pending {
+      background: #fdf1dc;
+      color: #8a4b06;
+    }
+    .pill.approved {
+      background: #e8f3ec;
+      color: #1e6b33;
+    }
+    .pill.sent {
+      background: var(--d-p-wash);
+      color: var(--d-p-text);
+    }
+    .pill.expired {
+      background: #fbe9e9;
+      color: #a61b1b;
+    }
+    .notice {
+      background: #fdf1dc;
+      color: #8a4b06;
+      border-radius: calc(var(--d-radius) * 0.6);
+      padding: 0.55rem 0.75rem;
+      font-size: 0.85rem;
+    }
+    .table-scroll {
+      overflow-x: auto;
+      border: 1px solid var(--d-line);
+      border-radius: calc(var(--d-radius) * 0.6);
+      background: #ffffff;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      min-width: 30rem;
+      font-size: 0.85rem;
+    }
+    th,
+    td {
+      padding: 0.55rem 0.7rem;
+      text-align: left;
+      border-bottom: 1px solid var(--d-line);
+      vertical-align: top;
+    }
+    th {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--d-muted);
+      font-weight: 600;
+      background: var(--d-wash);
+    }
+    td.n,
+    th.n {
+      text-align: right;
+      font-family: var(--d-num);
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+    td .sku {
+      font-family: var(--d-num);
+      color: var(--d-muted);
+      font-size: 0.78rem;
+      display: block;
+    }
+    tr.selected td {
+      background: var(--d-p-wash);
+    }
+    tr:last-child td {
+      border-bottom: 0;
+    }
+    .split {
+      display: grid;
+      gap: 0.9rem;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    }
+    @media (max-width: 640px) {
+      .split {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+    .breakdown,
+    .totals {
+      background: #ffffff;
+      border: 1px solid var(--d-line);
+      border-radius: calc(var(--d-radius) * 0.6);
+      padding: 0.8rem;
+      display: grid;
+      gap: 0.35rem;
+      align-content: start;
+    }
+    .breakdown h4,
+    .totals h4 {
+      margin: 0 0 0.2rem;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--d-muted);
+      font-weight: 600;
+    }
+    .row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto auto;
+      gap: 0.6rem;
+      font-size: 0.84rem;
+      align-items: baseline;
+    }
+    .row .pct {
+      color: var(--d-muted);
+      font-family: var(--d-num);
+      font-variant-numeric: tabular-nums;
+      font-size: 0.78rem;
+    }
+    .row .amt {
+      font-family: var(--d-num);
+      font-variant-numeric: tabular-nums;
+      text-align: right;
+      min-width: 4.5rem;
+    }
+    .row.step .amt {
+      color: var(--d-p-text);
+    }
+    .row.net {
+      border-top: 1px solid var(--d-line);
+      padding-top: 0.35rem;
+      font-weight: 700;
+    }
+    .row.grand {
+      border-top: var(--d-total-rule);
+      padding-top: 0.4rem;
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+    .bar-track {
+      height: 0.4rem;
+      background: var(--d-wash);
+      border-radius: 99px;
+      overflow: hidden;
+      margin: -0.1rem 0 0.2rem;
+    }
+    .bar-track span {
+      display: block;
+      height: 100%;
+      background: var(--d-p);
+      border-radius: 99px;
+    }
+    .actions {
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .btn {
+      font: 600 0.85rem/1 var(--d-body);
+      padding: 0.65rem 1rem;
+      border-radius: var(--d-btn-radius);
+      border: 1px solid transparent;
+      cursor: default;
+    }
+    .btn.primary {
+      background: var(--d-p);
+      color: #ffffff;
+    }
+    .btn.secondary {
+      background: #ffffff;
+      color: var(--d-ink);
+      border-color: var(--d-input-line);
+    }
+    .actions .hint {
+      color: var(--d-muted);
+      font-size: 0.8rem;
+    }
+    .states {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    /* Directions: the values each sample uses. */
+    [data-dir="waterfall"] {
+      --d-p: #2047c8;
+      --d-p-text: #2047c8;
+      --d-p-wash: #e8edfb;
+      --d-ink: #161b2b;
+      --d-muted: #5b6478;
+      --d-line: #dfe3ec;
+      --d-input-line: #8b95ab;
+      --d-wash: #f4f6fb;
+      --d-canvas: #f4f6fb;
+      --d-bar: #161b2b;
+      --d-bar-ink: #ffffff;
+      --d-bar-border: 0;
+      --d-avatar: #2047c8;
+      --d-avatar-ink: #ffffff;
+      --d-display: "IBM Plex Sans", "Segoe UI", sans-serif;
+      --d-body: "IBM Plex Sans", "Segoe UI", sans-serif;
+      --d-num: "IBM Plex Mono", ui-monospace, monospace;
+      --d-display-weight: 600;
+      --d-radius: 6px;
+      --d-btn-radius: 4px;
+      --d-pill-radius: 4px;
+      --d-total-rule: 2px solid #161b2b;
+    }
+    [data-dir="workshop"] {
+      --d-p: #155e4e;
+      --d-p-text: #155e4e;
+      --d-p-wash: #e6f0ec;
+      --d-ink: #1f2420;
+      --d-muted: #625d52;
+      --d-line: #e3e0d8;
+      --d-input-line: #8f897c;
+      --d-wash: #f6f5f1;
+      --d-canvas: #f6f5f1;
+      --d-bar: #ffffff;
+      --d-bar-ink: #1f2420;
+      --d-bar-border: 3px solid #155e4e;
+      --d-avatar: #8a5a0b;
+      --d-avatar-ink: #ffffff;
+      --d-display: "Schibsted Grotesk", "Segoe UI", sans-serif;
+      --d-body: "Source Sans 3", "Segoe UI", sans-serif;
+      --d-num: "Source Sans 3", "Segoe UI", sans-serif;
+      --d-display-weight: 700;
+      --d-radius: 12px;
+      --d-btn-radius: 99px;
+      --d-pill-radius: 99px;
+      --d-total-rule: 2px solid #155e4e;
+    }
+    [data-dir="ledger"] {
+      --d-p: #1d2d50;
+      --d-p-text: #0f766e;
+      --d-p-wash: #e5f2f1;
+      --d-ink: #1b2233;
+      --d-muted: #5a6275;
+      --d-line: #e1e4ea;
+      --d-input-line: #8a92a3;
+      --d-wash: #f5f6f8;
+      --d-canvas: #ffffff;
+      --d-bar: #1d2d50;
+      --d-bar-ink: #ffffff;
+      --d-bar-border: 0;
+      --d-avatar: #0f766e;
+      --d-avatar-ink: #ffffff;
+      --d-display: "Source Serif 4", Georgia, serif;
+      --d-body: "Public Sans", "Segoe UI", sans-serif;
+      --d-num: "Public Sans", "Segoe UI", sans-serif;
+      --d-display-weight: 600;
+      --d-radius: 2px;
+      --d-btn-radius: 2px;
+      --d-pill-radius: 2px;
+      --d-total-rule: 3px double #1b2233;
+    }
+    .wordmark {
+      font-size: 1.55rem;
+      line-height: 1;
+      color: var(--d-ink);
+    }
+    .on-p .wordmark {
+      color: #ffffff;
+    }
+    .lockup-inner {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+    }
+    [data-dir="waterfall"] .wordmark {
+      font-family: "IBM Plex Sans", sans-serif;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+    [data-dir="workshop"] .wordmark {
+      font-family: "Schibsted Grotesk", sans-serif;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+    [data-dir="ledger"] .wordmark {
+      font-family: "Source Serif 4", Georgia, serif;
+      font-weight: 600;
+      letter-spacing: 0;
+    }
+    .specimen .big {
+      font-family: var(--d-display);
+      font-weight: var(--d-display-weight);
+      color: var(--fg);
+    }
+    .specimen .body {
+      font-family: var(--d-body);
+    }
+    .specimen .nums {
+      font-family: var(--d-num);
+    }
+
+    .next {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 1.4rem;
+      display: grid;
+      gap: 0.75rem;
+    }
+    .next ol {
+      margin: 0;
+      padding-left: 1.2rem;
+      display: grid;
+      gap: 0.4rem;
+      max-width: 70ch;
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .glance a {
+        transition: border-color 0.15s ease;
+      }
+    }
+  </style>
+
+  <svg width="0" height="0" style="position: absolute" aria-hidden="true">
+    <defs>
+      <!-- A: four bars of a price waterfall, from list price down to the net price. -->
+      <symbol id="mark-waterfall" viewBox="0 0 32 32">
+        <rect width="32" height="32" rx="7" fill="var(--mark-bg, #2047c8)" />
+        <rect x="5.5" y="7" width="4.6" height="18" rx="1" fill="var(--mark-fg, #ffffff)" />
+        <rect
+          x="11.2"
+          y="7"
+          width="4.6"
+          height="4.2"
+          rx="1"
+          fill="var(--mark-fg, #ffffff)"
+          opacity="0.72"
+        />
+        <rect
+          x="16.9"
+          y="11.2"
+          width="4.6"
+          height="3.2"
+          rx="1"
+          fill="var(--mark-fg, #ffffff)"
+          opacity="0.72"
+        />
+        <rect x="22.6" y="14.4" width="4.6" height="10.6" rx="1" fill="var(--mark-fg, #ffffff)" />
+      </symbol>
+      <!-- B: a P whose bowl is a price tag with its hole, cut square like a joiner's work. -->
+      <symbol id="mark-workshop" viewBox="0 0 32 32">
+        <path
+          fill="var(--mark-fg, #155e4e)"
+          fill-rule="evenodd"
+          d="M7 4h14.5L26 8.5V19H12v9H7V4zm13 4.2a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"
+        />
+      </symbol>
+      <!-- C: a ruled sheet with a folded corner, closed by the accountant's double rule under the total. -->
+      <symbol id="mark-ledger" viewBox="0 0 32 32">
+        <path
+          d="M7 4h13l6 6v18H7z"
+          fill="none"
+          stroke="var(--mark-fg, #1d2d50)"
+          stroke-width="2.2"
+          stroke-linejoin="round"
+        />
+        <path
+          d="M20 4v6h6"
+          fill="none"
+          stroke="var(--mark-fg, #1d2d50)"
+          stroke-width="2.2"
+          stroke-linejoin="round"
+        />
+        <path d="M11 14.5h11M11 18.5h11" stroke="var(--mark-fg, #1d2d50)" stroke-width="1.8" />
+        <path d="M15 22.6h7M15 25h7" stroke="var(--mark-accent, #0f766e)" stroke-width="1.6" />
+      </symbol>
+    </defs>
+  </svg>
+
+  <div class="wrap">
+    <header class="intro">
+      <p class="eyebrow">Pricewright · M12 · Brand exploration</p>
+      <h1>Three directions for Pricewright</h1>
+      <p class="lede">
+        Pricewright prices B2B quotes through a transparent waterfall of discounts, sends them for
+        approval and keeps the record. Each direction below reads that story differently. Pick one,
+        or name the parts you want to combine; the chosen one becomes the design tokens, with every
+        pair tested for contrast.
+      </p>
+      <div class="fixed" aria-label="Fixed in every direction">
+        <div>
+          <strong>Accessible by construction</strong
+          ><span
+            >Text pairs reach 4.5:1 and UI parts 3:1 (WCAG 2.2 AA). The ratios below are computed on
+            this page.</span
+          >
+        </div>
+        <div>
+          <strong>Semantic colors stay put</strong
+          ><span
+            >Success, warning, danger and focus never change with the brand or a tenant's
+            accent.</span
+          >
+        </div>
+        <div>
+          <strong>Tenants get a logo and one accent</strong
+          ><span
+            >Only in the app header, the PDF and the emails. The orange square stands for
+            Northfield's.</span
+          >
+        </div>
+        <div>
+          <strong>Numbers line up</strong
+          ><span
+            >Tabular figures for every amount; open-licensed fonts (OFL) so the PDF can embed
+            them.</span
+          >
+        </div>
+      </div>
+    </header>
+
+    <section class="glance" aria-label="The three directions at a glance">
+      <a href="#waterfall" data-dir="waterfall">
+        <span class="eyebrow">A · Waterfall</span>
+        <span class="tile"
+          ><span class="lockup-inner"
+            ><svg width="36" height="36" aria-hidden="true"><use href="#mark-waterfall" /></svg
+            ><span class="wordmark">Pricewright</span></span
+          ></span
+        >
+        <p>An instrument for exact prices. The mark is the price waterfall itself.</p>
+      </a>
+      <a href="#workshop" data-dir="workshop">
+        <span class="eyebrow">B · Workshop</span>
+        <span class="tile"
+          ><span class="lockup-inner"
+            ><svg width="36" height="36" aria-hidden="true"><use href="#mark-workshop" /></svg
+            ><span class="wordmark">pricewright</span></span
+          ></span
+        >
+        <p>The craftsman in the name: prices made with care, plain and warm.</p>
+      </a>
+      <a href="#ledger" data-dir="ledger">
+        <span class="eyebrow">C · Ledger</span>
+        <span class="tile"
+          ><span class="lockup-inner"
+            ><svg width="36" height="36" aria-hidden="true"><use href="#mark-ledger" /></svg
+            ><span class="wordmark">Pricewright</span></span
+          ></span
+        >
+        <p>The document of record: quotations that look like commercial paper.</p>
+      </a>
+    </section>
+
+    <!-- A -->
+    <section class="dir" id="waterfall" data-dir="waterfall">
+      <div class="dir-head">
+        <p class="eyebrow">Direction A</p>
+        <h2>Waterfall</h2>
+        <p class="idea">
+          Pricewright as a precision instrument. The logomark is a pocket-price waterfall: list
+          price, two discounts, the net price. Cobalt on cool slate, IBM Plex with its monospace for
+          SKUs and amounts. Feels engineered, exact and calm.
+        </p>
+      </div>
+      <div class="dir-grid">
+        <div class="kit">
+          <div class="block">
+            <h3>Logo</h3>
+            <div class="lockups">
+              <div class="lockup" style="background: #ffffff">
+                <span class="lockup-inner"
+                  ><svg width="34" height="34" aria-hidden="true">
+                    <use href="#mark-waterfall" /></svg
+                  ><span class="wordmark">Pricewright</span></span
+                >
+              </div>
+              <div
+                class="lockup on-p"
+                style="background: #161b2b; --mark-bg: #ffffff; --mark-fg: #161b2b"
+              >
+                <span class="lockup-inner"
+                  ><svg width="34" height="34" aria-hidden="true">
+                    <use href="#mark-waterfall" /></svg
+                  ><span class="wordmark">Pricewright</span></span
+                >
+              </div>
+            </div>
+          </div>
+          <div class="block">
+            <h3>Palette</h3>
+            <ul class="swatches">
+              <li data-fg="#ffffff" data-bg="#2047c8">
+                <span class="chip-color" style="background: #2047c8; color: #ffffff">Aa</span
+                ><span class="sw-name"
+                  ><b>Cobalt · primary</b><span class="mono">#2047C8 · white text on it</span></span
+                ><span class="ratio"></span>
+              </li>
+              <li data-fg="#161b2b" data-bg="#f4f6fb">
+                <span class="chip-color" style="background: #161b2b; color: #ffffff">Aa</span
+                ><span class="sw-name"
+                  ><b>Ink · text and app bar</b
+                  ><span class="mono">#161B2B · on the canvas</span></span
+                ><span class="ratio"></span>
+              </li>
+              <li data-fg="#5b6478" data-bg="#f4f6fb">
+                <span class="chip-color" style="background: #5b6478; color: #ffffff">Aa</span
+                ><span class="sw-name"
+                  ><b>Slate · secondary text</b
+                  ><span class="mono">#5B6478 · on the canvas</span></span
+                ><span class="ratio"></span>
+              </li>
+              <li data-fg="#8b95ab" data-bg="#ffffff" data-ui>
+                <span class="chip-color" style="background: #8b95ab"></span
+                ><span class="sw-name"
+                  ><b>Field border</b><span class="mono">#8B95AB · inputs, on white</span></span
+                ><span class="ratio"></span>
+              </li>
+              <li data-fg="#161b2b" data-bg="#f4f6fb">
+                <span
+                  class="chip-color"
+                  style="background: #f4f6fb; color: #161b2b; border: 1px solid #dfe3ec"
+                  >Aa</span
+                ><span class="sw-name"
+                  ><b>Mist · canvas</b><span class="mono">#F4F6FB · ink on it</span></span
+                ><span class="ratio"></span>
+              </li>
+            </ul>
+          </div>
+          <div class="block">
+            <h3>Type</h3>
+            <div class="specimen">
+              <span class="big">Net price, explained</span>
+              <span class="body"
+                >IBM Plex Sans for the interface, IBM Plex Mono for SKUs and amounts.</span
+              >
+              <span class="nums"
+                ><span>FST-0063 list</span><span>51.23</span><span>after volume −12%</span
+                ><span>45.08</span><span>after gold −6%</span><span>42.38</span></span
+              >
+              <span class="caption">IBM Plex · SIL Open Font License</span>
+            </div>
+          </div>
+          <div class="block voice">
+            <h3>Voice: exact and calm</h3>
+            <div><span>Email subject</span>NF-2026-000132 approved: 16.4% off list</div>
+            <div>
+              <span>Empty list</span>No quotes match these filters. Clear a filter or start a quote.
+            </div>
+            <div>
+              <span>Conflict</span>Morgan changed this quote after you opened it. Reload to see the
+              changes.
+            </div>
+          </div>
+          <div class="tradeoffs">
+            <div class="block">
+              <h3>Strengths</h3>
+              <ul>
+                <li>The mark explains the product: the waterfall is the pricing engine.</li>
+                <li>Numbers-first type suits dense tables.</li>
+                <li>Neutral enough for any tenant accent.</li>
+              </ul>
+            </div>
+            <div class="block">
+              <h3>Risks</h3>
+              <ul>
+                <li>Blue is the most common SaaS color; it leans on the mark to stand out.</li>
+                <li>Can feel cold to sales reps.</li>
+              </ul>
+            </div>
+          </div>
+          <p class="refs">
+            References: the pocket-price waterfall (Marn and Rosiello, “Managing Price, Gaining
+            Profit”, HBR, 1992); IBM’s Carbon design system, built on Plex.
+          </p>
+        </div>
+        <div class="sample">
+          <div class="app">
+            <div class="app-bar">
+              <span class="tenant"><i aria-hidden="true"></i>Northfield Supply</span>
+              <nav>
+                <b>Quotes</b><span>Approvals</span><span>Customers</span><span>Products</span>
+              </nav>
+              <span class="who">Morgan Reyes<em>MR</em></span>
+            </div>
+            <div class="app-body">
+              <div class="q-head">
+                <div>
+                  <p class="q-num">NF-2026-000132</p>
+                  <p class="q-title">Stonegate Storage Centers LLC</p>
+                  <p class="q-meta">Gold account · Taylor Brooks · valid until Nov 18, 2026</p>
+                </div>
+                <span class="pill pending">Pending approval</span>
+              </div>
+              <p class="notice">16.4% off list is above Northfield’s 15% approval threshold.</p>
+              <div class="table-scroll">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Product</th>
+                      <th class="n">Qty</th>
+                      <th class="n">Unit net</th>
+                      <th class="n">Line total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="selected">
+                      <td>
+                        <span class="sku">FST-0063</span>Zinc-Plated Sleeve Anchor, 1/2 x 3-3/4 in,
+                        Box of 25
+                      </td>
+                      <td class="n">60</td>
+                      <td class="n">42.38</td>
+                      <td class="n">2,542.65</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <span class="sku">OFP-0036</span>File Folders, Letter, Manila, Box of 100
+                      </td>
+                      <td class="n">12</td>
+                      <td class="n">27.95</td>
+                      <td class="n">335.36</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="split">
+                <div class="breakdown">
+                  <h4>Why FST-0063 costs 42.38</h4>
+                  <div class="row">
+                    <span>List price</span><span class="pct"></span><span class="amt">51.23</span>
+                  </div>
+                  <div class="row step">
+                    <span>Fastener volume, 50+ boxes</span><span class="pct">−12%</span
+                    ><span class="amt">45.08</span>
+                  </div>
+                  <div class="row step">
+                    <span>Gold account discount</span><span class="pct">−6%</span
+                    ><span class="amt">42.38</span>
+                  </div>
+                  <div class="bar-track" aria-hidden="true"><span style="width: 82.7%"></span></div>
+                  <div class="row net">
+                    <span>Net unit price</span><span class="pct">−17.28%</span
+                    ><span class="amt">42.38</span>
+                  </div>
+                </div>
+                <div class="totals">
+                  <h4>Totals · USD</h4>
+                  <div class="row">
+                    <span>List subtotal</span><span></span><span class="amt">3,441.60</span>
+                  </div>
+                  <div class="row">
+                    <span>Net subtotal</span><span class="pct">−16.4%</span
+                    ><span class="amt">2,878.01</span>
+                  </div>
+                  <div class="row">
+                    <span>Tax 7.25%</span><span></span><span class="amt">208.66</span>
+                  </div>
+                  <div class="row grand">
+                    <span>Total</span><span></span><span class="amt">3,086.67</span>
+                  </div>
+                </div>
+              </div>
+              <div class="actions">
+                <button class="btn primary" type="button">Approve</button
+                ><button class="btn secondary" type="button">Reject with a comment</button
+                ><span class="hint">Margin 27.5% · visible with costs:read</span>
+              </div>
+              <div class="states" aria-label="Quote states">
+                <span class="pill draft">Draft</span
+                ><span class="pill pending">Pending approval</span
+                ><span class="pill approved">Approved</span><span class="pill sent">Sent</span
+                ><span class="pill expired">Expired</span>
+              </div>
+            </div>
+          </div>
+          <p class="note">
+            Sample data from the Northfield demo: real rules (fastener volume 12% from 50 boxes,
+            gold 6%), amounts as the engine rounds them.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- B -->
+    <section class="dir" id="workshop" data-dir="workshop">
+      <div class="dir-head">
+        <p class="eyebrow">Direction B</p>
+        <h2>Workshop</h2>
+        <p class="idea">
+          Pricewright as the craftsman in its name. The mark is a P cut square, its bowl a price tag
+          with the hole punched through. Spruce green and brass on stone, a firm grotesque for
+          headings and Source Sans for reading. Feels skilled, human and direct.
+        </p>
+      </div>
+      <div class="dir-grid">
+        <div class="kit">
+          <div class="block">
+            <h3>Logo</h3>
+            <div class="lockups">
+              <div class="lockup" style="background: #ffffff">
+                <span class="lockup-inner"
+                  ><svg width="34" height="34" aria-hidden="true"><use href="#mark-workshop" /></svg
+                  ><span class="wordmark">pricewright</span></span
+                >
+              </div>
+              <div class="lockup on-p" style="background: #155e4e; --mark-fg: #ffffff">
+                <span class="lockup-inner"
+                  ><svg width="34" height="34" aria-hidden="true"><use href="#mark-workshop" /></svg
+                  ><span class="wordmark">pricewright</span></span
+                >
+              </div>
+            </div>
+          </div>
+          <div class="block">
+            <h3>Palette</h3>
+            <ul class="swatches">
+              <li data-fg="#ffffff" data-bg="#155e4e">
+                <span class="chip-color" style="background: #155e4e; color: #ffffff">Aa</span
+                ><span class="sw-name"
+                  ><b>Spruce · primary</b><span class="mono">#155E4E · white text on it</span></span
+                ><span class="ratio"></span>
+              </li>
+              <li data-fg="#8a5a0b" data-bg="#ffffff">
+                <span class="chip-color" style="background: #8a5a0b; color: #ffffff">Aa</span
+                ><span class="sw-name"
+                  ><b>Brass · accent</b><span class="mono">#8A5A0B · as text on white</span></span
+                ><span class="ratio"></span>
+              </li>
+              <li data-fg="#1f2420" data-bg="#f6f5f1">
+                <span class="chip-color" style="background: #1f2420; color: #ffffff">Aa</span
+                ><span class="sw-name"
+                  ><b>Charcoal · text</b><span class="mono">#1F2420 · on the canvas</span></span
+                ><span class="ratio"></span>
+              </li>
+              <li data-fg="#625d52" data-bg="#f6f5f1">
+                <span class="chip-color" style="background: #625d52; color: #ffffff">Aa</span
+                ><span class="sw-name"
+                  ><b>Clay · secondary text</b
+                  ><span class="mono">#625D52 · on the canvas</span></span
+                ><span class="ratio"></span>
+              </li>
+              <li data-fg="#8f897c" data-bg="#ffffff" data-ui>
+                <span class="chip-color" style="background: #8f897c"></span
+                ><span class="sw-name"
+                  ><b>Field border</b><span class="mono">#8F897C · inputs, on white</span></span
+                ><span class="ratio"></span>
+              </li>
+            </ul>
+          </div>
+          <div class="block">
+            <h3>Type</h3>
+            <div class="specimen">
+              <span class="big">Every discount, accounted for</span>
+              <span class="body"
+                >Schibsted Grotesk for headings, Source Sans 3 for the interface and amounts.</span
+              >
+              <span class="nums"
+                ><span>FST-0063 list</span><span>51.23</span><span>after volume −12%</span
+                ><span>45.08</span><span>after gold −6%</span><span>42.38</span></span
+              >
+              <span class="caption">Schibsted Grotesk, Source Sans 3 · SIL Open Font License</span>
+            </div>
+          </div>
+          <div class="block voice">
+            <h3>Voice: plain and warm</h3>
+            <div><span>Email subject</span>Morgan approved your quote for Stonegate</div>
+            <div>
+              <span>Empty list</span>No quotes yet. Start one and you’ll see every discount the
+              engine applies.
+            </div>
+            <div>
+              <span>Conflict</span>Morgan changed this quote while you had it open. Reload to pick
+              up the changes.
+            </div>
+          </div>
+          <div class="tradeoffs">
+            <div class="block">
+              <h3>Strengths</h3>
+              <ul>
+                <li>Distinct in a category of blues (Salesforce, SAP, Oracle).</li>
+                <li>Tells the name’s story; memorable mark.</li>
+                <li>Warm voice suits sales teams.</li>
+              </ul>
+            </div>
+            <div class="block">
+              <h3>Risks</h3>
+              <ul>
+                <li>
+                  Green brand sits close to “success”; approved states need their own hue and an
+                  icon.
+                </li>
+                <li>Rounded, friendly shapes are less formal on a PDF.</li>
+              </ul>
+            </div>
+          </div>
+          <p class="refs">
+            References: the name’s rationale (“wright” as craftsman, decision D-13); Shopify
+            Polaris, a green brand with a practical voice.
+          </p>
+        </div>
+        <div class="sample">
+          <div class="app">
+            <div class="app-bar">
+              <span class="tenant"><i aria-hidden="true"></i>Northfield Supply</span>
+              <nav>
+                <b>Quotes</b><span>Approvals</span><span>Customers</span><span>Products</span>
+              </nav>
+              <span class="who">Morgan Reyes<em>MR</em></span>
+            </div>
+            <div class="app-body">
+              <div class="q-head">
+                <div>
+                  <p class="q-num">NF-2026-000132</p>
+                  <p class="q-title">Stonegate Storage Centers LLC</p>
+                  <p class="q-meta">Gold account · Taylor Brooks · valid until Nov 18, 2026</p>
+                </div>
+                <span class="pill pending">Pending approval</span>
+              </div>
+              <p class="notice">16.4% off list is above Northfield’s 15% approval threshold.</p>
+              <div class="table-scroll">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Product</th>
+                      <th class="n">Qty</th>
+                      <th class="n">Unit net</th>
+                      <th class="n">Line total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="selected">
+                      <td>
+                        <span class="sku">FST-0063</span>Zinc-Plated Sleeve Anchor, 1/2 x 3-3/4 in,
+                        Box of 25
+                      </td>
+                      <td class="n">60</td>
+                      <td class="n">42.38</td>
+                      <td class="n">2,542.65</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <span class="sku">OFP-0036</span>File Folders, Letter, Manila, Box of 100
+                      </td>
+                      <td class="n">12</td>
+                      <td class="n">27.95</td>
+                      <td class="n">335.36</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="split">
+                <div class="breakdown">
+                  <h4>Why FST-0063 costs 42.38</h4>
+                  <div class="row">
+                    <span>List price</span><span class="pct"></span><span class="amt">51.23</span>
+                  </div>
+                  <div class="row step">
+                    <span>Fastener volume, 50+ boxes</span><span class="pct">−12%</span
+                    ><span class="amt">45.08</span>
+                  </div>
+                  <div class="row step">
+                    <span>Gold account discount</span><span class="pct">−6%</span
+                    ><span class="amt">42.38</span>
+                  </div>
+                  <div class="bar-track" aria-hidden="true"><span style="width: 82.7%"></span></div>
+                  <div class="row net">
+                    <span>Net unit price</span><span class="pct">−17.28%</span
+                    ><span class="amt">42.38</span>
+                  </div>
+                </div>
+                <div class="totals">
+                  <h4>Totals · USD</h4>
+                  <div class="row">
+                    <span>List subtotal</span><span></span><span class="amt">3,441.60</span>
+                  </div>
+                  <div class="row">
+                    <span>Net subtotal</span><span class="pct">−16.4%</span
+                    ><span class="amt">2,878.01</span>
+                  </div>
+                  <div class="row">
+                    <span>Tax 7.25%</span><span></span><span class="amt">208.66</span>
+                  </div>
+                  <div class="row grand">
+                    <span>Total</span><span></span><span class="amt">3,086.67</span>
+                  </div>
+                </div>
+              </div>
+              <div class="actions">
+                <button class="btn primary" type="button">Approve</button
+                ><button class="btn secondary" type="button">Reject with a comment</button
+                ><span class="hint">Margin 27.5% · visible with costs:read</span>
+              </div>
+              <div class="states" aria-label="Quote states">
+                <span class="pill draft">Draft</span
+                ><span class="pill pending">Pending approval</span
+                ><span class="pill approved">Approved</span><span class="pill sent">Sent</span
+                ><span class="pill expired">Expired</span>
+              </div>
+            </div>
+          </div>
+          <p class="note">Same quote in every direction, so only the brand changes.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- C -->
+    <section class="dir" id="ledger" data-dir="ledger">
+      <div class="dir-head">
+        <p class="eyebrow">Direction C</p>
+        <h2>Ledger</h2>
+        <p class="idea">
+          Pricewright as the document of record. The mark is a ruled sheet closed by the
+          accountant’s double rule under the total. Navy and verdigris on white paper, Source Serif
+          for headings and Public Sans for the interface. Feels institutional, careful and
+          permanent.
+        </p>
+      </div>
+      <div class="dir-grid">
+        <div class="kit">
+          <div class="block">
+            <h3>Logo</h3>
+            <div class="lockups">
+              <div class="lockup" style="background: #ffffff">
+                <span class="lockup-inner"
+                  ><svg width="34" height="34" aria-hidden="true"><use href="#mark-ledger" /></svg
+                  ><span class="wordmark">Pricewright</span></span
+                >
+              </div>
+              <div
+                class="lockup on-p"
+                style="background: #1d2d50; --mark-fg: #ffffff; --mark-accent: #7fd1c9"
+              >
+                <span class="lockup-inner"
+                  ><svg width="34" height="34" aria-hidden="true"><use href="#mark-ledger" /></svg
+                  ><span class="wordmark">Pricewright</span></span
+                >
+              </div>
+            </div>
+          </div>
+          <div class="block">
+            <h3>Palette</h3>
+            <ul class="swatches">
+              <li data-fg="#ffffff" data-bg="#1d2d50">
+                <span class="chip-color" style="background: #1d2d50; color: #ffffff">Aa</span
+                ><span class="sw-name"
+                  ><b>Navy · primary</b><span class="mono">#1D2D50 · white text on it</span></span
+                ><span class="ratio"></span>
+              </li>
+              <li data-fg="#0f766e" data-bg="#ffffff">
+                <span class="chip-color" style="background: #0f766e; color: #ffffff">Aa</span
+                ><span class="sw-name"
+                  ><b>Verdigris · accent</b
+                  ><span class="mono">#0F766E · as text on white</span></span
+                ><span class="ratio"></span>
+              </li>
+              <li data-fg="#1b2233" data-bg="#ffffff">
+                <span class="chip-color" style="background: #1b2233; color: #ffffff">Aa</span
+                ><span class="sw-name"
+                  ><b>Ink · text</b><span class="mono">#1B2233 · on white</span></span
+                ><span class="ratio"></span>
+              </li>
+              <li data-fg="#5a6275" data-bg="#ffffff">
+                <span class="chip-color" style="background: #5a6275; color: #ffffff">Aa</span
+                ><span class="sw-name"
+                  ><b>Graphite · secondary text</b
+                  ><span class="mono">#5A6275 · on white</span></span
+                ><span class="ratio"></span>
+              </li>
+              <li data-fg="#8a92a3" data-bg="#ffffff" data-ui>
+                <span class="chip-color" style="background: #8a92a3"></span
+                ><span class="sw-name"
+                  ><b>Field border</b><span class="mono">#8A92A3 · inputs, on white</span></span
+                ><span class="ratio"></span>
+              </li>
+            </ul>
+          </div>
+          <div class="block">
+            <h3>Type</h3>
+            <div class="specimen">
+              <span class="big">Quotation NF-2026-000132</span>
+              <span class="body"
+                >Source Serif 4 for headings and documents, Public Sans for the interface.</span
+              >
+              <span class="nums"
+                ><span>FST-0063 list</span><span>51.23</span><span>after volume −12%</span
+                ><span>45.08</span><span>after gold −6%</span><span>42.38</span></span
+              >
+              <span class="caption">Source Serif 4, Public Sans · SIL Open Font License</span>
+            </div>
+          </div>
+          <div class="block voice">
+            <h3>Voice: formal and precise</h3>
+            <div><span>Email subject</span>Quotation NF-2026-000132 approved by Morgan Reyes</div>
+            <div>
+              <span>Empty list</span>There are no quotations in this view. Change the filters or
+              create a quotation.
+            </div>
+            <div>
+              <span>Conflict</span>This quotation was changed by Morgan Reyes after you opened it.
+              Reload it to continue.
+            </div>
+          </div>
+          <div class="tradeoffs">
+            <div class="block">
+              <h3>Strengths</h3>
+              <ul>
+                <li>PDFs and emails look like serious commercial documents.</li>
+                <li>Navy reads as trust in finance-adjacent software.</li>
+                <li>The double rule is a detail only this domain has.</li>
+              </ul>
+            </div>
+            <div class="block">
+              <h3>Risks</h3>
+              <ul>
+                <li>Conservative; closest to banking software and the least memorable.</li>
+                <li>Serif headings in a dense app need care at small sizes.</li>
+              </ul>
+            </div>
+          </div>
+          <p class="refs">
+            References: the double underline under a total in accounting practice; serif-led
+            document design in commercial paperwork and invoices.
+          </p>
+        </div>
+        <div class="sample">
+          <div class="app">
+            <div class="app-bar">
+              <span class="tenant"><i aria-hidden="true"></i>Northfield Supply</span>
+              <nav>
+                <b>Quotes</b><span>Approvals</span><span>Customers</span><span>Products</span>
+              </nav>
+              <span class="who">Morgan Reyes<em>MR</em></span>
+            </div>
+            <div class="app-body">
+              <div class="q-head">
+                <div>
+                  <p class="q-num">NF-2026-000132</p>
+                  <p class="q-title">Stonegate Storage Centers LLC</p>
+                  <p class="q-meta">Gold account · Taylor Brooks · valid until Nov 18, 2026</p>
+                </div>
+                <span class="pill pending">Pending approval</span>
+              </div>
+              <p class="notice">16.4% off list is above Northfield’s 15% approval threshold.</p>
+              <div class="table-scroll">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Product</th>
+                      <th class="n">Qty</th>
+                      <th class="n">Unit net</th>
+                      <th class="n">Line total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="selected">
+                      <td>
+                        <span class="sku">FST-0063</span>Zinc-Plated Sleeve Anchor, 1/2 x 3-3/4 in,
+                        Box of 25
+                      </td>
+                      <td class="n">60</td>
+                      <td class="n">42.38</td>
+                      <td class="n">2,542.65</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <span class="sku">OFP-0036</span>File Folders, Letter, Manila, Box of 100
+                      </td>
+                      <td class="n">12</td>
+                      <td class="n">27.95</td>
+                      <td class="n">335.36</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="split">
+                <div class="breakdown">
+                  <h4>Why FST-0063 costs 42.38</h4>
+                  <div class="row">
+                    <span>List price</span><span class="pct"></span><span class="amt">51.23</span>
+                  </div>
+                  <div class="row step">
+                    <span>Fastener volume, 50+ boxes</span><span class="pct">−12%</span
+                    ><span class="amt">45.08</span>
+                  </div>
+                  <div class="row step">
+                    <span>Gold account discount</span><span class="pct">−6%</span
+                    ><span class="amt">42.38</span>
+                  </div>
+                  <div class="bar-track" aria-hidden="true"><span style="width: 82.7%"></span></div>
+                  <div class="row net">
+                    <span>Net unit price</span><span class="pct">−17.28%</span
+                    ><span class="amt">42.38</span>
+                  </div>
+                </div>
+                <div class="totals">
+                  <h4>Totals · USD</h4>
+                  <div class="row">
+                    <span>List subtotal</span><span></span><span class="amt">3,441.60</span>
+                  </div>
+                  <div class="row">
+                    <span>Net subtotal</span><span class="pct">−16.4%</span
+                    ><span class="amt">2,878.01</span>
+                  </div>
+                  <div class="row">
+                    <span>Tax 7.25%</span><span></span><span class="amt">208.66</span>
+                  </div>
+                  <div class="row grand">
+                    <span>Total</span><span></span><span class="amt">3,086.67</span>
+                  </div>
+                </div>
+              </div>
+              <div class="actions">
+                <button class="btn primary" type="button">Approve</button
+                ><button class="btn secondary" type="button">Reject with a comment</button
+                ><span class="hint">Margin 27.5% · visible with costs:read</span>
+              </div>
+              <div class="states" aria-label="Quote states">
+                <span class="pill draft">Draft</span
+                ><span class="pill pending">Pending approval</span
+                ><span class="pill approved">Approved</span><span class="pill sent">Sent</span
+                ><span class="pill expired">Expired</span>
+              </div>
+            </div>
+          </div>
+          <p class="note">The grand total closes with a double rule, as on a printed quotation.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="next" aria-labelledby="next-title">
+      <h2 id="next-title">After the choice</h2>
+      <ol>
+        <li>
+          The chosen direction becomes the design tokens: primitives, then semantic names, each pair
+          tested for contrast in CI.
+        </li>
+        <li>
+          The logo is refined at its real sizes (favicon, app header, PDF), with clear space,
+          minimum size and misuse.
+        </li>
+        <li>
+          Northfield Supply and Larkspur Tool Co. get their logos and accents, checked against the
+          brand.
+        </li>
+        <li>
+          The brand guide, the screen specs and the clickable prototype are all built on those
+          tokens.
+        </li>
+      </ol>
+    </section>
+  </div>
+
+  <script>
+    // WCAG 2.2 contrast ratio between each swatch's foreground and background, computed in the page.
+    (function () {
+      function channel(v) {
+        v /= 255;
+        return v <= 0.04045 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+      }
+      function luminance(hex) {
+        var n = parseInt(hex.slice(1), 16);
+        return (
+          0.2126 * channel((n >> 16) & 255) +
+          0.7152 * channel((n >> 8) & 255) +
+          0.0722 * channel(n & 255)
+        );
+      }
+      function ratio(a, b) {
+        var x = luminance(a),
+          y = luminance(b);
+        return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05);
+      }
+      document.querySelectorAll(".swatches li").forEach(function (item) {
+        var r = ratio(item.dataset.fg, item.dataset.bg);
+        var ui = item.hasAttribute("data-ui");
+        var pass = ui ? r >= 3 : r >= 4.5;
+        var label = ui ? (pass ? "AA UI 3:1" : "below 3:1") : pass ? "AA text" : "below 4.5:1";
+        item.querySelector(".ratio").innerHTML =
+          "<span>" + r.toFixed(2) + ':1</span><span class="badge">' + label + "</span>";
+      });
+    })();
+  </script>
+</html>
