@@ -34,6 +34,8 @@ are fictional.
 ```text
 just setup | just check | just lint | just typecheck | just test | just fmt
 just build                                      # dist/: tokens.css, theme.css, tokens.json
+just site                                       # dist/site/: the brand guide
+just logo                                       # docs/brand/logo/ from the tokens
 ```
 
 `just check` must pass before a task is considered done.
@@ -45,5 +47,6 @@ See `docs/adr/`. Do not contradict an accepted ADR; propose a new ADR that super
 ## Current status
 
 - In progress: M12. Done: decisions ADR-0001–0004, journeys and screen specs, the usability test
-  plan, positioning and voice, every token (color, type, space, radius, shadow, motion), the logo.
-  Next: the brand guide pages; the prototype; the release workflow; the test sessions.
+  plan, positioning and voice, every token (color, type, space, radius, shadow, motion), the logo,
+  the brand guide on GitHub Pages (`just site`). Next: the prototype; the PDF and email designs; the
+  demo tenants' logos; the release workflow; the test sessions.
