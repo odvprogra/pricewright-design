@@ -52,9 +52,10 @@ reaches each of them through a reviewed version bump.
 
 ## Key decisions
 
-| Decision                                              | Why                                               | ADR                                                    |
-| ----------------------------------------------------- | ------------------------------------------------- | ------------------------------------------------------ |
-| Design as code; tokens are the only source of a value | Brand, prototype and products cannot drift (D-15) | [0001](docs/adr/0001-record-architecture-decisions.md) |
+| Decision                                              | Why                                                                    | ADR                                                                           |
+| ----------------------------------------------------- | ---------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| Design as code; tokens are the only source of a value | Brand, prototype and products cannot drift (D-15)                      | [0001](docs/adr/0001-record-architecture-decisions.md)                        |
+| A repository of its own; consumers pin a release      | Three consumers in two languages; none depends on another's repository | [0002](docs/adr/0002-a-design-repository-consumed-through-pinned-releases.md) |
 
 ## Run it locally
 
