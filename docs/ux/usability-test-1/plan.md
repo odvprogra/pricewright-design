@@ -17,13 +17,13 @@ tested.
 
 ## Purpose
 
-| #   | Question                                                                                  | Answered by   |
-| --- | ----------------------------------------------------------------------------------------- | ------------- |
-| Q1  | Can a sales rep build a 5-line quote and submit it without help?                          | Task 2        |
-| Q2  | Does the price breakdown explain a net price well enough to repeat it to a customer?      | Task 3        |
-| Q3  | Is it clear, before and after submitting, whether a quote needs approval and what's next? | Tasks 2 and 5 |
-| Q4  | Can a manager decide on two approvals on a phone, quickly and with the right comment?     | Task 4        |
-| Q5  | How usable does Pricewright feel overall?                                                 | SUS           |
+| #   | Question                                                                                         | Answered by   |
+| --- | ------------------------------------------------------------------------------------------------ | ------------- |
+| Q1  | Can a sales rep build a 5-line quote and submit it without help?                                 | Task 2        |
+| Q2  | Does the price breakdown explain a net price well enough to repeat it to a customer?             | Task 3        |
+| Q3  | Is it clear, before and after submitting, whether a quote needs approval and what's next?        | Tasks 2 and 5 |
+| Q4  | Can a manager find two quotes in the inbox and decide on them on a phone, with a useful comment? | Task 4        |
+| Q5  | How usable does Pricewright feel overall?                                                        | SUS           |
 
 The brief's acceptance criterion is Q1: **at least 4 of 5 participants complete task 2 without
 help**.
@@ -66,13 +66,13 @@ read a simple English interface. The screener is in the [script](script.md#scree
 Participants play Taylor Brooks, a sales rep at Northfield Supply, then Morgan Reyes, the sales
 manager. The tasks use the demo's real data and pricing rules.
 
-| #   | Role    | Task                                                                                                                                   | Success                                                                     |
-| --- | ------- | -------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
-| 1   | Rep     | Find Stonegate Storage Centers and say what payment terms it has.                                                                      | Says "Net 60" (or 60 days).                                                 |
-| 2   | Rep     | Build a quote for Stonegate with the five products on the task card, and submit it.                                                    | Five lines, right products and quantities, submitted.                       |
-| 3   | Rep     | Stonegate asks why the sleeve anchors cost 42.38 instead of 51.23. Explain it.                                                         | Names the volume discount (50 boxes or more) and the gold account discount. |
-| 4   | Manager | On your phone, two quotes wait for you. Approve Stonegate's; reject the one with a line below the margin floor, saying what to change. | Both decided; the rejection names the line to change.                       |
-| 5   | Rep     | Morgan approved your quote. Send it to the customer, and say who received it.                                                          | Sent; names Stonegate's purchasing email.                                   |
+| #   | Role    | Task                                                                                                                           | Success                                                                     |
+| --- | ------- | ------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------- |
+| 1   | Rep     | Find Stonegate Storage Centers and say what payment terms it has.                                                              | Says "Net 60" (or 60 days).                                                 |
+| 2   | Rep     | Build a quote for Stonegate with the five products on the task card, and submit it.                                            | Five lines, right products and quantities, submitted.                       |
+| 3   | Rep     | Stonegate asks why the sleeve anchors cost 42.38 instead of 51.23. Explain it.                                                 | Names the volume discount (50 boxes or more) and the gold account discount. |
+| 4   | Manager | On your phone: approve Stonegate's quote; reject Kestrel Bay's NF-2026-000140, asking the rep to bring it within 15% off list. | Both decided; the rejection says what to change.                            |
+| 5   | Rep     | Morgan approved your quote. Send it to the customer, and say who received it.                                                  | Sent; names Stonegate's purchasing email.                                   |
 
 Task 2's card (also in the script):
 

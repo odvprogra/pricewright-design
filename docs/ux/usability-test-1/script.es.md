@@ -5,8 +5,8 @@
 
 ## Antes de la sesión
 
-- El prototipo abierto en el commit que nombra el informe; los datos de demo reiniciados (recargar
-  la página).
+- El prototipo abierto en el commit que nombra el informe; los datos de demo reiniciados (abrir su
+  enlace con `?reset` una vez).
 - La videollamada lista: compartir pantalla, grabación apagada hasta tener el consentimiento.
 - La fila del participante lista en [data/tasks.csv](data/tasks.csv); un cronómetro.
 - Las tarjetas de tarea listas para pegar en el chat, una por una.
@@ -92,15 +92,18 @@ tarea: "¿Qué pasa ahora con esta cotización?" (P3 del plan).
 
 Pedir al participante que abra el enlace del prototipo en su teléfono y comparta esa pantalla.
 
-> Ahora eres Morgan Reyes, gerente de ventas, entre dos visitas a clientes. Dos cotizaciones esperan
-> tu aprobación. Aprueba la de Stonegate. Rechaza la otra, que tiene una línea bajo el margen
-> mínimo, y dile al vendedor qué cambiar.
+> Ahora eres Morgan Reyes, gerente de ventas, entre dos visitas a clientes. Varias cotizaciones
+> esperan tu aprobación. Aprueba la de Stonegate. Rechaza la de Kestrel Bay NF-2026-000140, que
+> descuenta más del 15% que permites, y dile al vendedor qué cambiar.
 
-Éxito: la de Stonegate aprobada; la otra rechazada con un comentario que nombra la línea a cambiar.
+Éxito: NF-2026-000132 de Stonegate aprobada; NF-2026-000140 rechazada con un comentario que pide un
+descuento menor. Hay otra cotización de Kestrel Bay pendiente: decidir sobre esa es un error.
 
 ### Tarea 5 — enviar la cotización aprobada
 
-De vuelta en la computadora, como Taylor.
+De vuelta en la computadora, como Taylor. Pegar en el chat el enlace de moderador (la dirección del
+prototipo terminada en `#/moderator/approve-latest`): al abrirlo, Morgan aprueba la cotización de la
+tarea 2, como si el participante hubiera esperado la decisión.
 
 > Morgan aprobó tu cotización para Stonegate. Envíala al cliente. ¿Quién la recibió?
 

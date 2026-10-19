@@ -5,7 +5,8 @@ English version is the reference for the repository; both say the same.
 
 ## Before the session
 
-- Prototype open at the commit named in the report; demo data reset (reload the page).
+- Prototype open at the commit named in the report; demo data reset (open its link with `?reset`
+  once).
 - Video call ready: screen sharing, recording off until consent.
 - The participant's data sheet row ready in [data/tasks.csv](data/tasks.csv); a timer.
 - Task cards ready to paste in the chat, one at a time.
@@ -91,15 +92,18 @@ Success: names the volume discount (50 boxes or more) and the gold account disco
 
 Ask the participant to open the prototype's link on their phone and share its screen.
 
-> You are now Morgan Reyes, the sales manager, between two customer visits. Two quotes wait for your
-> approval. Approve Stonegate's. Reject the other one, which has a line below the margin floor, and
-> tell the rep what to change.
+> You are now Morgan Reyes, the sales manager, between two customer visits. Several quotes wait for
+> your approval. Approve Stonegate's. Reject Kestrel Bay's NF-2026-000140, which gives away more
+> than the 15% you allow, and tell the rep what to change.
 
-Success: Stonegate's approved; the other rejected with a comment that names the line to change.
+Success: Stonegate's NF-2026-000132 approved; NF-2026-000140 rejected with a comment that asks for a
+smaller discount. Another Kestrel Bay quote waits too: deciding on that one is an error.
 
 ### Task 5 — send the approved quote
 
-Back on the computer, as Taylor.
+Back on the computer, as Taylor. Paste the moderator's link (the prototype's address ending in
+`#/moderator/approve-latest`) in the chat: opening it approves the quote from task 2 as Morgan, as
+if the participant had waited for the decision.
 
 > Morgan approved your quote for Stonegate. Send it to the customer. Who received it?
 
