@@ -45,5 +45,5 @@ See `docs/adr/`. Do not contradict an accepted ADR; propose a new ADR that super
 ## Current status
 
 - In progress: M12. Done: decisions ADR-0001–0004, journeys and screen specs, the usability test
-  plan, positioning and voice, the color tokens. Next: type, space and the other tokens; the release
-  workflow; the logo; the brand guide pages; the prototype; the test sessions.
+  plan, positioning and voice, every token (color, type, space, radius, shadow, motion). Next: the
+  release workflow; the logo; the brand guide pages; the prototype; the test sessions.

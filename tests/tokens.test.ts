@@ -6,7 +6,7 @@ import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
 import { CONTRAST_PAIRS, isTextToken } from "../src/contrast-pairs.ts";
 import { contrastRatio } from "../src/contrast.ts";
-import { SHADCN_ALIASES, build, cssVariable } from "../src/tokens.ts";
+import { SHADCN_ALIASES, build, cssColor, cssVariable, tailwindVariable } from "../src/tokens.ts";
 
 let out: string;
 let built: Record<string, string>;
@@ -71,6 +71,44 @@ describe("contrast", () => {
     const named = CONTRAST_PAIRS.flatMap((pair) => [pair.foreground, pair.background]);
 
     expect(named.filter((path) => !known.has(path))).toEqual([]);
+  });
+});
+
+describe("tailwindVariable", () => {
+  it.each([
+    ["color.surface.muted", "--color-surface-muted"],
+    ["font.family.heading", "--font-heading"],
+    ["font.weight.semibold", "--font-weight-semibold"],
+    ["font.size.sm", "--text-sm"],
+    ["font.leading.snug", "--leading-snug"],
+    ["radius.sm", "--radius-sm"],
+    ["shadow.md", "--shadow-md"],
+    ["motion.ease.standard", "--ease-standard"],
+    ["space.unit", "--spacing"],
+  ])("puts %s in Tailwind's %s", (path, variable) => {
+    expect(tailwindVariable(path.split("."))).toBe(variable);
+  });
+
+  it.each(["space.4", "border-width.focus", "motion.duration.fast", "font.family"])(
+    "leaves %s out of the theme",
+    (path) => {
+      expect(tailwindVariable(path.split("."))).toBeUndefined();
+    },
+  );
+});
+
+describe("cssColor", () => {
+  it("writes opaque sRGB as hex and translucent sRGB as rgba()", () => {
+    expect(cssColor({ colorSpace: "srgb", components: [0.1059, 0.1333, 0.2] })).toBe("#1b2233");
+    expect(cssColor({ colorSpace: "srgb", components: [0.1059, 0.1333, 0.2], alpha: 0.08 })).toBe(
+      "rgba(27, 34, 51, 0.08)",
+    );
+  });
+
+  it("refuses other color spaces", () => {
+    expect(() => cssColor({ colorSpace: "oklch", components: [0.5, 0.1, 250] })).toThrow(
+      "only sRGB colors are supported",
+    );
   });
 });
 
