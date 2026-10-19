@@ -1,0 +1,191 @@
+{
+  "color": {
+    "$type": "color",
+    "text": {
+      "default": {
+        "$value": "{palette.neutral.900}",
+        "$description": "Body text, headings, amounts."
+      },
+      "muted": {
+        "$value": "{palette.neutral.600}",
+        "$description": "Secondary text: labels, metadata, help."
+      },
+      "inverse": {
+        "$value": "{palette.neutral.0}",
+        "$description": "Text on inverse surfaces and solid actions."
+      },
+      "inverse-muted": {
+        "$value": "{palette.neutral.300}",
+        "$description": "Secondary text on inverse surfaces."
+      },
+      "link": {
+        "$value": "{palette.verdigris.700}",
+        "$description": "Links in running text."
+      }
+    },
+    "surface": {
+      "default": {
+        "$value": "{palette.neutral.0}",
+        "$description": "The page and cards: white paper."
+      },
+      "muted": {
+        "$value": "{palette.neutral.50}",
+        "$description": "Table headers, side panels, the app canvas."
+      },
+      "sunken": {
+        "$value": "{palette.neutral.100}",
+        "$description": "Wells and inputs' read-only state."
+      },
+      "hover": {
+        "$value": "{palette.neutral.100}",
+        "$description": "A row, menu item or ghost button under the pointer."
+      },
+      "selected": {
+        "$value": "{palette.verdigris.50}",
+        "$description": "The selected row or item."
+      },
+      "inverse": {
+        "$value": "{palette.navy.700}",
+        "$description": "The app bar and other inverse areas."
+      }
+    },
+    "border": {
+      "default": {
+        "$value": "{palette.neutral.200}",
+        "$description": "Dividers and card edges (decorative)."
+      },
+      "strong": {
+        "$value": "{palette.neutral.300}",
+        "$description": "Table rules and emphasized dividers (decorative)."
+      },
+      "input": {
+        "$value": "{palette.neutral.400}",
+        "$description": "Form fields' boundary: 3:1 on every surface."
+      }
+    },
+    "action": {
+      "primary": {
+        "background": {
+          "$value": "{palette.navy.700}",
+          "$description": "The one primary action of a view."
+        },
+        "background-hover": {
+          "$value": "{palette.navy.800}",
+          "$description": "Primary action under the pointer."
+        },
+        "foreground": {
+          "$value": "{palette.neutral.0}",
+          "$description": "Label of a primary action."
+        }
+      },
+      "secondary": {
+        "background": {
+          "$value": "{palette.neutral.0}",
+          "$description": "Secondary actions."
+        },
+        "background-hover": {
+          "$value": "{palette.neutral.100}",
+          "$description": "Secondary action under the pointer."
+        },
+        "foreground": {
+          "$value": "{palette.navy.700}",
+          "$description": "Label of a secondary action."
+        },
+        "border": {
+          "$value": "{palette.neutral.400}",
+          "$description": "Boundary of a secondary action."
+        }
+      },
+      "danger": {
+        "background": {
+          "$value": "{palette.red.600}",
+          "$description": "Destructive actions, after a confirmation."
+        },
+        "background-hover": {
+          "$value": "{palette.red.700}",
+          "$description": "Destructive action under the pointer."
+        },
+        "foreground": {
+          "$value": "{palette.neutral.0}",
+          "$description": "Label of a destructive action."
+        }
+      }
+    },
+    "accent": {
+      "default": {
+        "$value": "{palette.verdigris.600}",
+        "$description": "Brand accent: selection marks, the logo's double rule."
+      },
+      "text": {
+        "$value": "{palette.verdigris.700}",
+        "$description": "Accent used as text."
+      },
+      "surface": {
+        "$value": "{palette.verdigris.50}",
+        "$description": "Accent background behind text."
+      },
+      "foreground": {
+        "$value": "{palette.neutral.0}",
+        "$description": "Text on the solid accent."
+      }
+    },
+    "status": {
+      "success": {
+        "text": {
+          "$value": "{palette.green.700}",
+          "$description": "Approved, accepted, saved."
+        },
+        "surface": {
+          "$value": "{palette.green.50}",
+          "$description": "Background of a success badge or banner."
+        }
+      },
+      "warning": {
+        "text": {
+          "$value": "{palette.amber.700}",
+          "$description": "Pending approval, needs attention."
+        },
+        "surface": {
+          "$value": "{palette.amber.50}",
+          "$description": "Background of a warning badge or banner."
+        }
+      },
+      "danger": {
+        "text": {
+          "$value": "{palette.red.700}",
+          "$description": "Errors, rejected, expired."
+        },
+        "surface": {
+          "$value": "{palette.red.50}",
+          "$description": "Background of a danger badge or banner."
+        }
+      },
+      "info": {
+        "text": {
+          "$value": "{palette.blue.700}",
+          "$description": "Neutral information: sent, draft notes."
+        },
+        "surface": {
+          "$value": "{palette.blue.50}",
+          "$description": "Background of an information badge or banner."
+        }
+      }
+    },
+    "focus": {
+      "ring": {
+        "$value": "{palette.blue.600}",
+        "$description": "Keyboard focus indicator on light surfaces."
+      },
+      "ring-inverse": {
+        "$value": "{palette.blue.300}",
+        "$description": "Keyboard focus indicator on inverse surfaces."
+      }
+    },
+    "tenant": {
+      "accent": {
+        "$value": "{palette.verdigris.600}",
+        "$description": "A tenant's one accent color (header, PDF, emails); consumers override it, nothing else."
+      }
+    }
+  }
+}

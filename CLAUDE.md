@@ -32,7 +32,8 @@ are fictional.
 ## Commands
 
 ```text
-just setup | just check | just lint | just fmt
+just setup | just check | just lint | just typecheck | just test | just fmt
+just build                                      # dist/: tokens.css, theme.css, tokens.json
 ```
 
 `just check` must pass before a task is considered done.
@@ -43,4 +44,6 @@ See `docs/adr/`. Do not contradict an accepted ADR; propose a new ADR that super
 
 ## Current status
 
-- In progress: M12 — the repository's scaffold.
+- In progress: M12. Done: decisions ADR-0001–0004, journeys and screen specs, the usability test
+  plan, positioning and voice, the color tokens. Next: type, space and the other tokens; the release
+  workflow; the logo; the brand guide pages; the prototype; the test sessions.
