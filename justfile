@@ -24,5 +24,17 @@ lint:
 fmt:
     {{ pnpm }} exec prettier --write .
 
+# Build every token format into dist/ (tokens.css, theme.css, tokens.json)
+build:
+    node scripts/build.ts
+
+# Type-check the build and the tests
+typecheck:
+    {{ pnpm }} exec tsc --noEmit -p .
+
+# Run the tests: contrast of every token pair, the builds' contents
+test:
+    {{ pnpm }} exec vitest run
+
 # Everything CI checks
-check: lint
+check: lint typecheck test
