@@ -6,9 +6,23 @@ import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
 import { CONTRAST_PAIRS, isTextToken } from "../src/contrast-pairs.ts";
 import { contrastRatio } from "../src/contrast.ts";
-import { SHADCN_ALIASES, build, cssColor, cssVariable, tailwindVariable } from "../src/tokens.ts";
+import {
+  SHADCN_ALIASES,
+  VERSION,
+  build,
+  cssColor,
+  cssVariable,
+  tailwindVariable,
+} from "../src/tokens.ts";
+
+interface TokensJson {
+  name: string;
+  version: string;
+  tokens: Record<string, string>;
+}
 
 let out: string;
+let tokensJson: TokensJson;
 let built: Record<string, string>;
 let tokensCss: string;
 let themeCss: string;
@@ -38,7 +52,8 @@ const value = (path: string): string => {
 beforeAll(async () => {
   out = await mkdtemp(join(tmpdir(), "pricewright-tokens-"));
   await build(out);
-  built = JSON.parse(await readFile(join(out, "tokens.json"), "utf8")) as Record<string, string>;
+  tokensJson = JSON.parse(await readFile(join(out, "tokens.json"), "utf8")) as TokensJson;
+  built = tokensJson.tokens;
   tokensCss = await readFile(join(out, "tokens.css"), "utf8");
   themeCss = await readFile(join(out, "theme.css"), "utf8");
   const files = (await readdir("tokens")).filter((name) => name.endsWith(".tokens.json"));
@@ -109,6 +124,17 @@ describe("cssColor", () => {
     expect(() => cssColor({ colorSpace: "oklch", components: [0.5, 0.1, 250] })).toThrow(
       "only sRGB colors are supported",
     );
+  });
+});
+
+describe("every build", () => {
+  it("names the release it belongs to, the package's version", async () => {
+    const pkg = JSON.parse(await readFile("package.json", "utf8")) as { version: string };
+
+    expect(VERSION).toBe(pkg.version);
+    expect(tokensJson).toMatchObject({ name: "pricewright-design", version: VERSION });
+    expect(tokensCss).toContain(`pricewright-design ${VERSION}:`);
+    expect(themeCss).toContain(`pricewright-design ${VERSION}:`);
   });
 });
 
