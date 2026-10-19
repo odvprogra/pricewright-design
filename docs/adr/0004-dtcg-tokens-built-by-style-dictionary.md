@@ -45,10 +45,12 @@ with shadcn/ui's variable names (`pricewright-web`), and plain data.
   - `tokens.css`: every token as a custom property on `:root`, names from the token path
     (`color.surface.muted` → `--color-surface-muted`), with resolved values rather than `var()`
     chains, so a consumer can copy a value where custom properties do not work (email clients).
-  - `theme.css`: a Tailwind CSS v4 `@theme` that resets Tailwind's own palette
-    (`--color-*: initial`) and registers only the semantic tokens, so a palette color cannot become
-    a utility; plus shadcn/ui's names as aliases of semantic tokens (`--primary` is the primary
-    action, `--accent` the hover surface, not the brand accent).
+  - `theme.css`: a Tailwind CSS v4 `@theme`. Token names follow Tailwind's namespaces
+    (`font.size.sm` → `--text-sm`, `space.unit` → `--spacing`). Tailwind's defaults are reset in
+    every namespace it replaces (color, radius, shadow, text, leading, ease), and only semantic
+    tokens are registered, so neither a Tailwind default nor a palette color can become a utility.
+    shadcn/ui's names follow as aliases of semantic tokens: `--color-primary` is the primary action,
+    `--color-accent` the hover surface, not the brand accent.
   - `tokens.json`: every token's resolved value, flat, for consumers that are not CSS.
 - **Contrast is a test:** every pair a screen can draw (text on its surfaces, controls and focus on
   their backgrounds) is listed with its minimum, 4.5:1 for text and 3:1 for UI components and focus

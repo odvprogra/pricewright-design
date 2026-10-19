@@ -1,0 +1,82 @@
+{
+  "space": {
+    "$type": "dimension",
+    "$description": "A 4 px grid. Tailwind derives its spacing from the unit; other consumers use the steps.",
+    "unit": { "$value": { "value": 0.25, "unit": "rem" } },
+    "1": { "$value": { "value": 0.25, "unit": "rem" } },
+    "2": { "$value": { "value": 0.5, "unit": "rem" } },
+    "3": { "$value": { "value": 0.75, "unit": "rem" } },
+    "4": { "$value": { "value": 1, "unit": "rem" } },
+    "6": { "$value": { "value": 1.5, "unit": "rem" } },
+    "8": { "$value": { "value": 2, "unit": "rem" } },
+    "12": { "$value": { "value": 3, "unit": "rem" } },
+    "16": { "$value": { "value": 4, "unit": "rem" } }
+  },
+  "radius": {
+    "$type": "dimension",
+    "$description": "Ledger's corners are nearly square: paper, not pills.",
+    "none": { "$value": { "value": 0, "unit": "px" } },
+    "sm": { "$value": { "value": 2, "unit": "px" }, "$description": "Buttons, inputs, badges." },
+    "md": { "$value": { "value": 4, "unit": "px" }, "$description": "Cards, menus, dialogs." },
+    "full": { "$value": { "value": 9999, "unit": "px" }, "$description": "Avatars only." }
+  },
+  "border-width": {
+    "$type": "dimension",
+    "default": { "$value": { "value": 1, "unit": "px" } },
+    "focus": {
+      "$value": { "value": 2, "unit": "px" },
+      "$description": "The focus ring, with a 2 px offset: sized after WCAG 2.2's focus appearance (2.4.13, AAA)."
+    }
+  },
+  "shadow": {
+    "$type": "shadow",
+    "sm": {
+      "$value": {
+        "color": {
+          "colorSpace": "srgb",
+          "components": [0.1059, 0.1333, 0.2],
+          "alpha": 0.08,
+          "hex": "#1b2233"
+        },
+        "offsetX": { "value": 0, "unit": "px" },
+        "offsetY": { "value": 1, "unit": "px" },
+        "blur": { "value": 2, "unit": "px" },
+        "spread": { "value": 0, "unit": "px" }
+      },
+      "$description": "Cards that sit on the canvas."
+    },
+    "md": {
+      "$value": {
+        "color": {
+          "colorSpace": "srgb",
+          "components": [0.1059, 0.1333, 0.2],
+          "alpha": 0.14,
+          "hex": "#1b2233"
+        },
+        "offsetX": { "value": 0, "unit": "px" },
+        "offsetY": { "value": 4, "unit": "px" },
+        "blur": { "value": 12, "unit": "px" },
+        "spread": { "value": 0, "unit": "px" }
+      },
+      "$description": "Menus, popovers and dialogs above the page."
+    }
+  },
+  "motion": {
+    "duration": {
+      "$type": "duration",
+      "fast": {
+        "$value": { "value": 100, "unit": "ms" },
+        "$description": "Hover and press feedback."
+      },
+      "normal": {
+        "$value": { "value": 200, "unit": "ms" },
+        "$description": "Menus and panels opening."
+      }
+    },
+    "ease": {
+      "$type": "cubicBezier",
+      "standard": { "$value": [0.2, 0, 0, 1], "$description": "Things entering or changing." },
+      "exit": { "$value": [0.4, 0, 1, 1], "$description": "Things leaving." }
+    }
+  }
+}

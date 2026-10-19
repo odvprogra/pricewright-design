@@ -28,7 +28,7 @@ exists.
 | Area                | Status      | What it delivers                                                                                                                  |
 | ------------------- | ----------- | --------------------------------------------------------------------------------------------------------------------------------- |
 | Brand guide         | In progress | Positioning, logo, palette with a contrast table, typography, iconography, voice                                                  |
-| Design tokens       | In progress | [Colors](tokens/color.tokens.json) done: semantic tokens with every contrast pair checked in CI (WCAG 2.2 AA)                     |
+| Design tokens       | Done        | [Color, type, space, radius, shadow and motion](tokens/); every contrast pair checked in CI (WCAG 2.2 AA)                         |
 | Token builds        | In progress | CSS custom properties, a Tailwind CSS theme and JSON on every immutable release                                                   |
 | Journeys and specs  | Done        | [Journeys](docs/ux/journeys.md) per role and a [spec per screen](docs/ux/screens/README.md), with the four states and permissions |
 | Clickable prototype | Planned     | The key screens on the tokens, with Northfield Supply's demo data                                                                 |

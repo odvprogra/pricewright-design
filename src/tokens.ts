@@ -32,25 +32,133 @@ export const SHADCN_ALIASES: Readonly<Record<string, string>> = {
   ring: "color.focus.ring",
 };
 
+/** Tailwind namespaces the theme replaces, so no default value of theirs survives. */
+const RESET_NAMESPACES = ["color", "radius", "shadow", "text", "leading", "ease"];
+
 /** A token path as its custom property: `color.surface.muted` is `--color-surface-muted`. */
 export function cssVariable(path: string): string {
   return `--${path.replaceAll(".", "-")}`;
 }
 
-/** Only semantic tokens reach the Tailwind theme; palette values never become utilities. */
-function isSemantic(token: TransformedToken): boolean {
-  return token.path[0] !== "palette";
+/**
+ * The Tailwind CSS v4 theme variable of a token, or `undefined` when it has no Tailwind namespace
+ * (palette values, spacing steps, border widths, durations stay in `tokens.css` only).
+ */
+export function tailwindVariable(path: readonly string[]): string | undefined {
+  const [group, kind, ...rest] = path;
+  const name = rest.join("-");
+  if (group === "color") {
+    return `--${path.join("-")}`;
+  }
+  if (group === "font" && rest.length > 0) {
+    const namespace: Record<string, string> = {
+      family: "font",
+      weight: "font-weight",
+      size: "text",
+      leading: "leading",
+    };
+    return kind !== undefined && kind in namespace ? `--${namespace[kind]}-${name}` : undefined;
+  }
+  if (group === "radius" || group === "shadow") {
+    return `--${path.join("-")}`;
+  }
+  if (group === "motion" && kind === "ease") {
+    return `--ease-${name}`;
+  }
+  if (group === "space" && kind === "unit") {
+    return "--spacing";
+  }
+  return undefined;
 }
 
+interface DtcgColor {
+  colorSpace: string;
+  components: number[];
+  alpha?: number;
+}
+
+interface DtcgDimension {
+  value: number;
+  unit: string;
+}
+
+interface DtcgShadow {
+  color: DtcgColor | string;
+  offsetX: DtcgDimension;
+  offsetY: DtcgDimension;
+  blur: DtcgDimension;
+  spread: DtcgDimension;
+}
+
+/** sRGB colors as `#rrggbb`, or `rgba()` when translucent: forms every consumer understands. */
+export function cssColor(color: DtcgColor | string): string {
+  if (typeof color === "string") {
+    return color;
+  }
+  if (color.colorSpace !== "srgb") {
+    throw new Error(`only sRGB colors are supported, got ${color.colorSpace}`);
+  }
+  const channels = color.components.map((c) => Math.round(c * 255));
+  if (color.alpha !== undefined && color.alpha < 1) {
+    return `rgba(${channels.join(", ")}, ${color.alpha})`;
+  }
+  return `#${channels.map((c) => c.toString(16).padStart(2, "0")).join("")}`;
+}
+
+const dimension = (d: DtcgDimension): string => `${d.value}${d.unit}`;
+
+StyleDictionary.registerTransform({
+  name: "pricewright/color",
+  type: "value",
+  transitive: true,
+  filter: (token) => token.$type === "color",
+  transform: (token) => cssColor(token.$value as DtcgColor | string),
+});
+
+StyleDictionary.registerTransform({
+  name: "pricewright/shadow",
+  type: "value",
+  transitive: true,
+  filter: (token) => token.$type === "shadow",
+  transform: (token) => {
+    const layers = [token.$value as DtcgShadow | DtcgShadow[]].flat();
+    return layers
+      .map((s) =>
+        [s.offsetX, s.offsetY, s.blur, s.spread].map(dimension).concat(cssColor(s.color)).join(" "),
+      )
+      .join(", ");
+  },
+});
+
+StyleDictionary.registerTransform({
+  name: "pricewright/duration",
+  type: "value",
+  filter: (token) => token.$type === "duration",
+  transform: (token) => dimension(token.$value as DtcgDimension),
+});
+
+/** Style Dictionary's CSS transforms, with ours for colors, shadows and durations. */
+const TRANSFORMS = [
+  ...(StyleDictionary.hooks.transformGroups["css"] ?? []).filter(
+    (name) => !["color/css", "shadow/css/shorthand", "time/seconds"].includes(name),
+  ),
+  "pricewright/color",
+  "pricewright/shadow",
+  "pricewright/duration",
+];
+
 function tailwindTheme(tokens: readonly TransformedToken[]): string {
-  const semantic = tokens.filter(isSemantic);
+  const themed = tokens.flatMap((token) => {
+    const variable = tailwindVariable(token.path);
+    return variable === undefined ? [] : [`  ${variable}: ${String(token.$value)};`];
+  });
   const lines = [
     `/* ${HEADER} */`,
     "",
-    "/* Tailwind's default palette is reset: only Pricewright's semantic tokens are utilities. */",
+    "/* Tailwind's defaults are reset in these namespaces: only Pricewright's tokens remain. */",
     "@theme {",
-    "  --color-*: initial;",
-    ...semantic.map((token) => `  --${token.name}: ${String(token.$value)};`),
+    ...RESET_NAMESPACES.map((namespace) => `  --${namespace}-*: initial;`),
+    ...themed,
     "}",
     "",
     "/* shadcn/ui's theme names, as aliases of the semantic tokens. */",
@@ -66,7 +174,8 @@ function tailwindTheme(tokens: readonly TransformedToken[]): string {
 
 StyleDictionary.registerFormat({
   name: "css/tailwind-theme",
-  format: ({ dictionary }) => tailwindTheme(dictionary.allTokens),
+  format: ({ dictionary }) =>
+    tailwindTheme(dictionary.allTokens.filter((token) => token.path[0] !== "palette")),
 });
 
 export function config(buildPath: string): Config {
@@ -77,7 +186,7 @@ export function config(buildPath: string): Config {
     log: { warnings: "error", verbosity: "verbose" },
     platforms: {
       css: {
-        transformGroup: "css",
+        transforms: TRANSFORMS,
         buildPath: destination,
         files: [
           {
