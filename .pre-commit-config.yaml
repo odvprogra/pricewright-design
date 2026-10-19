@@ -1,6 +1,8 @@
 # Formatting and Markdown run through `just lint` (the versions in pnpm-lock.yaml, exactly what CI
 # runs); the hooks guard what every commit must never carry.
 default_install_hook_types: [pre-commit, commit-msg]
+# Third-party fonts and their licenses stay byte for byte as published.
+exclude: ^assets/fonts/
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks

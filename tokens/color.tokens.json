@@ -186,6 +186,32 @@
         "$value": "{palette.verdigris.600}",
         "$description": "A tenant's one accent color (header, PDF, emails); consumers override it, nothing else."
       }
+    },
+    "logo": {
+      "ink": {
+        "$value": "{palette.navy.700}",
+        "$description": "The logo's sheet, rules and wordmark on light backgrounds."
+      },
+      "rule": {
+        "$value": "{palette.verdigris.600}",
+        "$description": "The logo's double rule on light backgrounds."
+      },
+      "fold": {
+        "$value": "{palette.navy.400}",
+        "$description": "The small mark's folded corner on light backgrounds."
+      },
+      "ink-inverse": {
+        "$value": "{palette.neutral.0}",
+        "$description": "The logo on inverse backgrounds."
+      },
+      "rule-inverse": {
+        "$value": "{palette.verdigris.300}",
+        "$description": "The double rule on inverse backgrounds."
+      },
+      "fold-inverse": {
+        "$value": "{palette.navy.200}",
+        "$description": "The small mark's folded corner on inverse backgrounds."
+      }
     }
   }
 }
