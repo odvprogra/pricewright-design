@@ -7,5 +7,6 @@ in [engineering-standards](https://github.com/odvprogra/engineering-standards/tr
 | ---- | -------------------------------------------------------------------------------------------------------------------------------- | -------- |
 | 0001 | [Record architecture decisions](0001-record-architecture-decisions.md)                                                           | Accepted |
 | 0002 | [A design repository of its own, consumed through pinned releases](0002-a-design-repository-consumed-through-pinned-releases.md) | Accepted |
+| 0003 | [The Ledger brand direction](0003-the-ledger-brand-direction.md)                                                                 | Accepted |
 
 New ADRs start from [the template](template.md).

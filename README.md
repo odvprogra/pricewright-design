@@ -25,14 +25,14 @@ exists.
 
 ## What it does
 
-| Area                | Status  | What it delivers                                                                     |
-| ------------------- | ------- | ------------------------------------------------------------------------------------ |
-| Brand guide         | Planned | Positioning, logo, palette with a contrast table, typography, iconography, voice     |
-| Design tokens       | Planned | Semantic tokens with every contrast pair checked in CI (WCAG 2.2 AA)                 |
-| Token builds        | Planned | CSS custom properties, a Tailwind CSS theme and JSON on every immutable release      |
-| Journeys and specs  | Planned | Journeys per role and a spec per screen, with the four states and permissions        |
-| Clickable prototype | Planned | The key screens on the tokens, with Northfield Supply's demo data                    |
-| Usability test      | Planned | Five participants: task success, time, errors, SEQ and SUS, and the changes it drove |
+| Area                | Status      | What it delivers                                                                                                                  |
+| ------------------- | ----------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| Brand guide         | In progress | Positioning, logo, palette with a contrast table, typography, iconography, voice                                                  |
+| Design tokens       | Planned     | Semantic tokens with every contrast pair checked in CI (WCAG 2.2 AA)                                                              |
+| Token builds        | Planned     | CSS custom properties, a Tailwind CSS theme and JSON on every immutable release                                                   |
+| Journeys and specs  | Done        | [Journeys](docs/ux/journeys.md) per role and a [spec per screen](docs/ux/screens/README.md), with the four states and permissions |
+| Clickable prototype | Planned     | The key screens on the tokens, with Northfield Supply's demo data                                                                 |
+| Usability test      | Plan ready  | [Five participants](docs/ux/usability-test-1/plan.md): task success, time, errors, SEQ and SUS, and the changes it drove          |
 
 The full scope is in the [brief](docs/brief.md).
 
@@ -52,10 +52,11 @@ reaches each of them through a reviewed version bump.
 
 ## Key decisions
 
-| Decision                                              | Why                                                                    | ADR                                                                           |
-| ----------------------------------------------------- | ---------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
-| Design as code; tokens are the only source of a value | Brand, prototype and products cannot drift (D-15)                      | [0001](docs/adr/0001-record-architecture-decisions.md)                        |
-| A repository of its own; consumers pin a release      | Three consumers in two languages; none depends on another's repository | [0002](docs/adr/0002-a-design-repository-consumed-through-pinned-releases.md) |
+| Decision                                                 | Why                                                                             | ADR                                                                           |
+| -------------------------------------------------------- | ------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| Design as code; tokens are the only source of a value    | Brand, prototype and products cannot drift (D-15)                               | [0001](docs/adr/0001-record-architecture-decisions.md)                        |
+| A repository of its own; consumers pin a release         | Three consumers in two languages; none depends on another's repository          | [0002](docs/adr/0002-a-design-repository-consumed-through-pinned-releases.md) |
+| Brand direction Ledger: navy, verdigris, serif documents | Quotations read as commercial documents; chosen among three explored directions | [0003](docs/adr/0003-the-ledger-brand-direction.md)                           |
 
 ## Run it locally
 
