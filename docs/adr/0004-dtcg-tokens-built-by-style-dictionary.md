@@ -43,7 +43,8 @@ with shadcn/ui's variable names (`pricewright-web`), and plain data.
   - No component tier until a theme (dark, high contrast) needs one.
 - **Builds** (Style Dictionary, `just build` into `dist/`):
   - `tokens.css`: every token as a custom property on `:root`, names from the token path
-    (`color.surface.muted` → `--color-surface-muted`).
+    (`color.surface.muted` → `--color-surface-muted`), with resolved values rather than `var()`
+    chains, so a consumer can copy a value where custom properties do not work (email clients).
   - `theme.css`: a Tailwind CSS v4 `@theme` that resets Tailwind's own palette
     (`--color-*: initial`) and registers only the semantic tokens, so a palette color cannot become
     a utility; plus shadcn/ui's names as aliases of semantic tokens (`--primary` is the primary
