@@ -4,6 +4,7 @@
 overrides:
   katex: 0.18.11 # GHSA-238p-pmpm-9mq7; markdownlint parses math with it, this repo has none
   smol-toml: 1.9.0 # GHSA-r4xh-jqrq-34v2
+  markdown-it: 15.0.2 # GHSA-r7fv-28h4-cvq7
 
 auditConfig:
   ignoreGhsas:
