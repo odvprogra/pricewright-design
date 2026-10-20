@@ -12,7 +12,7 @@ value it uses comes from the design tokens; this guide explains how to use them.
 | Typography and iconography                      | [Published](https://odvprogra.github.io/pricewright-design/type.html); icons: Lucide (handbook §14.1) |
 | UI examples: the clickable prototype            | [Published](https://odvprogra.github.io/pricewright-design/prototype/)                                |
 | [The quotation PDF](documents.md#the-quotation) | [Published](https://odvprogra.github.io/pricewright-design/documents.html)                            |
-| [The emails](documents.md#emails)               | Next                                                                                                  |
+| [The emails](documents.md#emails)               | [Published](https://odvprogra.github.io/pricewright-design/documents.html#the-emails)                 |
 | [Demo tenants' logos and accents](tenants.md)   | [Published](https://odvprogra.github.io/pricewright-design/tenants.html)                              |
 
 The [three directions explored](explorations/directions.html) are kept as the record of the choice.

@@ -72,4 +72,56 @@ A notice under the tenant's rule, semibold, in a status color's text on its surf
 
 ## Emails
 
-Next: the decision emails to the rep and the sent quotation to the customer.
+[`src/documents/emails.ts`](../../src/documents/emails.ts), shown with Northfield's demo data: the
+quotation NF-2026-000122 sent to its customer, Morgan Reyes approving NF-2026-000078 for Taylor
+Brooks, and asking Jordan Patel for changes to NF-2026-000101. Each email has an HTML and a
+plain-text part, written from the same blocks.
+
+| Email               | To                    | Subject                                           | Heading                                 |
+| ------------------- | --------------------- | ------------------------------------------------- | --------------------------------------- |
+| Quotation sent      | The customer          | "Quotation NF-2026-000122 from Northfield Supply" | "Your quotation from Northfield Supply" |
+| Quote approved      | The rep who submitted | "Quote NF-2026-000078 approved"                   | "Your quote is approved"                |
+| Quote needs changes | The rep who submitted | "Quote NF-2026-000101 needs changes"              | "Your quote needs changes"              |
+
+### Structure
+
+- **One column, at most 600 px**, centered on `color.surface.muted`, the card on
+  `color.surface.default` with a `color.border.default` edge. Layout tables carry
+  `role="presentation"`, so screen readers skip them; the facts (quote, customer, total, validity)
+  are a real table with row headers. `lang="en"` and `dir="ltr"` on the root.
+- **The tenant's rule**, 4 px in its accent, tops the card; the tenant's name (its logo from M7, an
+  image with its name as `alt`) sits under it. Pricewright appears only in the footer.
+- **A preview line** follows the subject in the inbox, hidden in the body: the total and validity
+  for the customer, the decision and the comment for the rep.
+- **A manager's comment** is quoted (`blockquote`, a 3 px `color.border.strong` rule on
+  `color.surface.muted`), right after who decided.
+- **Voice:** customers read formal sentences without contractions ("The quotation is attached as a
+  PDF"); reps read the app's voice ("It's ready to send"). A sentence that ends with a name ending
+  in a period ("Co.") gets no second one.
+
+### Type and color
+
+- **Every style inline, every value copied from `tokens.json`:** mail clients drop `<style>` blocks
+  and do not resolve `var()`. Sizes in pixels (a 16 px `md`), as clients handle `rem` unevenly.
+- **No web fonts:** Gmail on the web and Outlook for Windows ignore `@font-face`
+  ([caniemail](https://www.caniemail.com/features/css-at-font-face/)), so the emails use the tokens'
+  stacks as they are: the heading in the serif stack (Source Serif 4 where installed, else Georgia),
+  the rest in the sans stack (Public Sans, else Segoe UI, Helvetica Neue or Arial).
+- **No numbers in headings:** Georgia sets old-style figures, so quote numbers and amounts go in the
+  facts, in the sans stack's tabular figures.
+- **Light only:** `color-scheme: light` until the tokens have a dark theme; images (the tenant's
+  logo, from M7) carry their own light background so a client's forced dark mode cannot hide them.
+
+### Practice followed
+
+- The Email Markup Consortium's
+  [yearly accessibility reports](https://emailmarkup.org/en/reports/accessibility/) find most emails
+  miss both a `lang` attribute and `role="presentation"` on layout tables (84% of layout tables
+  unmarked in 2026, as
+  [Resend summarizes it](https://resend.com/blog/6-tips-for-accessible-emails)); both are here and
+  tested.
+- [Litmus on dark mode](https://www.litmus.com/blog/the-ultimate-guide-to-dark-mode-for-email-marketers):
+  Apple Mail keeps an email's colors without the dark-mode meta tags, and other clients invert on
+  their own; a light-only email with no transparent images survives both.
+- Single column, 600 px and table layout, as transactional email guides advise
+  ([Mailgun](https://www.mailgun.com/blog/email/transactional-html-email-templates/)).

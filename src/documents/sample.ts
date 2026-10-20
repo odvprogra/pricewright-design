@@ -29,7 +29,13 @@ interface DemoQuote {
   total: string;
   notes: string | null;
   lines: DemoLine[];
-  approvals: { requested_at: string }[];
+  approvals: {
+    status: string;
+    requested_at: string;
+    requested_by: string;
+    decided_by: string;
+    comment: string | null;
+  }[];
 }
 
 interface Demo {
@@ -43,14 +49,57 @@ const DEMO = new URL("../../prototype/data/demo.json", import.meta.url);
 /** A sent quote with five lines: what a customer receives. */
 export const SAMPLE_NUMBER = "NF-2026-000122";
 
-export function sampleQuotation(logo?: string): Quotation {
+/** Decisions with a comment: Morgan Reyes approves Taylor Brooks's quote, rejects Jordan Patel's. */
+export const APPROVED_NUMBER = "NF-2026-000078";
+export const REJECTED_NUMBER = "NF-2026-000101";
+
+/** A manager's decision on a quote, as the rep's email tells it. */
+export interface Decision {
+  readonly tenant: { readonly name: string; readonly accent: string };
+  readonly number: string;
+  readonly approved: boolean;
+  readonly rep: string;
+  readonly decider: string;
+  readonly comment: string | null;
+  readonly customer: string;
+  readonly currency: string;
+  readonly total: string;
+  readonly validUntil: string;
+}
+
+function load(number: string) {
   const demo = JSON.parse(readFileSync(DEMO, "utf8")) as Demo;
-  const quote = demo.quotes.find((q) => q.number === SAMPLE_NUMBER);
+  const quote = demo.quotes.find((q) => q.number === number);
   const customer = demo.customers.find((c) => c.id === quote?.customer_id);
   const tenant = TENANTS.find((t) => t.name === demo.tenant.name);
   if (quote === undefined || customer === undefined || tenant === undefined) {
-    throw new Error(`no quote ${SAMPLE_NUMBER} with its customer and tenant in the demo data`);
+    throw new Error(`no quote ${number} with its customer and tenant in the demo data`);
   }
+  return { demo, quote, customer, tenant };
+}
+
+export function sampleDecision(number: string): Decision {
+  const { demo, quote, customer, tenant } = load(number);
+  const decision = quote.approvals.findLast((a) => a.status !== "pending");
+  if (decision === undefined) {
+    throw new Error(`quote ${number} has no decision in the demo data`);
+  }
+  return {
+    tenant: { name: tenant.name, accent: tenant.accent },
+    number: quote.number,
+    approved: decision.status === "approved",
+    rep: decision.requested_by,
+    decider: decision.decided_by,
+    comment: decision.comment,
+    customer: customer.name,
+    currency: demo.tenant.currency,
+    total: quote.total,
+    validUntil: quote.valid_until,
+  };
+}
+
+export function sampleQuotation(logo?: string): Quotation {
+  const { demo, quote, customer, tenant } = load(SAMPLE_NUMBER);
   return {
     tenant: { name: tenant.name, accent: tenant.accent, ...(logo === undefined ? {} : { logo }) },
     number: quote.number,
