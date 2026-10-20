@@ -1,6 +1,8 @@
 /** The brand guide's pages, written from the tokens, the contrast pairs and the logo files. */
 import { CONTRAST_PAIRS } from "../contrast-pairs.ts";
 import { TEXT_MINIMUM, contrastRatio } from "../contrast.ts";
+import { notice } from "../documents/quotation.ts";
+import { SAMPLE_NUMBER } from "../documents/sample.ts";
 import { MINIMUM_DISTANCE, PAPER, checkAccent } from "../tenant-accent.ts";
 import { RESERVED_TOKENS, TENANTS } from "../tenants.ts";
 import { type Page, escape } from "./layout.ts";
@@ -225,6 +227,75 @@ ${cards}`,
   };
 }
 
+const NOTICES: readonly { status: string; label: string }[] = [
+  { status: "pending_approval", label: "Draft, pending approval or rejected" },
+  { status: "expired", label: "Expired" },
+  { status: "cancelled", label: "Cancelled" },
+  { status: "superseded", label: "Superseded" },
+];
+
+function documents(): Page {
+  const notices = NOTICES.map(({ status, label }) => {
+    const shown = notice({ status, validUntil: "2026-11-13" });
+    if (shown === null) {
+      throw new Error(`no notice for ${status}`);
+    }
+    const style = `color:var(--color-status-${shown.tone}-text);background:var(--color-status-${shown.tone}-surface)`;
+    return `<tr><td>${label}</td><td><span class="pair" style="${style}">${escape(shown.text)}</span></td>
+<td><code>color.status.${shown.tone}.*</code></td></tr>`;
+  }).join("\n");
+  return {
+    file: "documents.html",
+    title: "Documents",
+    body: `<section>
+<p class="eyebrow">Documents</p>
+<h1>Documents</h1>
+<p class="lede">The quotation a customer receives is the tenant's document, set in Ledger's type and
+rules: the tenant's name and accent on top, Pricewright only in the closing line.</p>
+</section>
+<section>
+<h2>The quotation</h2>
+<p>Quotation ${SAMPLE_NUMBER} from Northfield's demo data, as pricewright-api prints it on A4.
+<a href="documents/quotation.html">Open it on its own</a> to print it to PDF.</p>
+<iframe class="document-frame" src="documents/quotation.html" title="Quotation ${SAMPLE_NUMBER}, the reference design"></iframe>
+</section>
+<section>
+<h2>Page and type</h2>
+<ul>
+<li>A4, margins 18 mm at the top, 16 mm at the sides and 20 mm at the bottom; a running footer with
+the quote's number on the left and "Page 1 of 2" on the right.</li>
+<li>A 10 pt root, so every size token prints in proportion: body 10 pt, the lines' table 8.75 pt,
+the footer 7.5 pt.</li>
+<li>"Quotation" is the one serif heading (Source Serif 4, 3xl); everything else is Public Sans,
+amounts in tabular figures, right-aligned. Unit prices keep up to four places when they have them.</li>
+<li>Both families are embedded (SIL Open Font License), from TrueType files: WeasyPrint subsets
+them, so a PDF carries only the glyphs it uses.</li>
+<li>The table's header repeats on every page and a line never splits across two; the totals and
+the notes stay whole.</li>
+</ul>
+</section>
+<section>
+<h2>Color and rules</h2>
+<ul>
+<li>Text in <code>color.text.default</code> and <code>color.text.muted</code>; the lines' header on
+<code>color.surface.muted</code>, rows divided by <code>color.border.default</code>.</li>
+<li>The tenant's rule, 2 pt in <code>color.tenant.accent</code> under the masthead, is the only place
+the tenant's color appears; the logo (from M7) or the tenant's name sits above it.</li>
+<li>The grand total, with its currency, sits between a rule in <code>color.border.strong</code> and
+the accountant's double rule in <code>color.text.default</code>, as the logo's sheet closes.</li>
+<li>Costs and margins never appear, whoever prints the quote.</li>
+</ul>
+</section>
+<section>
+<h2>When it is not an offer</h2>
+<p>A notice under the tenant's rule says so, in a status color's text on its surface.</p>
+<div class="table"><table>
+<thead><tr><th scope="col">Quote</th><th scope="col">Notice</th><th scope="col">Tokens</th></tr></thead>
+<tbody>${notices}</tbody></table></div>
+</section>`,
+  };
+}
+
 export function pages(tokens: TokenIndex): Page[] {
-  return [home(), color(tokens), type(tokens), logo(), tenants(tokens)];
+  return [home(), color(tokens), type(tokens), logo(), tenants(tokens), documents()];
 }

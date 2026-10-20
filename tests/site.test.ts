@@ -49,6 +49,15 @@ describe("the brand guide", () => {
     }
   });
 
+  it("titles every frame for assistive technology", () => {
+    const frames = [...html.values()].flatMap((page) => page.match(/<iframe\b[^>]*>/g) ?? []);
+
+    expect(frames.length).toBeGreaterThan(0);
+    for (const frame of frames) {
+      expect(frame).toMatch(/\btitle="[^"]+"/);
+    }
+  });
+
   it("lists every contrast pair the tests check", () => {
     const rows = (html.get("color.html") ?? "").match(/<td class="pass">Pass<\/td>/g) ?? [];
 
