@@ -2,8 +2,10 @@
 import { copyFile, cp, mkdir, readFile, readdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 
+import { quotationHtml } from "../documents/quotation.ts";
+import { sampleQuotation } from "../documents/sample.ts";
 import { VERSION, build, cssVariable } from "../tokens.ts";
-import { layout } from "./layout.ts";
+import { FONTS, layout } from "./layout.ts";
 import { type TokenEntry, type TokenIndex, pages } from "./pages.ts";
 
 const LOGO = "docs/brand/logo";
@@ -65,6 +67,13 @@ export async function buildSite(out: string): Promise<string[]> {
       await copyFile(join(from, file), join(out, to, file));
     }
   }
+  // The documents' reference designs, shown in frames by documents.html.
+  await mkdir(join(out, "documents"), { recursive: true });
+  const quotation = sampleQuotation("../tenants/northfield-supply-logo.svg");
+  await writeFile(
+    join(out, "documents", "quotation.html"),
+    quotationHtml(quotation, "../tokens.css", FONTS),
+  );
   const written: string[] = [];
   for (const page of pages(await tokenIndex(join(out, "tokens.json")))) {
     await writeFile(join(out, page.file), layout(page, VERSION));
