@@ -51,7 +51,18 @@ flowchart LR
 ```
 
 Consumers pin a release, the same way they pin pricewright-api's `openapi.json`, so a design change
-reaches each of them through a reviewed version bump.
+reaches each of them through a reviewed version bump. Each release is immutable and carries three
+assets, each naming its version:
+
+| Asset         | For                                                                        |
+| ------------- | -------------------------------------------------------------------------- |
+| `tokens.css`  | Any CSS: every token as a custom property on `:root`, with resolved values |
+| `theme.css`   | Tailwind CSS v4 and shadcn/ui: `@import` it after `tailwindcss`            |
+| `tokens.json` | Everything else: `{ name, version, tokens }`, the values by variable name  |
+
+```sh
+gh release download v0.1.0 --repo odvprogra/pricewright-design --dir design-tokens
+```
 
 ## Key decisions
 
