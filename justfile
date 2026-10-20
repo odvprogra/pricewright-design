@@ -32,6 +32,18 @@ build:
 site:
     node scripts/site.ts
 
+# Serve dist/site/ on http://localhost:8123 (run `just site` first)
+serve:
+    node scripts/serve.ts
+
+# The prototype's journeys in Chromium, desktop and phone, with axe (needs `playwright install chromium`)
+e2e:
+    {{ pnpm }} exec playwright test
+
+# Export Northfield's demo and the engine's prices from a pricewright-api checkout next to this one
+demo-data api="../pricewright-api":
+    uv run --frozen --project {{ api }} python prototype/tools/export_demo.py {{ api }}
+
 # Draw the logo files into docs/brand/logo/ from the tokens and the outlined wordmark
 logo:
     node scripts/logo.ts

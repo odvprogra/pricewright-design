@@ -1,5 +1,5 @@
 /** `just site`: the brand guide into a folder, ready for GitHub Pages. */
-import { copyFile, mkdir, readFile, readdir, writeFile } from "node:fs/promises";
+import { copyFile, cp, mkdir, readFile, readdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 
 import { VERSION, build, cssVariable } from "../tokens.ts";
@@ -7,6 +7,7 @@ import { layout } from "./layout.ts";
 import { type TokenEntry, type TokenIndex, pages } from "./pages.ts";
 
 const LOGO = "docs/brand/logo";
+const PROTOTYPE = "prototype";
 const STYLES = new URL("./site.css", import.meta.url);
 
 interface Node {
@@ -63,5 +64,10 @@ export async function buildSite(out: string): Promise<string[]> {
     await writeFile(join(out, page.file), layout(page, VERSION));
     written.push(page.file);
   }
+  // The clickable prototype, beside the guide: it reads ../tokens.css and ../logo/.
+  await cp(PROTOTYPE, join(out, "prototype"), {
+    recursive: true,
+    filter: (source) => !/(^|\/)prototype\/tools(\/|$)/.test(source.replaceAll("\\", "/")),
+  });
   return written;
 }

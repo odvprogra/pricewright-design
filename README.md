@@ -14,7 +14,9 @@ universe (Pricewright, Northfield Supply, Larkspur Tool Co.) is fictional.
 
 - **Brand guide:** <https://odvprogra.github.io/pricewright-design/>, built from `main`'s tokens on
   every merge: color with the contrast table, type, the logo.
-- **Clickable prototype:** next (milestone M12 is in progress).
+- **Clickable prototype:** <https://odvprogra.github.io/pricewright-design/prototype/>, the screens
+  of the usability test on Northfield's real demo data and prices. Sign in as
+  `taylor@northfield.example` or `morgan@northfield.example`, any password.
 
 ## The problem
 
@@ -32,7 +34,7 @@ exists.
 | Design tokens       | Done        | [Color, type, space, radius, shadow and motion](tokens/); every contrast pair checked in CI (WCAG 2.2 AA)                         |
 | Token builds        | In progress | CSS custom properties, a Tailwind CSS theme and JSON on every immutable release                                                   |
 | Journeys and specs  | Done        | [Journeys](docs/ux/journeys.md) per role and a [spec per screen](docs/ux/screens/README.md), with the four states and permissions |
-| Clickable prototype | Planned     | The key screens on the tokens, with Northfield Supply's demo data                                                                 |
+| Clickable prototype | Done        | [The key screens](prototype/README.md) on the tokens, with Northfield Supply's demo data                                          |
 | Usability test      | Plan ready  | [Five participants](docs/ux/usability-test-1/plan.md): task success, time, errors, SEQ and SUS, and the changes it drove          |
 
 The full scope is in the [brief](docs/brief.md).
@@ -68,7 +70,9 @@ Prerequisites: Node.js 24 (with Corepack), Docker, [just](https://just.systems) 
 ```sh
 just setup   # locked dependencies and git hooks
 just build   # dist/: tokens.css, theme.css (Tailwind CSS v4) and tokens.json
-just site    # dist/site/: the brand guide, as GitHub Pages publishes it
+just site    # dist/site/: the brand guide and the prototype, as GitHub Pages publishes them
+just serve   # dist/site/ on http://localhost:8123
+just e2e     # the prototype's journeys in Chromium (after `pnpm exec playwright install chromium`)
 just check   # what CI checks
 ```
 
@@ -84,6 +88,10 @@ just check   # what CI checks
   1 and 21, 1 against itself, growing as a grey darkens.
 - **The builds:** every source token reaches `tokens.json`; `tokens.css` holds resolved values;
   `theme.css` exposes no palette color and maps every shadcn/ui name to a semantic token.
+- **The prototype's prices:** recomputed for 2,020 quotes pricewright-api's engine priced, to the
+  cent, with the approval check.
+- **Journeys (Playwright):** the usability test's five tasks on a desktop and a phone, with axe
+  (WCAG 2.2 AA) on every screen they pass through.
 
 ## Project structure
 
@@ -96,7 +104,8 @@ just check   # what CI checks
 │   └── brief.md   # the milestone's scope and acceptance criteria
 ├── tokens/        # DTCG sources: palette, then semantic tokens
 ├── src/           # the build (Style Dictionary) and the contrast rules
-├── tests/         # contrast and build tests
+├── prototype/     # the clickable prototype and its data from pricewright-api
+├── tests/         # contrast, build and price tests; e2e/ for the journeys
 ├── .github/       # CI, Dependabot, pull request and issue templates
 ├── justfile       # uniform commands
 └── package.json   # pinned tooling (pnpm through Corepack)
