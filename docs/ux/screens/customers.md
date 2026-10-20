@@ -60,7 +60,8 @@ Creation sends an `Idempotency-Key`; edits send `If-Match`.
 
 ## Keyboard and accessibility
 
-- `/` focuses search; results update while typing (debounced 250 ms) and are announced as a count.
+- `/` focuses search (off with the user's character-key setting); results update while typing
+  (debounced 250 ms) and are announced as a count.
 - Tier is text, not only a color.
 
 ## Copy

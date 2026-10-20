@@ -67,7 +67,9 @@ total or validity on request (`sort`).
 
 ## Keyboard and accessibility
 
-- `/` focuses the filter bar's search; arrow keys move between rows; Enter opens one.
+- `/` focuses the filter bar's search (off with the user's character-key setting); arrow keys move
+  between rows while the table has focus; Enter opens one.
+- Changing a filter keeps the focus on it; "Load more" focuses the first new row.
 - The table is a real `<table>` with column headers; status badges carry their text, not only a
   color.
 
