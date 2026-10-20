@@ -8,6 +8,14 @@ updates:
     groups:
       node:
         patterns: ["*"]
+    ignore:
+      # Node's types follow the runtime CI and package.json run (Node 24), not the newest Node.
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
+      # opentype.js 2 publishes no types and @types/opentype.js covers 1.x: upgrading it is a change
+      # of its own to the logo script, not a weekly bump.
+      - dependency-name: "opentype.js"
+        update-types: ["version-update:semver-major"]
     commit-message:
       prefix: chore
 
