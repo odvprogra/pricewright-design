@@ -1,6 +1,8 @@
 /** The brand guide's pages, written from the tokens, the contrast pairs and the logo files. */
 import { CONTRAST_PAIRS } from "../contrast-pairs.ts";
-import { contrastRatio } from "../contrast.ts";
+import { TEXT_MINIMUM, contrastRatio } from "../contrast.ts";
+import { MINIMUM_DISTANCE, PAPER, checkAccent } from "../tenant-accent.ts";
+import { RESERVED_TOKENS, TENANTS } from "../tenants.ts";
 import { type Page, escape } from "./layout.ts";
 
 export interface TokenEntry {
@@ -178,6 +180,51 @@ that, the small mark. Never recolored, stretched or set in another font.</p>
   };
 }
 
+function tenants(tokens: TokenIndex): Page {
+  const reserved = Object.fromEntries(
+    RESERVED_TOKENS.map((path) => [path, find(tokens, path).value]),
+  );
+  const cards = TENANTS.map((tenant) => {
+    const check = checkAccent(tenant.accent, reserved);
+    return `<section>
+<h2>${escape(tenant.name)}</h2>
+<div class="stage"><img src="tenants/${tenant.slug}-logo.svg" alt="${escape(tenant.name)} logo" height="64">
+<img src="tenants/${tenant.slug}-mark.svg" alt="${escape(tenant.name)} mark" height="64"></div>
+<div class="table"><table>
+<thead><tr><th scope="col">Sample</th><th scope="col">Accent</th><th scope="col" class="number">On white</th>
+<th scope="col">Nearest reserved color</th><th scope="col" class="number">ΔEOK</th><th scope="col">Result</th></tr></thead>
+<tbody><tr><td><span class="pair" style="color:${tenant.accent};background:${PAPER}">Aa</span>
+<span class="pair" style="color:${PAPER};background:${tenant.accent}">Aa</span></td>
+<td><code>${tenant.accent}</code></td><td class="number">${check.contrast.toFixed(2)}:1</td>
+<td><code>${check.nearest.name}</code></td><td class="number">${check.nearest.distance.toFixed(3)}</td>
+${check.problems.length === 0 ? '<td class="pass">Pass</td>' : "<td>Fail</td>"}</tr></tbody></table></div>
+</section>`;
+  }).join("\n");
+  return {
+    file: "tenants.html",
+    title: "Tenants",
+    body: `<section>
+<p class="eyebrow">Demo tenants</p>
+<h1>Tenants</h1>
+<p class="lede">A tenant brings one accent and its logo; everything else stays Pricewright's. Northfield
+Supply and Larkspur Tool Co. are the demo's two fictional tenants.</p>
+</section>
+<section>
+<h2>The accent's rules</h2>
+<ul>
+<li>At least ${TEXT_MINIMUM}:1 on white, so it reads as text and carries white text.</li>
+<li>At least ${MINIMUM_DISTANCE.toFixed(2)} ΔEOK, four just-noticeable differences, from every
+status color and the focus ring, so it never reads as success, warning, danger, information or focus.</li>
+<li>An accent that fails is darkened in OKLab until it reads on white; if that shade still fails,
+the default accent, <code>color.tenant.accent</code>, is used.</li>
+<li>It colors the tenant's rule in the app's header, the quotation and the emails; never a status,
+and never Pricewright's logo.</li>
+</ul>
+</section>
+${cards}`,
+  };
+}
+
 export function pages(tokens: TokenIndex): Page[] {
-  return [home(), color(tokens), type(tokens), logo()];
+  return [home(), color(tokens), type(tokens), logo(), tenants(tokens)];
 }

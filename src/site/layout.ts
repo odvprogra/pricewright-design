@@ -12,6 +12,7 @@ export const NAVIGATION: readonly { file: string; label: string }[] = [
   { file: "color.html", label: "Color" },
   { file: "type.html", label: "Type" },
   { file: "logo.html", label: "Logo" },
+  { file: "tenants.html", label: "Tenants" },
 ];
 
 const FONTS =

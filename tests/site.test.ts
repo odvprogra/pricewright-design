@@ -61,9 +61,21 @@ describe("the brand guide", () => {
     expect(css).not.toMatch(/#[0-9a-f]{3,8}\b|rgba?\(|hsla?\(|oklch\(/i);
   });
 
-  it("ships the logo files it shows", async () => {
-    for (const name of ["pricewright-logo.svg", "pricewright-logo-inverse.svg"]) {
-      expect(await readFile(join(out, "logo", name), "utf8")).toContain("<svg");
+  it("ships every image it shows", async () => {
+    for (const [file, page] of html) {
+      for (const [, source] of page.matchAll(/<img\b[^>]*\bsrc="([^"]+)"/g)) {
+        expect(await readFile(join(out, source ?? ""), "utf8"), `${file}: ${source}`).toContain(
+          "<svg",
+        );
+      }
     }
+  });
+
+  it("checks each demo tenant's accent on the tenants page", () => {
+    const page = html.get("tenants.html") ?? "";
+
+    expect(page.match(/<td class="pass">Pass<\/td>/g)).toHaveLength(2);
+    expect(page).toContain("#36597a");
+    expect(page).toContain("#6b2f74");
   });
 });
