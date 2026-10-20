@@ -7,6 +7,7 @@ import { layout } from "./layout.ts";
 import { type TokenEntry, type TokenIndex, pages } from "./pages.ts";
 
 const LOGO = "docs/brand/logo";
+const TENANT_LOGOS = "docs/brand/tenants";
 const PROTOTYPE = "prototype";
 const STYLES = new URL("./site.css", import.meta.url);
 
@@ -53,11 +54,16 @@ async function tokenIndex(builtJson: string): Promise<TokenIndex> {
 }
 
 export async function buildSite(out: string): Promise<string[]> {
-  await mkdir(join(out, "logo"), { recursive: true });
   await build(out);
   await copyFile(STYLES, join(out, "site.css"));
-  for (const file of (await readdir(LOGO)).filter((n) => n.endsWith(".svg"))) {
-    await copyFile(join(LOGO, file), join(out, "logo", file));
+  for (const [from, to] of [
+    [LOGO, "logo"],
+    [TENANT_LOGOS, "tenants"],
+  ] as const) {
+    await mkdir(join(out, to), { recursive: true });
+    for (const file of (await readdir(from)).filter((n) => n.endsWith(".svg"))) {
+      await copyFile(join(from, file), join(out, to, file));
+    }
   }
   const written: string[] = [];
   for (const page of pages(await tokenIndex(join(out, "tokens.json")))) {

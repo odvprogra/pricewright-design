@@ -35,7 +35,7 @@ are fictional.
 just setup | just check | just lint | just typecheck | just test | just fmt
 just build                                      # dist/: tokens.css, theme.css, tokens.json
 just site                                       # dist/site/: the brand guide
-just logo                                       # docs/brand/logo/ from the tokens
+just logo                                       # docs/brand/logo/ and docs/brand/tenants/
 just e2e                                        # the prototype's journeys (Playwright)
 just demo-data                                  # prototype data from ../pricewright-api
 ```
@@ -48,8 +48,8 @@ See `docs/adr/`. Do not contradict an accepted ADR; propose a new ADR that super
 
 ## Current status
 
-- In progress: M12. Done: decisions ADR-0001–0004, journeys and screen specs, the usability test
+- In progress: M12. Done: decisions ADR-0001–0005, journeys and screen specs, the usability test
   plan, positioning and voice, every token (color, type, space, radius, shadow, motion), the logo,
-  the brand guide on GitHub Pages (`just site`), the clickable prototype with its journeys. Next:
-  the test sessions (the maintainer runs them); the PDF and email designs; the demo tenants' logos;
-  the release workflow.
+  the brand guide on GitHub Pages (`just site`), the clickable prototype with its journeys, the demo
+  tenants' logos and accents. Next: the test sessions (the maintainer runs them); the PDF and email
+  designs; the release workflow.
