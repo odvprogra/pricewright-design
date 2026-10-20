@@ -1,6 +1,6 @@
 // The prototype's shell: a hash router, the app bar and navigation for the signed-in role.
 import { h } from "./format.js";
-import { setRender } from "./render.js";
+import { setRender, takeFocusTarget } from "./render.js";
 import { currentUser, demo, load, reset, save, state } from "./store.js";
 import { approvalsView } from "./views/approvals.js";
 import { customersView, customerView } from "./views/customers.js";
@@ -94,15 +94,29 @@ ${h(demo.source.as_of)}. <img src="../logo/pricewright-mark-small.svg" alt="" wi
     location.hash = "#/quotes";
     render();
   });
-  view.mount?.(app);
-  // Move focus to the page, as a route change would announce it.
   const heading = app.querySelector("h1");
   if (heading instanceof HTMLElement) {
     heading.tabIndex = -1;
-    heading.focus({ preventScroll: true });
   }
+  view.mount?.(app);
+  const selector = takeFocusTarget();
+  const target = selector === null ? null : app.querySelector(selector);
+  if (target instanceof HTMLElement) {
+    // The view asked to keep the user where they were (a filter they changed, the next rows).
+    target.focus();
+    return;
+  }
+  // Otherwise move focus to the page, as a route change would announce it.
+  heading?.focus({ preventScroll: true });
   window.scrollTo(0, 0);
 }
+
+// The skip link targets #main, which the hash router would read as an unknown route: move the
+// focus instead of following the link.
+document.querySelector(".skip")?.addEventListener("click", (event) => {
+  event.preventDefault();
+  document.getElementById("main")?.focus();
+});
 
 setRender(render);
 window.addEventListener("hashchange", render);

@@ -29,7 +29,7 @@ import {
 } from "../quote-model.js";
 import { currentUser, customer, demo, product, quote, save } from "../store.js";
 import { breakdown } from "./breakdown.js";
-import { rerender } from "../render.js";
+import { focusAfterRender, rerender } from "../render.js";
 
 /** @typedef {import("../store.js").Quote} Quote */
 
@@ -114,7 +114,7 @@ function builder(q, selected) {
 <td class="number">${unitPrice(line.list_unit_price)}</td>
 <td class="number">${netUnit(line.net_unit_price)}${line.below_margin_floor ? ' <span class="badge danger">Below floor</span>' : ""}</td>
 <td class="number">${money(line.net_total)}</td>
-<td><span class="row-actions"><button type="button" class="link" data-why="${i}" aria-pressed="${i === selected}">Why this price</button>
+<td><span class="row-actions"><button type="button" class="link" id="why-${i}" data-why="${i}" aria-pressed="${i === selected}">Why this price</button>
 <button type="button" class="link danger" data-remove="${i}">Remove<span class="visually-hidden"> ${h(line.sku)}</span></button></span></td>
 </tr>`,
     )
@@ -144,6 +144,7 @@ ${takeNotice()}
 ${q.lines.length === 0 ? '<p class="muted hint">Type a SKU or product name to add the first line.</p>' : ""}
 </form>
 </div>
+<p id="undo" class="toast" role="status" hidden></p>
 </section>
 <aside class="side">
 <section class="panel" aria-live="polite">${why}</section>
@@ -162,7 +163,6 @@ ${approvalNote(q)}
 </section>
 </aside>
 </div>
-<p id="undo" class="toast" role="status" hidden></p>
 ${cancelDialog(q.number)}`;
 }
 
@@ -251,7 +251,7 @@ function dialogs(email, number) {
       : `<p>The customer receives the quotation as a PDF at <b>${h(email)}</b>. Replies come back to you.</p>`;
   return `<dialog id="send-dialog" aria-labelledby="send-title"><form method="dialog">
 <h2 id="send-title">Send to customer?</h2>${recipient}
-<div class="actions"><button class="primary" value="confirm">Send to customer</button><button class="secondary" value="cancel">Keep it</button></div>
+<div class="actions"><button class="primary" value="confirm">Send to customer</button><button class="secondary" value="cancel" autofocus>Keep it</button></div>
 </form></dialog>
 <dialog id="reject-dialog" aria-labelledby="reject-title"><form method="dialog" id="reject-form">
 <h2 id="reject-title">Reject this quote?</h2>
@@ -310,6 +310,7 @@ export function quoteView(id) {
     /** @param {HTMLElement} root */
     mount(root) {
       if (editing) {
+        if (q.lines.length === 0) focusAfterRender("#line-product");
         mountBuilder(
           root,
           q,
@@ -389,6 +390,10 @@ function mountBuilder(root, q, getSelected, setSelected) {
       input.setAttribute("aria-expanded", "false");
     }
   });
+  input.addEventListener("blur", () => {
+    list.hidden = true;
+    input.setAttribute("aria-expanded", "false");
+  });
   list.addEventListener("mousedown", (event) => {
     const option = /** @type {HTMLElement} */ (event.target).closest("li");
     if (option?.dataset.sku !== undefined) {
@@ -452,8 +457,9 @@ function mountBuilder(root, q, getSelected, setSelected) {
   });
   root.querySelectorAll("[data-why]").forEach((button) => {
     button.addEventListener("click", () => {
-      setSelected(Number(/** @type {HTMLElement} */ (button).dataset.why));
-      refresh(`qty-${getSelected()}`);
+      const i = Number(/** @type {HTMLElement} */ (button).dataset.why);
+      setSelected(i);
+      refresh(`why-${i}`);
     });
   });
   root.querySelectorAll("[data-remove]").forEach((button) => {
@@ -463,11 +469,11 @@ function mountBuilder(root, q, getSelected, setSelected) {
       setSelected(q.lines.length > 0 ? Math.min(i, q.lines.length - 1) : null);
       refresh("line-product");
       const toast = /** @type {HTMLElement} */ (root.querySelector("#undo"));
+      // No timer: a toast with an action stays until the next change re-renders the builder, so
+      // undoing never races the clock (WCAG 2.2.1); it is two Tabs after the product search.
       toast.innerHTML = `${h(removed?.sku ?? "")} removed. <button type="button" class="link" id="undo-remove">Undo</button>`;
       toast.hidden = false;
-      const timer = window.setTimeout(() => (toast.hidden = true), 5000);
       toast.querySelector("#undo-remove")?.addEventListener("click", () => {
-        window.clearTimeout(timer);
         if (removed !== undefined) q.lines.splice(i, 0, removed);
         setSelected(i);
         refresh("line-product");
@@ -516,6 +522,7 @@ function wireCancel(root, q) {
       const error = /** @type {HTMLElement} */ (root.querySelector("#cancel-error"));
       error.textContent = "Say why the quote is cancelled; the reason stays in its history.";
       error.hidden = false;
+      /** @type {HTMLElement} */ (root.querySelector("#cancel-reason")).focus();
       return;
     }
     cancel(q, reason);
@@ -562,6 +569,7 @@ function mountDetail(root, q) {
       const error = /** @type {HTMLElement} */ (root.querySelector("#reject-error"));
       error.textContent = "Say what should change: the rep needs it to fix the quote.";
       error.hidden = false;
+      /** @type {HTMLElement} */ (root.querySelector("#reject-comment")).focus();
       return;
     }
     decide(q, "rejected", user?.name ?? "", comment);

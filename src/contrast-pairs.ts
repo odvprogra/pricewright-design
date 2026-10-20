@@ -61,7 +61,7 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
   ...ui("color.action.primary.background", "color.surface.default", "color.surface.muted"),
   ...ui("color.action.danger.background", "color.surface.default", "color.surface.muted"),
   ...ui("color.accent.default", "color.surface.default"),
-  ...ui("color.focus.ring", ...LIGHT_SURFACES),
+  ...ui("color.focus.ring", ...LIGHT_SURFACES, "color.surface.hover"),
   ...ui("color.focus.ring-inverse", "color.surface.inverse"),
   ...ui("color.tenant.accent", "color.surface.default"),
   ...ui("color.logo.ink", "color.surface.default", "color.surface.muted"),
