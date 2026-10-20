@@ -60,7 +60,7 @@ form says so.
 
 ## Keyboard and accessibility
 
-- `/` focuses search; results update while typing.
+- `/` focuses search (off with the user's character-key setting); results update while typing.
 - Prices are read with their currency ("51.23 US dollars").
 
 ## Copy

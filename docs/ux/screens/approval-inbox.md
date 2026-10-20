@@ -69,7 +69,8 @@ pricewright-api's worker).
 
 ## Keyboard and accessibility
 
-- `j` / `k` move through the list; `a` approves, `r` opens the rejection comment (both ask for
+- While the list or the request has focus, `j` / `k` move through the list; `a` approves, `r` opens
+  the rejection comment (all off with the user's character-key setting; both decisions ask for
   confirmation with Enter).
 - The count of pending requests is in the page title and the navigation ("Approvals, 3 waiting").
 

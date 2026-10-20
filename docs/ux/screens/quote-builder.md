@@ -44,15 +44,15 @@ From `GET /api/v1/quotes/{id}`; every change returns the quote priced again with
 
 ## Actions
 
-| Action          | How                                                                         | API                                       |
-| --------------- | --------------------------------------------------------------------------- | ----------------------------------------- |
-| Add a line      | Type a SKU or name in the empty last row; pick; type the quantity; Enter    | `POST …/lines`                            |
-| Change quantity | Edit the cell; saved on Enter or blur                                       | `PATCH …/lines/{line_id}`                 |
-| Remove a line   | Row menu or Delete on a focused row; undo for 5 s instead of a confirmation | `DELETE …/lines/{line_id}`                |
-| Override price  | Managers: a unit price or a rate, and a required reason                     | `PATCH …/lines/{line_id}` with `override` |
-| Change terms    | Valid until, notes                                                          | `PATCH /api/v1/quotes/{id}`               |
-| Submit          | Primary button; says what will happen ("Submit for approval" or "Submit")   | `POST …/submit`                           |
-| Cancel draft    | Secondary menu; confirmation naming the quote; reason required              | `POST …/cancel`                           |
+| Action          | How                                                                                                      | API                                       |
+| --------------- | -------------------------------------------------------------------------------------------------------- | ----------------------------------------- |
+| Add a line      | Type a SKU or name in the empty last row; pick; type the quantity; Enter                                 | `POST …/lines`                            |
+| Change quantity | Edit the cell; saved on Enter or blur                                                                    | `PATCH …/lines/{line_id}`                 |
+| Remove a line   | Row menu or Delete on a focused row; an Undo toast instead of a confirmation, kept until the next change | `DELETE …/lines/{line_id}`                |
+| Override price  | Managers: a unit price or a rate, and a required reason                                                  | `PATCH …/lines/{line_id}` with `override` |
+| Change terms    | Valid until, notes                                                                                       | `PATCH /api/v1/quotes/{id}`               |
+| Submit          | Primary button; says what will happen ("Submit for approval" or "Submit")                                | `POST …/submit`                           |
+| Cancel draft    | Secondary menu; confirmation naming the quote; reason required                                           | `POST …/cancel`                           |
 
 Every change sends `If-Match` with the quote's `ETag`. Lines are repriced together after any change,
 so the table updates every line's net price, not only the edited one.
@@ -82,7 +82,8 @@ so the table updates every line's net price, not only the edited one.
 
 - Keyboard-first entry: the product search is a combobox (ARIA 1.2); Enter adds the line and moves
   to its quantity; Enter again returns to a new empty row.
-- Arrow keys move between cells; `b` opens the selected line's breakdown; `Ctrl+Enter` submits.
+- Arrow keys move between cells; `b` opens the selected line's breakdown (while the lines table has
+  focus); `Ctrl+Enter` submits. "Why this price" keeps the focus on the button pressed.
 - Repriced amounts are announced politely ("Total 3,086.67 USD") through one live region, not one
   per cell.
 
