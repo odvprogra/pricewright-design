@@ -51,5 +51,6 @@ See `docs/adr/`. Do not contradict an accepted ADR; propose a new ADR that super
 - In progress: M12. Done: decisions ADR-0001–0005, journeys and screen specs, the usability test
   plan, positioning and voice, every token (color, type, space, radius, shadow, motion), the logo,
   the brand guide on GitHub Pages (`just site`), the clickable prototype with its journeys, the demo
-  tenants' logos and accents. Next: the test sessions (the maintainer runs them); the PDF and email
-  designs; the release workflow.
+  tenants' logos and accents, the quotation PDF and email designs (`src/documents/`). Next: the test
+  sessions (the maintainer runs them) and their report; the release workflow and 0.1.0;
+  pricewright-api applies the documents' designs from that release.

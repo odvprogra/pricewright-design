@@ -2,6 +2,7 @@
 import { copyFile, cp, mkdir, readFile, readdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 
+import { sampleEmails } from "../documents/emails.ts";
 import { quotationHtml } from "../documents/quotation.ts";
 import { sampleQuotation } from "../documents/sample.ts";
 import { VERSION, build, cssVariable } from "../tokens.ts";
@@ -74,8 +75,18 @@ export async function buildSite(out: string): Promise<string[]> {
     join(out, "documents", "quotation.html"),
     quotationHtml(quotation, "../tokens.css", FONTS),
   );
+  const built = (
+    JSON.parse(await readFile(join(out, "tokens.json"), "utf8")) as {
+      tokens: Record<string, string>;
+    }
+  ).tokens;
+  const emails = sampleEmails(built);
+  for (const [name, email] of Object.entries(emails)) {
+    await writeFile(join(out, "documents", `${name}.html`), email.html);
+    await writeFile(join(out, "documents", `${name}.txt`), email.text);
+  }
   const written: string[] = [];
-  for (const page of pages(await tokenIndex(join(out, "tokens.json")))) {
+  for (const page of pages(await tokenIndex(join(out, "tokens.json")), emails)) {
     await writeFile(join(out, page.file), layout(page, VERSION));
     written.push(page.file);
   }
