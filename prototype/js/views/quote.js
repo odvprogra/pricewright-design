@@ -130,21 +130,20 @@ ${takeNotice()}
 <div class="builder">
 <section class="lines" aria-labelledby="lines-title">
 <h2 id="lines-title" class="visually-hidden">Lines</h2>
+<div class="lines-box">
 <div class="table"><table>
 <thead><tr><th scope="col">Product</th><th scope="col" class="number">Qty</th><th scope="col">Unit</th>
 <th scope="col" class="number">List</th><th scope="col" class="number">Net unit</th><th scope="col" class="number">Line total</th><th scope="col"><span class="visually-hidden">Actions</span></th></tr></thead>
-<tbody>${rows}
-<tr class="entry"><td colspan="7">
+<tbody>${rows}</tbody></table></div>
 <form id="add-line" class="add-line" autocomplete="off">
 <div class="field combobox"><label for="line-product">Add a product</label>
 <input id="line-product" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="line-options" placeholder="SKU or product name">
 <ul id="line-options" role="listbox" aria-label="Matching products" hidden></ul></div>
 <div class="field"><label for="line-quantity">Quantity</label><input id="line-quantity" inputmode="numeric" value="1" size="5"></div>
 <button type="submit" class="secondary">Add line</button>
+${q.lines.length === 0 ? '<p class="muted hint">Type a SKU or product name to add the first line.</p>' : ""}
 </form>
-${q.lines.length === 0 ? '<p class="muted">Type a SKU or product name to add the first line.</p>' : ""}
-</td></tr>
-</tbody></table></div>
+</div>
 </section>
 <aside class="side">
 <section class="panel" aria-live="polite">${why}</section>
@@ -163,7 +162,8 @@ ${approvalNote(q)}
 </section>
 </aside>
 </div>
-<p id="undo" class="toast" role="status" hidden></p>`;
+<p id="undo" class="toast" role="status" hidden></p>
+${cancelDialog(q.number)}`;
 }
 
 /** @param {Quote} q */
@@ -237,11 +237,14 @@ ${q.sent_to ? `<section class="panel"><h2 class="panel-title">Sent</h2><p>To <b>
 ${history === "" ? "" : `<section class="panel"><h2 class="panel-title">Approvals</h2><ul class="history">${history}</ul></section>`}
 </aside>
 </div>
-${dialogs(c.email)}`;
+${dialogs(c.email, q.number)}`;
 }
 
-/** @param {string | null} email */
-function dialogs(email) {
+/**
+ * @param {string | null} email
+ * @param {string} number
+ */
+function dialogs(email, number) {
   const recipient =
     email === null
       ? `<p class="notice warning">This customer has no email on file. Sending marks the quote as sent; deliver the PDF yourself.</p>`
@@ -257,8 +260,16 @@ function dialogs(email) {
 <p id="reject-error" class="error" role="alert" hidden></p>
 <div class="actions"><button class="primary" value="confirm">Reject</button><button class="secondary" value="cancel" formnovalidate>Keep it pending</button></div>
 </form></dialog>
-<dialog id="cancel-dialog" aria-labelledby="cancel-title"><form method="dialog" id="cancel-form">
-<h2 id="cancel-title">Cancel this quote for good?</h2>
+${cancelDialog(number)}`;
+}
+
+/**
+ * Cancelling asks for a reason, on a draft as on a quote already in the lifecycle.
+ * @param {string} number
+ */
+function cancelDialog(number) {
+  return `<dialog id="cancel-dialog" aria-labelledby="cancel-title"><form method="dialog" id="cancel-form">
+<h2 id="cancel-title">Cancel ${h(number)} for good?</h2>
 <div class="field"><label for="cancel-reason">Reason (required)</label><input id="cancel-reason"></div>
 <p id="cancel-error" class="error" role="alert" hidden></p>
 <div class="actions"><button class="primary danger" value="confirm">Cancel quote</button><button class="secondary" value="cancel">Keep it</button></div>

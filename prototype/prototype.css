@@ -487,11 +487,30 @@ tr.selected td {
   gap: var(--space-3);
 }
 
+/* The lines and the entry row read as one card, but the entry sits outside the table's scroll
+   container: a scroll container clips overflow on both axes, so the product options would be cut. */
+.lines-box {
+  background: var(--color-surface-default);
+  border: var(--border-width-default) solid var(--color-border-default);
+  border-radius: var(--radius-md);
+}
+
+.lines-box .table {
+  border: 0;
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+}
+
 .add-line {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-3);
   align-items: flex-end;
+  padding: var(--space-2) var(--space-3) var(--space-3);
+}
+
+.add-line .hint {
+  flex-basis: 100%;
+  margin: 0;
 }
 
 .combobox {
