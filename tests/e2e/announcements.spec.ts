@@ -92,3 +92,17 @@ test("submitting announces the outcome after the page redraws", async ({ page })
     "Submitted. A manager will decide on it; you'll get an email.",
   );
 });
+
+test("the product search says how many match once typing pauses", async ({ page }) => {
+  await newDraft(page);
+  await page.getByRole("combobox", { name: "Add a product" }).pressSequentially("fst-00");
+  await expect(live(page)).toHaveText(
+    "8 products match. FST-0063 Zinc-Plated Sleeve Anchor, 1/2 in x 3-3/4 in, Box of 25, 1 of 8, is highlighted.",
+  );
+});
+
+test("each request in the inbox reads its amount and its number apart", async ({ page }) => {
+  await signIn(page, "morgan@northfield.example");
+  const link = page.getByRole("link", { name: /Stonegate Storage Centers LLC/ });
+  await expect(link).toHaveAccessibleName(/1,722\.55 USD\s*,\s*NF-2026-000132/);
+});

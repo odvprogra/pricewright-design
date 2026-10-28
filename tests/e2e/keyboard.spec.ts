@@ -97,10 +97,19 @@ test("the builder keeps the focus where the rep works", async ({ page }) => {
   await addLine(page, "OFP-0036", "12");
 
   // The option Enter would pick draws the focus ring; leaving with Tab closes the options.
+  // Typing keeps the focus in the field; the first Down Arrow enters the list on the highlighted
+  // option, the next one moves (ARIA APG combobox), so a screen reader hears each option once.
   await page.keyboard.type("glove");
+  const active = page.locator("#line-options li.active");
+  await expect(active).toContainText("SAF-0932");
+  await expect(product).not.toHaveAttribute("aria-activedescendant");
+  await expect(page.locator("#line-options [aria-selected='true']")).toHaveCount(0);
   await page.keyboard.press("ArrowDown");
-  const active = page.locator("#line-options [aria-selected='true']");
+  await expect(product).toHaveAttribute("aria-activedescendant", "opt-0");
+  await page.keyboard.press("ArrowDown");
+  await expect(product).toHaveAttribute("aria-activedescendant", "opt-1");
   await expect(active).toContainText("SAF-0936");
+  await expect(active).toHaveAttribute("aria-selected", "true");
   await expect(active).toHaveCSS("outline-style", "solid");
   await page.keyboard.press("Tab");
   await expect(product).toHaveAttribute("aria-expanded", "false");

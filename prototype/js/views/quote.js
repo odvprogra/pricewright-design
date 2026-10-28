@@ -351,25 +351,41 @@ function mountBuilder(root, q, getSelected, setSelected) {
   /** @type {string | null} */
   let picked = null;
   let active = -1;
+  let matchesTimer = 0;
+  // While typing, the focus stays in the field (no aria-activedescendant): the options are redrawn
+  // on every key, and NVDA read each new option before it had a name. Down Arrow then moves into
+  // the list, first to the highlighted option (ARIA APG combobox, list autocomplete).
   const showOptions = () => {
     const found = matches(input.value);
     active = found.length > 0 ? 0 : -1;
+    window.clearTimeout(matchesTimer);
+    // How many match, once typing pauses, as GOV.UK's accessible-autocomplete says it (1.4 s).
+    matchesTimer = window.setTimeout(() => {
+      const first = found[0];
+      announce(
+        first === undefined
+          ? "No products match."
+          : `${found.length} ${found.length === 1 ? "product matches" : "products match"}. ${first.sku} ${first.name}, 1 of ${found.length}, is highlighted.`,
+      );
+    }, 1400);
     list.innerHTML = found
       .map(
         (p, i) =>
-          `<li role="option" id="opt-${i}" data-sku="${h(p.sku)}" aria-selected="${i === active}"><span class="sku">${h(p.sku)}</span> ${h(p.name)}</li>`,
+          `<li role="option" id="opt-${i}" data-sku="${h(p.sku)}"${i === active ? ' class="active"' : ""} aria-selected="false"><span class="sku">${h(p.sku)}</span> ${h(p.name)}</li>`,
       )
       .join("");
     list.hidden = found.length === 0;
     input.setAttribute("aria-expanded", String(found.length > 0));
-    input.setAttribute("aria-activedescendant", active >= 0 ? `opt-${active}` : "");
+    input.removeAttribute("aria-activedescendant");
   };
   const choose = (/** @type {string} */ sku) => {
     picked = sku;
     const p = product(sku);
     input.value = `${p.sku} · ${p.name}`;
+    window.clearTimeout(matchesTimer);
     list.hidden = true;
     input.setAttribute("aria-expanded", "false");
+    input.removeAttribute("aria-activedescendant");
     quantity.focus();
     quantity.select();
   };
@@ -382,8 +398,17 @@ function mountBuilder(root, q, getSelected, setSelected) {
     if (event.key === "ArrowDown" || event.key === "ArrowUp") {
       event.preventDefault();
       if (options.length === 0) return;
-      active = (active + (event.key === "ArrowDown" ? 1 : options.length - 1)) % options.length;
-      options.forEach((o, i) => o.setAttribute("aria-selected", String(i === active)));
+      window.clearTimeout(matchesTimer);
+      // The first arrow key enters the list on the highlighted option; the next ones move.
+      if (input.hasAttribute("aria-activedescendant")) {
+        active = (active + (event.key === "ArrowDown" ? 1 : options.length - 1)) % options.length;
+      }
+      // Selected only once the list has the active descendant: Chrome reported each redrawn option
+      // marked selected while typing, and NVDA read it before it had a name ("list item").
+      options.forEach((o, i) => {
+        o.classList.toggle("active", i === active);
+        o.setAttribute("aria-selected", String(i === active));
+      });
       input.setAttribute("aria-activedescendant", `opt-${active}`);
     } else if (event.key === "Enter" && !list.hidden && active >= 0) {
       event.preventDefault();
@@ -392,11 +417,14 @@ function mountBuilder(root, q, getSelected, setSelected) {
     } else if (event.key === "Escape") {
       list.hidden = true;
       input.setAttribute("aria-expanded", "false");
+      input.removeAttribute("aria-activedescendant");
     }
   });
   input.addEventListener("blur", () => {
+    window.clearTimeout(matchesTimer);
     list.hidden = true;
     input.setAttribute("aria-expanded", "false");
+    input.removeAttribute("aria-activedescendant");
   });
   list.addEventListener("mousedown", (event) => {
     const option = /** @type {HTMLElement} */ (event.target).closest("li");
