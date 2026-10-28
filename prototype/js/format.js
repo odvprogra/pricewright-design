@@ -154,16 +154,27 @@ export function percent(ratio) {
 
 const LIVE = () => document.getElementById("live");
 
+/** @type {string[]} */
+let queued = [];
+let timer = 0;
+
 /**
- * Tell assistive technology what changed, politely.
+ * Tell assistive technology what changed, politely, through the page's one live region (#live in
+ * index.html, which no render replaces): a live region drawn with a re-render is not announced.
+ * Messages from one action are read together, in order, instead of the last replacing the others.
  * @param {string} message
  */
 export function announce(message) {
   const live = LIVE();
-  if (live !== null) {
-    live.textContent = "";
-    window.setTimeout(() => {
-      live.textContent = message;
-    }, 50);
+  if (live === null) {
+    return;
   }
+  queued.push(message);
+  live.textContent = "";
+  window.clearTimeout(timer);
+  // After the render that caused it, so the message follows the new focus instead of being cut.
+  timer = window.setTimeout(() => {
+    live.textContent = queued.join(" ");
+    queued = [];
+  }, 100);
 }

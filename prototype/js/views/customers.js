@@ -1,5 +1,5 @@
 // Customers (customers.md): search the list, open a customer, start a quote from it.
-import { h, money, statusBadge, terms, tierName } from "../format.js";
+import { announce, h, money, statusBadge, terms, tierName } from "../format.js";
 import { demo, state } from "../store.js";
 import { startQuote } from "./quotes.js";
 
@@ -31,7 +31,7 @@ export function customersView() {
 <div class="field grow"><label for="customer-q">Search</label>
 <input id="customer-q" type="search" value="${h(query())}" placeholder="Name or account number"></div>
 </form>
-<p class="muted" id="customer-count" aria-live="polite">${found.length} ${found.length === 1 ? "customer" : "customers"}</p>
+<p class="muted" id="customer-count">${found.length} ${found.length === 1 ? "customer" : "customers"}</p>
 ${
   found.length === 0
     ? `<div class="empty"><p>No customer matches “${h(query())}”.</p><a class="button secondary" href="#/customers">Clear search</a></div>`
@@ -58,6 +58,7 @@ ${
           const again = /** @type {HTMLInputElement} */ (root.querySelector("#customer-q"));
           again.focus();
           again.setSelectionRange(again.value.length, again.value.length);
+          announce(root.querySelector("#customer-count")?.textContent ?? "");
         }, 250);
       });
       root
