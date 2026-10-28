@@ -41,6 +41,7 @@ test("a draft is cancelled with a reason, after a confirmation that names it", a
   await dialog.getByLabel("Reason (required)").fill("The customer bought elsewhere.");
   await dialog.getByRole("button", { name: "Cancel quote" }).click();
 
-  await expect(page.getByRole("status")).toContainText(`${number} was cancelled.`);
+  await expect(page.locator(".notice", { hasText: `${number} was cancelled.` })).toBeVisible();
+  await expect(page.locator("#live")).toContainText(`${number} was cancelled.`);
   await expect(page.getByText("Cancelled").first()).toBeVisible();
 });

@@ -49,7 +49,9 @@ function takeNotice() {
   if (notice.text === "") {
     return "";
   }
-  const html = `<p class="notice ${notice.tone}" role="status">${h(notice.text)}</p>`;
+  // Drawn with the render, so it is not a live region itself: #live reads it.
+  const html = `<p class="notice ${notice.tone}">${h(notice.text)}</p>`;
+  announce(notice.text);
   notice.text = "";
   return html;
 }
@@ -144,10 +146,10 @@ ${takeNotice()}
 ${q.lines.length === 0 ? '<p class="muted hint">Type a SKU or product name to add the first line.</p>' : ""}
 </form>
 </div>
-<p id="undo" class="toast" role="status" hidden></p>
+<p id="undo" class="toast" hidden></p>
 </section>
 <aside class="side">
-<section class="panel" aria-live="polite">${why}</section>
+<section class="panel">${why}</section>
 <section class="panel summary" aria-labelledby="summary-title">
 <h2 id="summary-title" class="panel-title">Summary</h2>
 ${totals(q)}
@@ -332,12 +334,14 @@ export function quoteView(id) {
  */
 function mountBuilder(root, q, getSelected, setSelected) {
   const refresh = (/** @type {string} */ focusId) => {
+    const before = q.total;
     reprice(q);
     save();
     const main = /** @type {HTMLElement} */ (root.querySelector("main"));
     main.innerHTML = builder(q, getSelected());
     mountBuilder(root, q, getSelected, setSelected);
-    announce(`Total ${money(q.total)}`);
+    // Only a new total is news; opening a line's breakdown changes nothing.
+    if (q.total !== before) announce(`Total ${money(q.total)}`);
     const target = root.querySelector(`#${focusId}`);
     if (target instanceof HTMLElement) target.focus();
   };
@@ -467,6 +471,7 @@ function mountBuilder(root, q, getSelected, setSelected) {
       const i = Number(/** @type {HTMLElement} */ (button).dataset.remove);
       const [removed] = q.lines.splice(i, 1);
       setSelected(q.lines.length > 0 ? Math.min(i, q.lines.length - 1) : null);
+      announce(`${removed?.sku ?? ""} removed. Undo is after the product search.`);
       refresh("line-product");
       const toast = /** @type {HTMLElement} */ (root.querySelector("#undo"));
       // No timer: a toast with an action stays until the next change re-renders the builder, so
