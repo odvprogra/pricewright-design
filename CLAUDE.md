@@ -52,6 +52,6 @@ See `docs/adr/`. Do not contradict an accepted ADR; propose a new ADR that super
   plan, positioning and voice, every token (color, type, space, radius, shadow, motion), the logo,
   the brand guide on GitHub Pages (`just site`), the clickable prototype with its journeys, the demo
   tenants' logos and accents, the quotation PDF and email designs (`src/documents/`), keyboard pass
-  1 on the prototype (`docs/ux/accessibility/`). Next: the NVDA pass and the test sessions (the
-  maintainer runs both) and the test's report; the release workflow and 0.1.0; pricewright-api
+  1 and NVDA pass 1 on the prototype (`docs/ux/accessibility/`). Next: the test sessions (the
+  maintainer runs them) and the test's report; the release workflow and 0.1.0; pricewright-api
   applies the documents' designs from that release.
