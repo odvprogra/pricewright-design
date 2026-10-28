@@ -6,7 +6,8 @@ import { join } from "node:path";
 import { type LogoColors, lockup, mark, smallMark } from "./logo.ts";
 import { build } from "./tokens.ts";
 
-async function builtTokens(): Promise<Record<string, string>> {
+/** Every token's built value, keyed by its CSS name without the dashes (`color-surface-default`). */
+export async function builtTokens(): Promise<Record<string, string>> {
   const out = await mkdtemp(join(tmpdir(), "pricewright-logo-"));
   try {
     await build(out);

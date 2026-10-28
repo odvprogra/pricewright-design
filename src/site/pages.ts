@@ -1,6 +1,11 @@
 /** The brand guide's pages, written from the tokens, the contrast pairs and the logo files. */
 import { CONTRAST_PAIRS } from "../contrast-pairs.ts";
-import { contrastRatio } from "../contrast.ts";
+import { TEXT_MINIMUM, contrastRatio } from "../contrast.ts";
+import type { Email } from "../documents/emails.ts";
+import { notice } from "../documents/quotation.ts";
+import { SAMPLE_NUMBER } from "../documents/sample.ts";
+import { MINIMUM_DISTANCE, PAPER, checkAccent } from "../tenant-accent.ts";
+import { RESERVED_TOKENS, TENANTS } from "../tenants.ts";
 import { type Page, escape } from "./layout.ts";
 
 export interface TokenEntry {
@@ -178,6 +183,155 @@ that, the small mark. Never recolored, stretched or set in another font.</p>
   };
 }
 
-export function pages(tokens: TokenIndex): Page[] {
-  return [home(), color(tokens), type(tokens), logo()];
+function tenants(tokens: TokenIndex): Page {
+  const reserved = Object.fromEntries(
+    RESERVED_TOKENS.map((path) => [path, find(tokens, path).value]),
+  );
+  const cards = TENANTS.map((tenant) => {
+    const check = checkAccent(tenant.accent, reserved);
+    return `<section>
+<h2>${escape(tenant.name)}</h2>
+<div class="stage"><img src="tenants/${tenant.slug}-logo.svg" alt="${escape(tenant.name)} logo" height="64">
+<img src="tenants/${tenant.slug}-mark.svg" alt="${escape(tenant.name)} mark" height="64"></div>
+<div class="table"><table>
+<thead><tr><th scope="col">Sample</th><th scope="col">Accent</th><th scope="col" class="number">On white</th>
+<th scope="col">Nearest reserved color</th><th scope="col" class="number">ΔEOK</th><th scope="col">Result</th></tr></thead>
+<tbody><tr><td><span class="pair" style="color:${tenant.accent};background:${PAPER}">Aa</span>
+<span class="pair" style="color:${PAPER};background:${tenant.accent}">Aa</span></td>
+<td><code>${tenant.accent}</code></td><td class="number">${check.contrast.toFixed(2)}:1</td>
+<td><code>${check.nearest.name}</code></td><td class="number">${check.nearest.distance.toFixed(3)}</td>
+${check.problems.length === 0 ? '<td class="pass">Pass</td>' : "<td>Fail</td>"}</tr></tbody></table></div>
+</section>`;
+  }).join("\n");
+  return {
+    file: "tenants.html",
+    title: "Tenants",
+    body: `<section>
+<p class="eyebrow">Demo tenants</p>
+<h1>Tenants</h1>
+<p class="lede">A tenant brings one accent and its logo; everything else stays Pricewright's. Northfield
+Supply and Larkspur Tool Co. are the demo's two fictional tenants.</p>
+</section>
+<section>
+<h2>The accent's rules</h2>
+<ul>
+<li>At least ${TEXT_MINIMUM}:1 on white, so it reads as text and carries white text.</li>
+<li>At least ${MINIMUM_DISTANCE.toFixed(2)} ΔEOK, four just-noticeable differences, from every
+status color and the focus ring, so it never reads as success, warning, danger, information or focus.</li>
+<li>An accent that fails is darkened in OKLab until it reads on white; if that shade still fails,
+the default accent, <code>color.tenant.accent</code>, is used.</li>
+<li>It colors the tenant's rule in the app's header, the quotation and the emails; never a status,
+and never Pricewright's logo.</li>
+</ul>
+</section>
+${cards}`,
+  };
+}
+
+const NOTICES: readonly { status: string; label: string }[] = [
+  { status: "pending_approval", label: "Draft, pending approval or rejected" },
+  { status: "expired", label: "Expired" },
+  { status: "cancelled", label: "Cancelled" },
+  { status: "superseded", label: "Superseded" },
+];
+
+function documents(emails: Readonly<Record<string, Email>>): Page {
+  const notices = NOTICES.map(({ status, label }) => {
+    const shown = notice({ status, validUntil: "2026-11-13" });
+    if (shown === null) {
+      throw new Error(`no notice for ${status}`);
+    }
+    const style = `color:var(--color-status-${shown.tone}-text);background:var(--color-status-${shown.tone}-surface)`;
+    return `<tr><td>${label}</td><td><span class="pair" style="${style}">${escape(shown.text)}</span></td>
+<td><code>color.status.${shown.tone}.*</code></td></tr>`;
+  }).join("\n");
+  return {
+    file: "documents.html",
+    title: "Documents",
+    body: `<section>
+<p class="eyebrow">Documents</p>
+<h1>Documents</h1>
+<p class="lede">The quotation and the emails are the tenant's documents, set in Ledger's type and
+rules: the tenant's name and accent on top, Pricewright only in the closing line.</p>
+</section>
+<section>
+<h2>The quotation</h2>
+<p>Quotation ${SAMPLE_NUMBER} from Northfield's demo data, as pricewright-api prints it on A4.
+<a href="documents/quotation.html">Open it on its own</a> to print it to PDF.</p>
+<iframe class="document-frame" src="documents/quotation.html" title="Quotation ${SAMPLE_NUMBER}, the reference design"></iframe>
+</section>
+<section>
+<h2>Page and type</h2>
+<ul>
+<li>A4, margins 18 mm at the top, 16 mm at the sides and 20 mm at the bottom; a running footer with
+the quote's number on the left and "Page 1 of 2" on the right.</li>
+<li>A 10 pt root, so every size token prints in proportion: body 10 pt, the lines' table 8.75 pt,
+the footer 7.5 pt.</li>
+<li>"Quotation" is the one serif heading (Source Serif 4, 3xl); everything else is Public Sans,
+amounts in tabular figures, right-aligned. List prices keep up to four places when they have them;
+net prices always show four, so their column lines up.</li>
+<li>Both families are embedded (SIL Open Font License), from TrueType files: WeasyPrint subsets
+them, so a PDF carries only the glyphs it uses.</li>
+<li>The table's header repeats on every page and a line never splits across two; the totals and
+the notes stay whole.</li>
+</ul>
+</section>
+<section>
+<h2>Color and rules</h2>
+<ul>
+<li>Text in <code>color.text.default</code> and <code>color.text.muted</code>; the lines' header on
+<code>color.surface.muted</code>, rows divided by <code>color.border.default</code>.</li>
+<li>The tenant's rule, 2 pt in <code>color.tenant.accent</code> under the masthead, is the only place
+the tenant's color appears; the logo (from M7) or the tenant's name sits above it.</li>
+<li>The grand total, with its currency, sits between a rule in <code>color.border.strong</code> and
+the accountant's double rule in <code>color.text.default</code>, as the logo's sheet closes.</li>
+<li>Costs and margins never appear, whoever prints the quote.</li>
+</ul>
+</section>
+<section>
+<h2>When it is not an offer</h2>
+<p>A notice under the tenant's rule says so, in a status color's text on its surface.</p>
+<div class="table"><table>
+<thead><tr><th scope="col">Quote</th><th scope="col">Notice</th><th scope="col">Tokens</th></tr></thead>
+<tbody>${notices}</tbody></table></div>
+</section>
+<section>
+<h2>The emails</h2>
+<p>The quotation sent to the customer, and a manager's decision sent to the rep, from Northfield's
+demo data. Each one also has a plain-text part.</p>
+${emailFrames(emails)}
+</section>
+<section>
+<h2>Email rules</h2>
+<ul>
+<li>One column, at most 600 px wide, laid out with tables marked <code>role="presentation"</code>;
+facts are a real table with row headers. <code>lang</code> and <code>dir</code> on the root.</li>
+<li>Every style inline, every value copied from <code>tokens.json</code>: mail clients drop
+<code>&lt;style&gt;</code> blocks and do not resolve <code>var()</code>. Sizes in pixels.</li>
+<li>Web-safe stacks, no web fonts (Gmail and Outlook for Windows ignore them): the heading in the serif
+stack, from Georgia when Source Serif 4 is not installed; the rest in the sans stack, from Segoe UI.</li>
+<li>The tenant's rule, 4 px in its accent, tops the card; the tenant's name (its logo from M7) sits
+under it; Pricewright appears only in the footer.</li>
+<li>A preview line follows the subject in the inbox; a manager's comment is quoted, first when it
+asks for changes. Customers read formal sentences without contractions; reps read the app's voice.</li>
+<li>Light only (<code>color-scheme: light</code>) until the tokens have a dark theme.</li>
+</ul>
+</section>`,
+  };
+}
+
+function emailFrames(emails: Readonly<Record<string, Email>>): string {
+  return Object.entries(emails)
+    .map(
+      ([name, email]) => `<figure class="email">
+<figcaption><b>${escape(email.subject)}</b><span>${escape(email.preheader)}</span>
+<a href="documents/${name}.txt">Plain text</a></figcaption>
+<iframe class="email-frame" src="documents/${name}.html" title="Email: ${escape(email.subject)}"></iframe>
+</figure>`,
+    )
+    .join("\n");
+}
+
+export function pages(tokens: TokenIndex, emails: Readonly<Record<string, Email>>): Page[] {
+  return [home(), color(tokens), type(tokens), logo(), tenants(tokens), documents(emails)];
 }

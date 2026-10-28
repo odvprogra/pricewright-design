@@ -1,5 +1,5 @@
 // The approval inbox (approval-inbox.md): a worklist, oldest first, each request led by its reason.
-import { h, money, percent, relative } from "../format.js";
+import { announce, h, money, percent, relative } from "../format.js";
 import { decide } from "../quote-model.js";
 import { rerender } from "../render.js";
 import { currentUser, customer, demo, quote, state } from "../store.js";
@@ -44,7 +44,7 @@ function item(q, selected) {
   const request = q.approvals.at(-1);
   return `<li><a href="#/approvals/${q.id}"${q.id === selected ? ' aria-current="true"' : ""}>
 <span class="reason">${h(reason(q))}</span>
-<span class="line1"><b>${h(c.name)}</b><span class="amount">${money(q.total)}</span></span>
+<span class="line1"><b>${h(c.name)}</b><span class="amount">${money(q.total)}</span><span class="visually-hidden">, </span></span>
 <span class="line2 muted">${h(q.number)} · ${h(request?.requested_by ?? q.created_by)} · ${relative(request?.requested_at ?? null)}</span>
 </a></li>`;
 }
@@ -92,6 +92,10 @@ export function approvalsView(id) {
   const selected = id === undefined ? undefined : quote(id);
   const shown = message;
   message = "";
+  if (shown !== "") {
+    // Drawn with the render, so #live reads it, as the quote's notices.
+    announce(shown);
+  }
   const list =
     items.length === 0
       ? `<div class="empty"><p>Nothing waits for your approval.</p></div>`
@@ -105,10 +109,10 @@ export function approvalsView(id) {
   return {
     title: "Approvals",
     html: `<div class="page-head"><h1>Approvals</h1><p class="muted">${items.length} waiting</p></div>
-${shown === "" ? "" : `<p class="notice success" role="status">${h(shown)}</p>`}
+${shown === "" ? "" : `<p class="notice success">${h(shown)}</p>`}
 <div class="inbox${selected ? " has-selection" : ""}">
 <section class="inbox-list">${list}</section>
-<section class="inbox-detail" aria-live="polite">${detail}</section>
+<section class="inbox-detail">${detail}</section>
 </div>`,
     /** @param {HTMLElement} root */
     mount(root) {

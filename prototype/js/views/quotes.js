@@ -1,5 +1,6 @@
 // Quotes (screen spec: docs/ux/screens/quotes.md): a list report with filters in the URL.
-import { daysLeft, date, h, money, relative, statusBadge } from "../format.js";
+import { announce, daysLeft, date, h, money, relative, statusBadge } from "../format.js";
+import { focusAfterRender } from "../render.js";
 import { currentUser, customer, demo, nextNumber, save, state, today } from "../store.js";
 
 const OPEN = new Set(["draft", "pending_approval", "approved", "sent"]);
@@ -119,21 +120,27 @@ ${
     : `<div class="table"><table>
 <thead><tr><th scope="col">Number</th><th scope="col">Customer</th><th scope="col">Status</th><th scope="col" class="number">Total</th>
 <th scope="col">Valid until</th><th scope="col">Created by</th><th scope="col">Updated</th></tr></thead>
-<tbody>${rows}</tbody></table></div>
+<tbody id="quote-rows">${rows}</tbody></table></div>
 <p class="muted">${Math.min(shown, all.length)} of ${all.length} quotes.</p>
-${shown < all.length ? `<a class="button secondary" href="#/quotes?${new URLSearchParams({ status, mine: mine ? "1" : "", shown: String(shown + PAGE) })}">Load more</a>` : ""}`
+${shown < all.length ? `<a class="button secondary" id="load-more" href="#/quotes?${new URLSearchParams({ status, mine: mine ? "1" : "", shown: String(shown + PAGE) })}">Load more</a>` : ""}`
 }
 ${newQuoteDialog()}`,
     /** @param {HTMLElement} root */
     mount(root) {
       const form = /** @type {HTMLFormElement} */ (root.querySelector("#quote-filters"));
-      form.addEventListener("change", () => {
+      form.addEventListener("change", (event) => {
+        focusAfterRender(`#${/** @type {HTMLElement} */ (event.target).id}`);
         const data = new FormData(form);
         const query = new URLSearchParams();
         const chosen = String(data.get("status") ?? "");
         if (chosen !== "") query.set("status", chosen);
         if (data.get("mine") !== null) query.set("mine", "1");
         location.hash = `#/quotes${query.size > 0 ? `?${query}` : ""}`;
+      });
+      // The next rows load below the ones already read: focus the first new one, not the page top.
+      root.querySelector("#load-more")?.addEventListener("click", () => {
+        focusAfterRender(`#quote-rows tr:nth-child(${shown + 1}) a`);
+        announce(`Showing ${Math.min(shown + PAGE, all.length)} of ${all.length} quotes.`);
       });
       const dialog = /** @type {HTMLDialogElement} */ (root.querySelector("#new-quote"));
       const input = /** @type {HTMLInputElement} */ (root.querySelector("#new-quote-customer"));

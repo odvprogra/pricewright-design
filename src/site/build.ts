@@ -2,11 +2,15 @@
 import { copyFile, cp, mkdir, readFile, readdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 
+import { sampleEmails } from "../documents/emails.ts";
+import { quotationHtml } from "../documents/quotation.ts";
+import { sampleQuotation } from "../documents/sample.ts";
 import { VERSION, build, cssVariable } from "../tokens.ts";
-import { layout } from "./layout.ts";
+import { FONTS, layout } from "./layout.ts";
 import { type TokenEntry, type TokenIndex, pages } from "./pages.ts";
 
 const LOGO = "docs/brand/logo";
+const TENANT_LOGOS = "docs/brand/tenants";
 const PROTOTYPE = "prototype";
 const STYLES = new URL("./site.css", import.meta.url);
 
@@ -53,14 +57,36 @@ async function tokenIndex(builtJson: string): Promise<TokenIndex> {
 }
 
 export async function buildSite(out: string): Promise<string[]> {
-  await mkdir(join(out, "logo"), { recursive: true });
   await build(out);
   await copyFile(STYLES, join(out, "site.css"));
-  for (const file of (await readdir(LOGO)).filter((n) => n.endsWith(".svg"))) {
-    await copyFile(join(LOGO, file), join(out, "logo", file));
+  for (const [from, to] of [
+    [LOGO, "logo"],
+    [TENANT_LOGOS, "tenants"],
+  ] as const) {
+    await mkdir(join(out, to), { recursive: true });
+    for (const file of (await readdir(from)).filter((n) => n.endsWith(".svg"))) {
+      await copyFile(join(from, file), join(out, to, file));
+    }
+  }
+  // The documents' reference designs, shown in frames by documents.html.
+  await mkdir(join(out, "documents"), { recursive: true });
+  const quotation = sampleQuotation("../tenants/northfield-supply-logo.svg");
+  await writeFile(
+    join(out, "documents", "quotation.html"),
+    quotationHtml(quotation, "../tokens.css", FONTS),
+  );
+  const built = (
+    JSON.parse(await readFile(join(out, "tokens.json"), "utf8")) as {
+      tokens: Record<string, string>;
+    }
+  ).tokens;
+  const emails = sampleEmails(built);
+  for (const [name, email] of Object.entries(emails)) {
+    await writeFile(join(out, "documents", `${name}.html`), email.html);
+    await writeFile(join(out, "documents", `${name}.txt`), email.text);
   }
   const written: string[] = [];
-  for (const page of pages(await tokenIndex(join(out, "tokens.json")))) {
+  for (const page of pages(await tokenIndex(join(out, "tokens.json")), emails)) {
     await writeFile(join(out, page.file), layout(page, VERSION));
     written.push(page.file);
   }

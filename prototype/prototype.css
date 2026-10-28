@@ -403,6 +403,16 @@ input[aria-invalid="true"] {
   color: var(--color-text-inverse);
 }
 
+.toast :focus-visible {
+  outline-color: var(--color-focus-ring-inverse);
+}
+
+/* While the toast shows, scrolling a focused control into view keeps it above the toast (WCAG
+   technique C43 for 2.4.11, Focus Not Obscured). */
+html:has(.toast:not([hidden])) {
+  scroll-padding-bottom: 5rem;
+}
+
 /* Tables */
 .table {
   overflow-x: auto;
@@ -487,11 +497,30 @@ tr.selected td {
   gap: var(--space-3);
 }
 
+/* The lines and the entry row read as one card, but the entry sits outside the table's scroll
+   container: a scroll container clips overflow on both axes, so the product options would be cut. */
+.lines-box {
+  background: var(--color-surface-default);
+  border: var(--border-width-default) solid var(--color-border-default);
+  border-radius: var(--radius-md);
+}
+
+.lines-box .table {
+  border: 0;
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+}
+
 .add-line {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-3);
   align-items: flex-end;
+  padding: var(--space-2) var(--space-3) var(--space-3);
+}
+
+.add-line .hint {
+  flex-basis: 100%;
+  margin: 0;
 }
 
 .combobox {
@@ -520,9 +549,16 @@ tr.selected td {
   font-size: var(--font-size-sm);
 }
 
-.combobox li[aria-selected="true"],
 .combobox li:hover {
   background: var(--color-surface-hover);
+}
+
+/* The option Enter would pick: DOM focus stays in the field (aria-activedescendant), so the option
+   draws the focus ring itself; the hover tint alone is too faint to mark a state (WCAG 1.4.11). */
+.combobox li.active {
+  background: var(--color-surface-hover);
+  outline: var(--border-width-focus) solid var(--color-focus-ring);
+  outline-offset: calc(-1 * var(--border-width-focus));
 }
 
 .combobox li .sku {

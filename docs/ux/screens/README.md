@@ -46,3 +46,22 @@ From handbook §14.2 and §14.3, so the specs do not repeat them:
 - Destructive actions ask for a confirmation that names the object.
 - Everything can be done with a keyboard; focus is always visible; text and controls meet WCAG 2.2
   AA.
+- **Where the focus goes:** a route change focuses the page's heading. A change on the same page (a
+  filter, a quantity, a panel toggled) keeps the focus on the control used, since WCAG 3.2.2 counts
+  a focus change as a change of context. "Load more" focuses the first new row and announces the new
+  count. A validation error moves the focus to its field.
+- **Dialogs** open on their first field; without one, on the least destructive action when the step
+  can't be undone (sending a quote). Escape closes them and the focus returns to what opened them.
+- **Toasts with an action** (Undo) don't time out (WCAG 2.2.1): they stay until the next change and
+  never cover the focused control.
+- **Messages** (an outcome, a count, a new total) are status messages (WCAG 4.1.3), read through one
+  live region that is in the page from the start and only gets new text; a notice drawn with a page
+  update is not a live region itself, since one that arrives holding its text is not read (NVDA pass
+  1). One action, one message, its parts in order. Errors use `role="alert"` on an element that is
+  already in the page.
+- **Character-key shortcuts** (WCAG 2.1.4): a letter shortcut works only while its list or table has
+  focus, and every shortcut without a modifier, the page-wide `/` included, can be turned off in the
+  user's settings, as GitHub's "Character keys" setting does. Shortcuts with a modifier
+  (`Ctrl+Enter`) are not affected.
+
+These rules come from the prototype's [keyboard pass 1](../accessibility/keyboard-pass-1.md).

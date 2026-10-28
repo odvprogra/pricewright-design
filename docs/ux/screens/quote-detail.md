@@ -79,6 +79,7 @@ Every action sends `If-Match`. After it, the screen shows the new status and the
 ## Keyboard and accessibility
 
 - The primary action is the first focusable control after the title.
+- Sending opens its confirmation on "Keep it": an email can't be recalled.
 - Confirmation dialogs trap focus, name the quote in their title and return focus to the action that
   opened them.
 

@@ -12,9 +12,12 @@ export const NAVIGATION: readonly { file: string; label: string }[] = [
   { file: "color.html", label: "Color" },
   { file: "type.html", label: "Type" },
   { file: "logo.html", label: "Logo" },
+  { file: "tenants.html", label: "Tenants" },
+  { file: "documents.html", label: "Documents" },
 ];
 
-const FONTS =
+/** Source Serif 4 and Public Sans from Google Fonts, for the guide and its specimens. */
+export const FONTS =
   "https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700" +
   "&family=Source+Serif+4:opsz,wght@8..60,600&display=swap";
 

@@ -41,5 +41,7 @@ just demo-data            # or: just demo-data ../path/to/pricewright-api
 ## Checks
 
 - `just e2e`: the usability test's five tasks in Chromium, on a desktop and a phone, with axe (WCAG
-  2.2 AA tags) on every screen they pass through and no horizontal scroll on the phone.
+  2.2 AA tags) on every screen they pass through and no horizontal scroll on the phone; the
+  builder's options and cancelling (`builder.spec.ts`); and where the focus goes with the keyboard
+  alone (`keyboard.spec.ts`), from [keyboard pass 1](../docs/ux/accessibility/keyboard-pass-1.md).
 - `just site && just serve`: the prototype at <http://localhost:8123/prototype/>.

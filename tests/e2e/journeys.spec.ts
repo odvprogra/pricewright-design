@@ -92,7 +92,8 @@ test.describe("as a sales rep, on a desktop", () => {
 
     await page.getByRole("button", { name: "Submit for approval" }).click();
     await expect(page.getByText("Pending approval").first()).toBeVisible();
-    await expect(page.getByRole("status")).toContainText("A manager will decide on it");
+    await expect(page.locator(".notice", { hasText: "A manager will decide on it" })).toBeVisible();
+    await expect(page.locator("#live")).toContainText("A manager will decide on it");
     await noAxeViolations(page, "pending quote");
   });
 
@@ -120,9 +121,10 @@ test.describe("as a sales rep, on a desktop", () => {
     await noAxeViolations(page, "send dialog");
     await dialog.getByRole("button", { name: "Send to customer" }).click();
 
-    await expect(page.getByRole("status")).toContainText(
-      "Sent to purchasing@stonegate-storage-centers-llc.example. Replies go to Taylor Brooks.",
-    );
+    const sent =
+      "Sent to purchasing@stonegate-storage-centers-llc.example. Replies go to Taylor Brooks.";
+    await expect(page.locator(".notice", { hasText: sent })).toBeVisible();
+    await expect(page.locator("#live")).toContainText(sent);
     await noAxeViolations(page, "sent quote");
   });
 });
@@ -146,7 +148,8 @@ test.describe("as the sales manager, on a phone", () => {
     await noHorizontalScroll(page);
     await noAxeViolations(page, "request");
     await page.getByRole("button", { name: "Approve" }).click();
-    await expect(page.getByRole("status")).toContainText("Approved NF-2026-000132");
+    await expect(page.locator(".notice", { hasText: "Approved NF-2026-000132" })).toBeVisible();
+    await expect(page.locator("#live")).toContainText("Approved NF-2026-000132");
 
     await page.goto("./#/approvals");
     await page.getByRole("link", { name: /NF-2026-000140/ }).click();
@@ -154,7 +157,8 @@ test.describe("as the sales manager, on a phone", () => {
     await expect(page.getByRole("alert")).toContainText("Say what should change");
     await page.getByLabel(/Comment/).fill("Bring it within 15% off list.");
     await page.getByRole("button", { name: "Reject" }).click();
-    await expect(page.getByRole("status")).toContainText("Rejected NF-2026-000140");
+    await expect(page.locator(".notice", { hasText: "Rejected NF-2026-000140" })).toBeVisible();
+    await expect(page.locator("#live")).toContainText("Rejected NF-2026-000140");
     await expect(page.getByText("6 waiting")).toBeVisible();
   });
 });

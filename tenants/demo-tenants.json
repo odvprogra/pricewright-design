@@ -1,0 +1,17 @@
+{
+  "$description": "Pricewright's fictional demo tenants: each one's accent (checked by ADR-0005's rules) and its logo's ink. pricewright-api seeds them in M7.",
+  "tenants": [
+    {
+      "slug": "northfield-supply",
+      "name": "Northfield Supply",
+      "accent": "#36597a",
+      "ink": "#1c2833"
+    },
+    {
+      "slug": "larkspur-tool-co",
+      "name": "Larkspur Tool Co.",
+      "accent": "#6b2f74",
+      "ink": "#2b2230"
+    }
+  ]
+}

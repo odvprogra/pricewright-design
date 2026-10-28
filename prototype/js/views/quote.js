@@ -29,7 +29,7 @@ import {
 } from "../quote-model.js";
 import { currentUser, customer, demo, product, quote, save } from "../store.js";
 import { breakdown } from "./breakdown.js";
-import { rerender } from "../render.js";
+import { focusAfterRender, rerender } from "../render.js";
 
 /** @typedef {import("../store.js").Quote} Quote */
 
@@ -49,7 +49,9 @@ function takeNotice() {
   if (notice.text === "") {
     return "";
   }
-  const html = `<p class="notice ${notice.tone}" role="status">${h(notice.text)}</p>`;
+  // Drawn with the render, so it is not a live region itself: #live reads it.
+  const html = `<p class="notice ${notice.tone}">${h(notice.text)}</p>`;
+  announce(notice.text);
   notice.text = "";
   return html;
 }
@@ -114,7 +116,7 @@ function builder(q, selected) {
 <td class="number">${unitPrice(line.list_unit_price)}</td>
 <td class="number">${netUnit(line.net_unit_price)}${line.below_margin_floor ? ' <span class="badge danger">Below floor</span>' : ""}</td>
 <td class="number">${money(line.net_total)}</td>
-<td><span class="row-actions"><button type="button" class="link" data-why="${i}" aria-pressed="${i === selected}">Why this price</button>
+<td><span class="row-actions"><button type="button" class="link" id="why-${i}" data-why="${i}" aria-pressed="${i === selected}">Why this price</button>
 <button type="button" class="link danger" data-remove="${i}">Remove<span class="visually-hidden"> ${h(line.sku)}</span></button></span></td>
 </tr>`,
     )
@@ -130,24 +132,24 @@ ${takeNotice()}
 <div class="builder">
 <section class="lines" aria-labelledby="lines-title">
 <h2 id="lines-title" class="visually-hidden">Lines</h2>
+<div class="lines-box">
 <div class="table"><table>
 <thead><tr><th scope="col">Product</th><th scope="col" class="number">Qty</th><th scope="col">Unit</th>
 <th scope="col" class="number">List</th><th scope="col" class="number">Net unit</th><th scope="col" class="number">Line total</th><th scope="col"><span class="visually-hidden">Actions</span></th></tr></thead>
-<tbody>${rows}
-<tr class="entry"><td colspan="7">
+<tbody>${rows}</tbody></table></div>
 <form id="add-line" class="add-line" autocomplete="off">
 <div class="field combobox"><label for="line-product">Add a product</label>
 <input id="line-product" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="line-options" placeholder="SKU or product name">
 <ul id="line-options" role="listbox" aria-label="Matching products" hidden></ul></div>
 <div class="field"><label for="line-quantity">Quantity</label><input id="line-quantity" inputmode="numeric" value="1" size="5"></div>
 <button type="submit" class="secondary">Add line</button>
+${q.lines.length === 0 ? '<p class="muted hint">Type a SKU or product name to add the first line.</p>' : ""}
 </form>
-${q.lines.length === 0 ? '<p class="muted">Type a SKU or product name to add the first line.</p>' : ""}
-</td></tr>
-</tbody></table></div>
+</div>
+<p id="undo" class="toast" hidden></p>
 </section>
 <aside class="side">
-<section class="panel" aria-live="polite">${why}</section>
+<section class="panel">${why}</section>
 <section class="panel summary" aria-labelledby="summary-title">
 <h2 id="summary-title" class="panel-title">Summary</h2>
 ${totals(q)}
@@ -163,7 +165,7 @@ ${approvalNote(q)}
 </section>
 </aside>
 </div>
-<p id="undo" class="toast" role="status" hidden></p>`;
+${cancelDialog(q.number)}`;
 }
 
 /** @param {Quote} q */
@@ -237,18 +239,21 @@ ${q.sent_to ? `<section class="panel"><h2 class="panel-title">Sent</h2><p>To <b>
 ${history === "" ? "" : `<section class="panel"><h2 class="panel-title">Approvals</h2><ul class="history">${history}</ul></section>`}
 </aside>
 </div>
-${dialogs(c.email)}`;
+${dialogs(c.email, q.number)}`;
 }
 
-/** @param {string | null} email */
-function dialogs(email) {
+/**
+ * @param {string | null} email
+ * @param {string} number
+ */
+function dialogs(email, number) {
   const recipient =
     email === null
       ? `<p class="notice warning">This customer has no email on file. Sending marks the quote as sent; deliver the PDF yourself.</p>`
       : `<p>The customer receives the quotation as a PDF at <b>${h(email)}</b>. Replies come back to you.</p>`;
   return `<dialog id="send-dialog" aria-labelledby="send-title"><form method="dialog">
 <h2 id="send-title">Send to customer?</h2>${recipient}
-<div class="actions"><button class="primary" value="confirm">Send to customer</button><button class="secondary" value="cancel">Keep it</button></div>
+<div class="actions"><button class="primary" value="confirm">Send to customer</button><button class="secondary" value="cancel" autofocus>Keep it</button></div>
 </form></dialog>
 <dialog id="reject-dialog" aria-labelledby="reject-title"><form method="dialog" id="reject-form">
 <h2 id="reject-title">Reject this quote?</h2>
@@ -257,8 +262,16 @@ function dialogs(email) {
 <p id="reject-error" class="error" role="alert" hidden></p>
 <div class="actions"><button class="primary" value="confirm">Reject</button><button class="secondary" value="cancel" formnovalidate>Keep it pending</button></div>
 </form></dialog>
-<dialog id="cancel-dialog" aria-labelledby="cancel-title"><form method="dialog" id="cancel-form">
-<h2 id="cancel-title">Cancel this quote for good?</h2>
+${cancelDialog(number)}`;
+}
+
+/**
+ * Cancelling asks for a reason, on a draft as on a quote already in the lifecycle.
+ * @param {string} number
+ */
+function cancelDialog(number) {
+  return `<dialog id="cancel-dialog" aria-labelledby="cancel-title"><form method="dialog" id="cancel-form">
+<h2 id="cancel-title">Cancel ${h(number)} for good?</h2>
 <div class="field"><label for="cancel-reason">Reason (required)</label><input id="cancel-reason"></div>
 <p id="cancel-error" class="error" role="alert" hidden></p>
 <div class="actions"><button class="primary danger" value="confirm">Cancel quote</button><button class="secondary" value="cancel">Keep it</button></div>
@@ -299,6 +312,7 @@ export function quoteView(id) {
     /** @param {HTMLElement} root */
     mount(root) {
       if (editing) {
+        if (q.lines.length === 0) focusAfterRender("#line-product");
         mountBuilder(
           root,
           q,
@@ -320,12 +334,14 @@ export function quoteView(id) {
  */
 function mountBuilder(root, q, getSelected, setSelected) {
   const refresh = (/** @type {string} */ focusId) => {
+    const before = q.total;
     reprice(q);
     save();
     const main = /** @type {HTMLElement} */ (root.querySelector("main"));
     main.innerHTML = builder(q, getSelected());
     mountBuilder(root, q, getSelected, setSelected);
-    announce(`Total ${money(q.total)}`);
+    // Only a new total is news; opening a line's breakdown changes nothing.
+    if (q.total !== before) announce(`Total ${money(q.total)}`);
     const target = root.querySelector(`#${focusId}`);
     if (target instanceof HTMLElement) target.focus();
   };
@@ -335,25 +351,41 @@ function mountBuilder(root, q, getSelected, setSelected) {
   /** @type {string | null} */
   let picked = null;
   let active = -1;
+  let matchesTimer = 0;
+  // While typing, the focus stays in the field (no aria-activedescendant): the options are redrawn
+  // on every key, and NVDA read each new option before it had a name. Down Arrow then moves into
+  // the list, first to the highlighted option (ARIA APG combobox, list autocomplete).
   const showOptions = () => {
     const found = matches(input.value);
     active = found.length > 0 ? 0 : -1;
+    window.clearTimeout(matchesTimer);
+    // How many match, once typing pauses, as GOV.UK's accessible-autocomplete says it (1.4 s).
+    matchesTimer = window.setTimeout(() => {
+      const first = found[0];
+      announce(
+        first === undefined
+          ? "No products match."
+          : `${found.length} ${found.length === 1 ? "product matches" : "products match"}. ${first.sku} ${first.name}, 1 of ${found.length}, is highlighted.`,
+      );
+    }, 1400);
     list.innerHTML = found
       .map(
         (p, i) =>
-          `<li role="option" id="opt-${i}" data-sku="${h(p.sku)}" aria-selected="${i === active}"><span class="sku">${h(p.sku)}</span> ${h(p.name)}</li>`,
+          `<li role="option" id="opt-${i}" data-sku="${h(p.sku)}"${i === active ? ' class="active"' : ""} aria-selected="false"><span class="sku">${h(p.sku)}</span> ${h(p.name)}</li>`,
       )
       .join("");
     list.hidden = found.length === 0;
     input.setAttribute("aria-expanded", String(found.length > 0));
-    input.setAttribute("aria-activedescendant", active >= 0 ? `opt-${active}` : "");
+    input.removeAttribute("aria-activedescendant");
   };
   const choose = (/** @type {string} */ sku) => {
     picked = sku;
     const p = product(sku);
     input.value = `${p.sku} · ${p.name}`;
+    window.clearTimeout(matchesTimer);
     list.hidden = true;
     input.setAttribute("aria-expanded", "false");
+    input.removeAttribute("aria-activedescendant");
     quantity.focus();
     quantity.select();
   };
@@ -366,8 +398,17 @@ function mountBuilder(root, q, getSelected, setSelected) {
     if (event.key === "ArrowDown" || event.key === "ArrowUp") {
       event.preventDefault();
       if (options.length === 0) return;
-      active = (active + (event.key === "ArrowDown" ? 1 : options.length - 1)) % options.length;
-      options.forEach((o, i) => o.setAttribute("aria-selected", String(i === active)));
+      window.clearTimeout(matchesTimer);
+      // The first arrow key enters the list on the highlighted option; the next ones move.
+      if (input.hasAttribute("aria-activedescendant")) {
+        active = (active + (event.key === "ArrowDown" ? 1 : options.length - 1)) % options.length;
+      }
+      // Selected only once the list has the active descendant: Chrome reported each redrawn option
+      // marked selected while typing, and NVDA read it before it had a name ("list item").
+      options.forEach((o, i) => {
+        o.classList.toggle("active", i === active);
+        o.setAttribute("aria-selected", String(i === active));
+      });
       input.setAttribute("aria-activedescendant", `opt-${active}`);
     } else if (event.key === "Enter" && !list.hidden && active >= 0) {
       event.preventDefault();
@@ -376,7 +417,14 @@ function mountBuilder(root, q, getSelected, setSelected) {
     } else if (event.key === "Escape") {
       list.hidden = true;
       input.setAttribute("aria-expanded", "false");
+      input.removeAttribute("aria-activedescendant");
     }
+  });
+  input.addEventListener("blur", () => {
+    window.clearTimeout(matchesTimer);
+    list.hidden = true;
+    input.setAttribute("aria-expanded", "false");
+    input.removeAttribute("aria-activedescendant");
   });
   list.addEventListener("mousedown", (event) => {
     const option = /** @type {HTMLElement} */ (event.target).closest("li");
@@ -441,8 +489,9 @@ function mountBuilder(root, q, getSelected, setSelected) {
   });
   root.querySelectorAll("[data-why]").forEach((button) => {
     button.addEventListener("click", () => {
-      setSelected(Number(/** @type {HTMLElement} */ (button).dataset.why));
-      refresh(`qty-${getSelected()}`);
+      const i = Number(/** @type {HTMLElement} */ (button).dataset.why);
+      setSelected(i);
+      refresh(`why-${i}`);
     });
   });
   root.querySelectorAll("[data-remove]").forEach((button) => {
@@ -450,13 +499,14 @@ function mountBuilder(root, q, getSelected, setSelected) {
       const i = Number(/** @type {HTMLElement} */ (button).dataset.remove);
       const [removed] = q.lines.splice(i, 1);
       setSelected(q.lines.length > 0 ? Math.min(i, q.lines.length - 1) : null);
+      announce(`${removed?.sku ?? ""} removed. Undo is after the product search.`);
       refresh("line-product");
       const toast = /** @type {HTMLElement} */ (root.querySelector("#undo"));
+      // No timer: a toast with an action stays until the next change re-renders the builder, so
+      // undoing never races the clock (WCAG 2.2.1); it is two Tabs after the product search.
       toast.innerHTML = `${h(removed?.sku ?? "")} removed. <button type="button" class="link" id="undo-remove">Undo</button>`;
       toast.hidden = false;
-      const timer = window.setTimeout(() => (toast.hidden = true), 5000);
       toast.querySelector("#undo-remove")?.addEventListener("click", () => {
-        window.clearTimeout(timer);
         if (removed !== undefined) q.lines.splice(i, 0, removed);
         setSelected(i);
         refresh("line-product");
@@ -505,6 +555,7 @@ function wireCancel(root, q) {
       const error = /** @type {HTMLElement} */ (root.querySelector("#cancel-error"));
       error.textContent = "Say why the quote is cancelled; the reason stays in its history.";
       error.hidden = false;
+      /** @type {HTMLElement} */ (root.querySelector("#cancel-reason")).focus();
       return;
     }
     cancel(q, reason);
@@ -551,6 +602,7 @@ function mountDetail(root, q) {
       const error = /** @type {HTMLElement} */ (root.querySelector("#reject-error"));
       error.textContent = "Say what should change: the rep needs it to fix the quote.";
       error.hidden = false;
+      /** @type {HTMLElement} */ (root.querySelector("#reject-comment")).focus();
       return;
     }
     decide(q, "rejected", user?.name ?? "", comment);
