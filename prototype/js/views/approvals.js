@@ -44,7 +44,7 @@ function item(q, selected) {
   const request = q.approvals.at(-1);
   return `<li><a href="#/approvals/${q.id}"${q.id === selected ? ' aria-current="true"' : ""}>
 <span class="reason">${h(reason(q))}</span>
-<span class="line1"><b>${h(c.name)}</b><span class="amount">${money(q.total)}</span></span>
+<span class="line1"><b>${h(c.name)}</b><span class="amount">${money(q.total)}</span><span class="visually-hidden">, </span></span>
 <span class="line2 muted">${h(q.number)} · ${h(request?.requested_by ?? q.created_by)} · ${relative(request?.requested_at ?? null)}</span>
 </a></li>`;
 }
