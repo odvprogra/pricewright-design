@@ -81,7 +81,10 @@ so the table updates every line's net price, not only the edited one.
 ## Keyboard and accessibility
 
 - Keyboard-first entry: the product search is a combobox (ARIA 1.2); Enter adds the line and moves
-  to its quantity; Enter again returns to a new empty row.
+  to its quantity; Enter again returns to a new empty row. While the rep types, the focus stays in
+  the field and the first match is highlighted for Enter; Down Arrow enters the list on it (ARIA APG
+  list autocomplete), and the number of matches is announced once typing pauses (1.4 s, as GOV.UK's
+  accessible-autocomplete).
 - Arrow keys move between cells; `b` opens the selected line's breakdown (while the lines table has
   focus); `Ctrl+Enter` submits. "Why this price" keeps the focus on the button pressed.
 - Repriced amounts are announced politely ("Total 3,086.67 USD") through one live region, not one

@@ -54,6 +54,11 @@ From handbook §14.2 and §14.3, so the specs do not repeat them:
   can't be undone (sending a quote). Escape closes them and the focus returns to what opened them.
 - **Toasts with an action** (Undo) don't time out (WCAG 2.2.1): they stay until the next change and
   never cover the focused control.
+- **Messages** (an outcome, a count, a new total) are status messages (WCAG 4.1.3), read through one
+  live region that is in the page from the start and only gets new text; a notice drawn with a page
+  update is not a live region itself, since one that arrives holding its text is not read (NVDA pass
+  1). One action, one message, its parts in order. Errors use `role="alert"` on an element that is
+  already in the page.
 - **Character-key shortcuts** (WCAG 2.1.4): a letter shortcut works only while its list or table has
   focus, and every shortcut without a modifier, the page-wide `/` included, can be turned off in the
   user's settings, as GitHub's "Character keys" setting does. Shortcuts with a modifier
