@@ -56,7 +56,9 @@ test("the customer search announces how many customers match", async ({ page }) 
 
 test("removing a line says what went and where Undo is, with the new total", async ({ page }) => {
   await newDraft(page);
+  // Each line's total is read before the next action: messages within 100 ms are read together.
   await addLine(page, "FST-0063", "60");
+  await expect(live(page)).toHaveText("Total 2,726.99 USD");
   await addLine(page, "OFP-0036", "12");
   await expect(live(page)).toHaveText("Total 3,086.67 USD");
 
