@@ -1,5 +1,6 @@
 // Which files markdownlint-cli2 checks. Rules live in .markdownlint.jsonc (one per directory level).
+// CHANGELOG.md is release-please's output, left as it writes it (Prettier ignores it too).
 {
   "globs": ["**/*.md"],
-  "ignores": ["**/node_modules/**", "dist/**"],
+  "ignores": ["**/node_modules/**", "dist/**", "CHANGELOG.md"],
 }
