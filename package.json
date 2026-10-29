@@ -1,6 +1,6 @@
 {
   "name": "pricewright-design",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": true,
   "description": "Pricewright's brand, design tokens and UX research: the source of truth for every user-facing surface.",
   "license": "MIT",
