@@ -3,6 +3,7 @@
 # Patched versions of the linters' transitive dependencies, until markdownlint-cli2 requires them.
 overrides:
   katex: 0.18.11 # GHSA-238p-pmpm-9mq7; markdownlint parses math with it, this repo has none
+  re2js: 2.8.8 # GHSA-gg6h-894w-4m9c; markdownlint 0.42.0 pins 2.8.6, the advisory's fix is 2.8.7
 
 auditConfig:
   ignoreGhsas:
