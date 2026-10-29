@@ -25,7 +25,8 @@ NF-2026-000122, a sent quote of five lines.
   else is Public Sans: labels in small capitals tracked 0.08 em, amounts in tabular figures,
   right-aligned.
 - **Fonts are embedded** from the OFL TrueType files with `@font-face`; WeasyPrint subsets them, so
-  the PDF carries only the glyphs it uses. WOFF files are not used: WeasyPrint does not read them.
+  the PDF carries only the glyphs it uses. The TrueType files are the ones the fonts' projects
+  publish; WeasyPrint also decodes WOFF and WOFF2, which only save download size on the web.
 - **Pagination:** the lines' header repeats on every page (`display: table-header-group`), a line
   never splits (`break-inside: avoid`), and the totals and the notes stay whole.
 
