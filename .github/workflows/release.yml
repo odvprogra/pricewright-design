@@ -1,0 +1,76 @@
+name: Release
+
+# release-please (ADR-0002): keeps a release PR up to date from the Conventional Commits on main.
+# Merging it tags the version and creates a draft release; this workflow builds the tokens from the
+# tag, attaches them, then publishes the release. Published releases are immutable, so the assets
+# have to be attached to the draft. Same flow as pricewright-api's openapi.json.
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false # never interrupt a release halfway
+
+jobs:
+  release:
+    name: Release PR and release
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      # A GitHub App token instead of GITHUB_TOKEN: events created with GITHUB_TOKEN start no workflows,
+      # so CI would never run on the release PR and the ruleset on main would block it.
+      - uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        id: app-token
+        with:
+          client-id: ${{ vars.RELEASE_APP_CLIENT_ID }}
+          private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
+          permission-contents: write
+          permission-issues: write
+          permission-pull-requests: write
+
+      - uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5.0.0
+        id: release
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        if: steps.release.outputs.release_created == 'true'
+        with:
+          ref: ${{ steps.release.outputs.tag_name }}
+          persist-credentials: false
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        if: steps.release.outputs.release_created == 'true'
+        with:
+          node-version: 24
+
+      # Outputs reach the shell as environment variables, never as ${{ }} inside run:.
+      - name: Build the tokens, attach them and publish the release
+        if: steps.release.outputs.release_created == 'true'
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          TAG: ${{ steps.release.outputs.tag_name }}
+          VERSION: ${{ steps.release.outputs.version }}
+        run: |
+          corepack enable
+          pnpm install --frozen-lockfile
+          node scripts/build.ts
+          for file in tokens.css theme.css; do
+            if ! grep --quiet --fixed-strings "pricewright-design $VERSION:" "dist/$file"; then
+              echo "::error::dist/$file was not built for $VERSION"
+              exit 1
+            fi
+          done
+          if ! node --eval 'process.exit(require("./dist/tokens.json").version === process.env.VERSION ? 0 : 1)'; then
+            echo "::error::dist/tokens.json was not built for $VERSION"
+            exit 1
+          fi
+          gh release upload "$TAG" dist/tokens.css dist/theme.css dist/tokens.json --repo "$GITHUB_REPOSITORY"
+          gh release edit "$TAG" --draft=false --repo "$GITHUB_REPOSITORY"
