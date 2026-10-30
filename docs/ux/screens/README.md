@@ -48,8 +48,8 @@ From handbook §14.2 and §14.3, so the specs do not repeat them:
   AA.
 - **Where the focus goes:** a route change focuses the page's heading. A change on the same page (a
   filter, a quantity, a panel toggled) keeps the focus on the control used, since WCAG 3.2.2 counts
-  a focus change as a change of context. "Load more" focuses the first new row and announces the new
-  count. A validation error moves the focus to its field.
+  a focus change as a change of context. A list's next or previous page focuses its first row and
+  announces which rows it shows. A validation error moves the focus to its field.
 - **Dialogs** open on their first field; without one, on the least destructive action when the step
   can't be undone (sending a quote). Escape closes them and the focus returns to what opened them.
 - **Toasts with an action** (Undo) don't time out (WCAG 2.2.1): they stay until the next change and
