@@ -78,8 +78,9 @@ default, oldest first, or by validity, ending soonest or latest first: the order
   between rows while the table has focus; Enter opens one.
 - Changing a filter keeps the focus on it; a new page focuses its first quote and announces which
   quotes it shows ("Quotes 51 to 100").
-- Without JavaScript the filter bar is a form that submits with its button, and the pages are plain
-  links.
+- The pages are plain links, so they open in a new tab and work before the app's code has loaded.
+  The rows stream in after the page's frame, which a browser shows only with JavaScript: unlike the
+  sign-in form, the list does not work with JavaScript turned off.
 - The table is a real `<table>` with column headers; status badges carry their text, not only a
   color.
 
