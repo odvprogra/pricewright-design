@@ -1,9 +1,13 @@
 # pnpm settings (a single package, no workspace members).
 
-# Patched versions of the linters' transitive dependencies, until markdownlint-cli2 requires them.
+# Patched versions of transitive dependencies, until the packages that pull them in require them.
 overrides:
   katex: 0.18.11 # GHSA-238p-pmpm-9mq7; markdownlint parses math with it, this repo has none
   re2js: 2.8.8 # GHSA-gg6h-894w-4m9c; markdownlint 0.42.0 pins 2.8.6, the advisory's fix is 2.8.7
+  # GHSA-3g3m-2fjr-6pw4 (glob <= 14.0.1) and, through glob 14's minimatch ^11.0.2,
+  # GHSA-g3hv-75wg-m249 (minimatch < 11.0.1): Style Dictionary's @bundled-es-modules/glob 13.0.6
+  # asks for glob ^13. glob 14 keeps the same exports (`.`, `./raw`); the token builds are unchanged.
+  glob: 14.0.3
 
 auditConfig:
   ignoreGhsas:
