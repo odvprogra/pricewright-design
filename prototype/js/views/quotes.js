@@ -8,11 +8,36 @@ const PAGE = 50;
 
 function filters() {
   const query = new URLSearchParams(location.hash.split("?")[1] ?? "");
+  // The API pages forward with cursors, and the web app keeps their trail in the URL (quotes.md);
+  // the prototype's quotes are all in the browser, so a page number stands for that trail.
+  const page = Math.floor(Number(query.get("page") ?? 1));
   return {
     status: query.get("status") ?? "",
     mine: query.get("mine") === "1",
-    shown: Number(query.get("shown") ?? PAGE),
+    page: Number.isFinite(page) && page > 1 ? page : 1,
   };
+}
+
+/**
+ * The list's URL for a page of the same filters.
+ * @param {{ status: string, mine: boolean }} view
+ * @param {number} page
+ */
+function pageHref({ status, mine }, page) {
+  const query = new URLSearchParams();
+  if (status !== "") query.set("status", status);
+  if (mine) query.set("mine", "1");
+  if (page > 1) query.set("page", String(page));
+  return `#/quotes${query.size > 0 ? `?${query}` : ""}`;
+}
+
+/**
+ * The rows a page shows, as the web app says it: "Quotes 51 to 100".
+ * @param {number} page
+ * @param {number} count
+ */
+function rangeOf(page, count) {
+  return `Quotes ${(page - 1) * PAGE + 1} to ${Math.min(page * PAGE, count)}`;
 }
 
 /** @param {import("../store.js").Quote} q */
@@ -83,12 +108,19 @@ export function startQuote(customerId) {
 }
 
 export function quotesView() {
-  const { status, mine, shown } = filters();
+  const view = filters();
+  const { status, mine } = view;
   const user = currentUser();
   const all = state.quotes.filter(
     (q) => (status === "" || q.status === status) && (!mine || q.created_by === user?.name),
   );
-  const rows = all.slice(0, shown).map(row).join("");
+  // A page past the last one (an edited link, or quotes cancelled meanwhile) shows the last.
+  const page = Math.min(view.page, Math.max(1, Math.ceil(all.length / PAGE)));
+  const rows = all
+    .slice((page - 1) * PAGE, page * PAGE)
+    .map(row)
+    .join("");
+  const range = rangeOf(page, all.length);
   const statuses = [
     "draft",
     "pending_approval",
@@ -118,11 +150,13 @@ ${
   all.length === 0
     ? empty
     : `<div class="table"><table>
+<caption class="visually-hidden">${range}</caption>
 <thead><tr><th scope="col">Number</th><th scope="col">Customer</th><th scope="col">Status</th><th scope="col" class="number">Total</th>
 <th scope="col">Valid until</th><th scope="col">Created by</th><th scope="col">Updated</th></tr></thead>
 <tbody id="quote-rows">${rows}</tbody></table></div>
-<p class="muted">${Math.min(shown, all.length)} of ${all.length} quotes.</p>
-${shown < all.length ? `<a class="button secondary" id="load-more" href="#/quotes?${new URLSearchParams({ status, mine: mine ? "1" : "", shown: String(shown + PAGE) })}">Load more</a>` : ""}`
+<nav class="actions" aria-label="Pages of quotes"><p class="muted">${range}</p>
+${page > 1 ? `<a class="button secondary" data-range="${rangeOf(page - 1, all.length)}" href="${pageHref(view, page - 1)}">Previous page</a>` : ""}
+${page * PAGE < all.length ? `<a class="button secondary" data-range="${rangeOf(page + 1, all.length)}" href="${pageHref(view, page + 1)}">Next page</a>` : ""}</nav>`
 }
 ${newQuoteDialog()}`,
     /** @param {HTMLElement} root */
@@ -131,17 +165,19 @@ ${newQuoteDialog()}`,
       form.addEventListener("change", (event) => {
         focusAfterRender(`#${/** @type {HTMLElement} */ (event.target).id}`);
         const data = new FormData(form);
-        const query = new URLSearchParams();
-        const chosen = String(data.get("status") ?? "");
-        if (chosen !== "") query.set("status", chosen);
-        if (data.get("mine") !== null) query.set("mine", "1");
-        location.hash = `#/quotes${query.size > 0 ? `?${query}` : ""}`;
+        // A filter goes back to the first page, as a cursor belongs to the query that returned it.
+        location.hash = pageHref(
+          { status: String(data.get("status") ?? ""), mine: data.get("mine") !== null },
+          1,
+        );
       });
-      // The next rows load below the ones already read: focus the first new one, not the page top.
-      root.querySelector("#load-more")?.addEventListener("click", () => {
-        focusAfterRender(`#quote-rows tr:nth-child(${shown + 1}) a`);
-        announce(`Showing ${Math.min(shown + PAGE, all.length)} of ${all.length} quotes.`);
-      });
+      // Another page replaces the rows: focus its first quote and say which rows it shows.
+      root.querySelectorAll("[data-range]").forEach((link) =>
+        link.addEventListener("click", () => {
+          focusAfterRender("#quote-rows tr:first-child a");
+          announce(`${/** @type {HTMLElement} */ (link).dataset.range}.`);
+        }),
+      );
       const dialog = /** @type {HTMLDialogElement} */ (root.querySelector("#new-quote"));
       const input = /** @type {HTMLInputElement} */ (root.querySelector("#new-quote-customer"));
       const error = /** @type {HTMLElement} */ (root.querySelector("#new-quote-error"));

@@ -81,13 +81,41 @@ test("changing a filter keeps the focus on it", async ({ page }) => {
   await expect(page.getByLabel("Only mine")).toBeFocused();
 });
 
-test("Load more puts the focus on the first quote it loaded", async ({ page }) => {
+test("a page link focuses the page's first quote and says which quotes it shows", async ({
+  page,
+}) => {
+  const pages = page.getByRole("navigation", { name: "Pages of quotes" });
+  const firstQuote = page.locator("#quote-rows tr:first-child a");
   await signIn(page);
-  await tabTo(page, "Load more");
+  await tabTo(page, "Next page");
   await page.keyboard.press("Enter");
 
-  await expect(page.getByText("100 of 161 quotes.", { exact: true })).toBeVisible();
-  await expect(page.locator("#quote-rows tr:nth-child(51) a")).toBeFocused();
+  await expect(page).toHaveURL(/#\/quotes\?page=2$/);
+  await expect(pages.getByText("Quotes 51 to 100", { exact: true })).toBeVisible();
+  await expect(firstQuote).toBeFocused();
+  await expect(page.locator("#live")).toHaveText("Quotes 51 to 100.");
+
+  // The page is in the URL, so a reload keeps it (quotes.md).
+  await page.reload();
+  await expect(pages.getByText("Quotes 51 to 100", { exact: true })).toBeVisible();
+
+  await tabTo(page, "Previous page");
+  await page.keyboard.press("Enter");
+  await expect(page).toHaveURL(/#\/quotes$/);
+  await expect(firstQuote).toBeFocused();
+  await expect(page.locator("#live")).toHaveText("Quotes 1 to 50.");
+});
+
+test("a filter goes back to the first page", async ({ page }) => {
+  await signIn(page);
+  await page.goto("./#/quotes?page=3");
+  await tabTo(page, "Only mine");
+  await page.keyboard.press("Space");
+
+  await expect(page).toHaveURL(/#\/quotes\?mine=1$/);
+  await expect(page.getByRole("navigation", { name: "Pages of quotes" })).toContainText(
+    "Quotes 1 to",
+  );
 });
 
 test("the builder keeps the focus where the rep works", async ({ page }) => {
