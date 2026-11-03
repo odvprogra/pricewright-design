@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.1](https://github.com/odvprogra/pricewright-design/compare/v0.1.0...v0.1.1) (2026-11-03)
+
+
+### Bug Fixes
+
+* page the prototype's quotes list like its spec, with Previous and Next ([#51](https://github.com/odvprogra/pricewright-design/issues/51)) ([6380e47](https://github.com/odvprogra/pricewright-design/commit/6380e47785162b9b8af186245a1a40dc0baac145))
+
 ## 0.1.0 (2026-10-29)
 
 
